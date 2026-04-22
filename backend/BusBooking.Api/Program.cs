@@ -2,6 +2,7 @@ using System.Text;
 using BusBooking.Api.Infrastructure;
 using BusBooking.Api.Infrastructure.Auth;
 using BusBooking.Api.Infrastructure.Errors;
+using BusBooking.Api.Infrastructure.Seeding;
 using BusBooking.Api.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +27,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.Configure<AdminSeedOptions>(
+    builder.Configuration.GetSection(AdminSeedOptions.SectionName));
+builder.Services.AddScoped<IAdminSeeder, AdminSeeder>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("ConnectionStrings:Default missing");
@@ -64,6 +68,13 @@ builder.Services
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+// ── Startup: seed admin ─────────────────────────────────────────
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IAdminSeeder>();
+    await seeder.SeedAsync(CancellationToken.None);
+}
 
 // ── Pipeline ────────────────────────────────────────────────────
 app.UseMiddleware<ExceptionMiddleware>();
