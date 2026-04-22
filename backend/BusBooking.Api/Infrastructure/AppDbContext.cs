@@ -1,5 +1,6 @@
 using BusBooking.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Route = BusBooking.Api.Models.Route;
 
 namespace BusBooking.Api.Infrastructure;
 
@@ -11,6 +12,9 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<City> Cities => Set<City>();
+    public DbSet<Route> Routes => Set<Route>();
+    public DbSet<PlatformFeeConfig> PlatformFeeConfigs => Set<PlatformFeeConfig>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,6 +47,50 @@ public class AppDbContext : DbContext
                 .WithMany(u => u.Roles)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<City>(b =>
+        {
+            b.ToTable("cities");
+            b.HasKey(c => c.Id);
+            b.Property(c => c.Id).HasColumnName("id");
+            b.Property(c => c.Name).HasColumnName("name").HasColumnType("citext").IsRequired().HasMaxLength(120);
+            b.Property(c => c.State).HasColumnName("state").IsRequired().HasMaxLength(120);
+            b.Property(c => c.IsActive).HasColumnName("is_active");
+            b.HasIndex(c => c.Name).IsUnique();
+            // The gin_trgm_ops GIN index is added by raw SQL in the migration (see Task 2).
+        });
+
+        modelBuilder.Entity<Route>(b =>
+        {
+            b.ToTable("routes");
+            b.HasKey(r => r.Id);
+            b.Property(r => r.Id).HasColumnName("id");
+            b.Property(r => r.SourceCityId).HasColumnName("source_city_id");
+            b.Property(r => r.DestinationCityId).HasColumnName("destination_city_id");
+            b.Property(r => r.DistanceKm).HasColumnName("distance_km");
+            b.Property(r => r.IsActive).HasColumnName("is_active");
+            b.HasIndex(r => new { r.SourceCityId, r.DestinationCityId }).IsUnique();
+            b.HasOne(r => r.SourceCity)
+                .WithMany()
+                .HasForeignKey(r => r.SourceCityId)
+                .OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(r => r.DestinationCity)
+                .WithMany()
+                .HasForeignKey(r => r.DestinationCityId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PlatformFeeConfig>(b =>
+        {
+            b.ToTable("platform_fee_config");
+            b.HasKey(p => p.Id);
+            b.Property(p => p.Id).HasColumnName("id");
+            b.Property(p => p.FeeType).HasColumnName("fee_type").IsRequired().HasMaxLength(16);
+            b.Property(p => p.Value).HasColumnName("value").HasColumnType("decimal(10,2)");
+            b.Property(p => p.EffectiveFrom).HasColumnName("effective_from");
+            b.Property(p => p.CreatedByAdminId).HasColumnName("created_by_admin_id");
+            b.HasIndex(p => p.EffectiveFrom);
         });
     }
 }
