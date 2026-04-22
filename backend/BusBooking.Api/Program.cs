@@ -30,6 +30,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 builder.Services.AddScoped<IAdminSeeder, AdminSeeder>();
+builder.Services.AddScoped<IPlatformFeeSeeder, PlatformFeeSeeder>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("ConnectionStrings:Default missing");
@@ -93,6 +94,8 @@ using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<IAdminSeeder>();
     await seeder.SeedAsync(CancellationToken.None);
+    var feeSeeder = scope.ServiceProvider.GetRequiredService<IPlatformFeeSeeder>();
+    await feeSeeder.SeedAsync(CancellationToken.None);
 }
 
 // ── Pipeline ────────────────────────────────────────────────────
