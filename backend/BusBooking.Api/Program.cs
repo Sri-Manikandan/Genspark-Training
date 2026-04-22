@@ -27,6 +27,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 builder.Services.AddScoped<IAdminSeeder, AdminSeeder>();
