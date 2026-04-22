@@ -1,0 +1,34 @@
+<mat-toolbar color="primary" class="navbar">
+  <a routerLink="/" class="brand flex items-center gap-2">
+    <mat-icon>directions_bus</mat-icon>
+    <span class="font-semibold">Bus Booking</span>
+  </a>
+
+  <span class="flex-1"></span>
+
+  @if (!isLoggedIn()) {
+    <a mat-button routerLink="/login">Log in</a>
+    <a mat-flat-button color="accent" routerLink="/register">Sign up</a>
+  } @else {
+    @if (isAdmin()) {
+      <a mat-button routerLink="/admin" routerLinkActive="active-link">Admin Console</a>
+    }
+    @if (isOperator()) {
+      <a mat-button routerLink="/operator" routerLinkActive="active-link">Operator</a>
+    }
+    <button mat-button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2">
+      <span class="initials-chip">{{ initials() }}</span>
+      <span class="hidden sm:inline">{{ user()?.name }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <div class="px-4 py-2 text-sm text-gray-600">
+        Roles: {{ user()?.roles?.join(', ') }}
+      </div>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Log out</span>
+      </button>
+    </mat-menu>
+  }
+</mat-toolbar>
