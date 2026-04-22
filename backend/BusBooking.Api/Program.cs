@@ -67,6 +67,25 @@ builder.Services
     });
 builder.Services.AddAuthorization();
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy("auth", context =>
+    {
+        var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        return System.Threading.RateLimiting.RateLimitPartition.GetSlidingWindowLimiter(
+            partitionKey: ip,
+            factory: _ => new System.Threading.RateLimiting.SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
+                Window = TimeSpan.FromSeconds(1),
+                SegmentsPerWindow = 2,
+                QueueLimit = 0,
+                QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst
+            });
+    });
+});
+
 var app = builder.Build();
 
 // ── Startup: seed admin ─────────────────────────────────────────
@@ -90,6 +109,7 @@ app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 

@@ -3,12 +3,14 @@ using BusBooking.Api.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace BusBooking.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/auth")]
 [AllowAnonymous]
+[EnableRateLimiting("auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
