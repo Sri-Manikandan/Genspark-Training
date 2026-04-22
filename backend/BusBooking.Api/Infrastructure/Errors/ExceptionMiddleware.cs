@@ -5,6 +5,11 @@ namespace BusBooking.Api.Infrastructure.Errors;
 
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     public async Task Invoke(HttpContext context)
     {
         try
@@ -43,10 +48,14 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
                 break;
         }
 
+        if (context.Response.HasStarted)
+        {
+            logger.LogError(ex, "Response already started; cannot write error envelope {CorrelationId}", correlationId);
+            return;
+        }
+
         context.Response.StatusCode = status;
         context.Response.ContentType = "application/json";
-        await context.Response.WriteAsync(JsonSerializer.Serialize(
-            new ErrorResponse(envelope),
-            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(new ErrorResponse(envelope), JsonOptions));
     }
 }
