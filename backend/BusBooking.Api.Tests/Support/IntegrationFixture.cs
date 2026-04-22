@@ -1,4 +1,5 @@
 using BusBooking.Api.Infrastructure;
+using BusBooking.Api.Infrastructure.Seeding;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +52,8 @@ public class IntegrationFixture : WebApplicationFactory<Program>, IAsyncLifetime
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await db.Database.ExecuteSqlRawAsync(
-            "TRUNCATE TABLE user_roles, users RESTART IDENTITY CASCADE");
+            "TRUNCATE TABLE user_roles, users, routes, cities, platform_fee_config RESTART IDENTITY CASCADE");
+        var seeder = scope.ServiceProvider.GetRequiredService<IPlatformFeeSeeder>();
+        await seeder.SeedAsync(CancellationToken.None);
     }
 }
