@@ -1,0 +1,25 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+  <mat-card class="w-full max-w-md p-6">
+    <h1 class="text-2xl font-semibold mb-2">Bus Booking System</h1>
+    <p class="text-slate-600 mb-6">Foundation milestone — health check.</p>
+
+    <div class="flex items-center gap-3 mb-4">
+      @switch (status()) {
+        @case ('loading') { <span class="inline-block w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span> }
+        @case ('ok')      { <span class="inline-block w-3 h-3 rounded-full bg-emerald-500"></span> }
+        @case ('failed')  { <span class="inline-block w-3 h-3 rounded-full bg-rose-500"></span> }
+      }
+      <span data-testid="status-label">{{ statusLabel() }}</span>
+    </div>
+
+    @if (payload(); as p) {
+      <dl class="text-sm text-slate-600 space-y-1">
+        <div class="flex gap-2"><dt class="font-medium w-24">Service</dt><dd>{{ p.service }}</dd></div>
+        <div class="flex gap-2"><dt class="font-medium w-24">Version</dt><dd>{{ p.version }}</dd></div>
+        <div class="flex gap-2"><dt class="font-medium w-24">Time (UTC)</dt><dd>{{ p.timestampUtc | date:'medium':'UTC' }}</dd></div>
+      </dl>
+    }
+
+    <button mat-flat-button color="primary" class="mt-6" (click)="ping()">Check again</button>
+  </mat-card>
+</div>
