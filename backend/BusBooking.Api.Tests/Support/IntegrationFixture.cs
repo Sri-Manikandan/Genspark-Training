@@ -9,6 +9,9 @@ namespace BusBooking.Api.Tests.Support;
 
 public class IntegrationFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    private HttpClient? _client;
+    public HttpClient Client => _client ??= CreateClient();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Development");
