@@ -11,11 +11,13 @@ public class AuthService : IAuthService
 {
     private readonly AppDbContext _db;
     private readonly IPasswordHasher _hasher;
+    private readonly IJwtTokenService _tokens;
 
-    public AuthService(AppDbContext db, IPasswordHasher hasher)
+    public AuthService(AppDbContext db, IPasswordHasher hasher, IJwtTokenService tokens)
     {
         _db = db;
         _hasher = hasher;
+        _tokens = tokens;
     }
 
     public async Task<UserDto> RegisterAsync(RegisterRequest request, CancellationToken ct)
@@ -40,5 +42,21 @@ public class AuthService : IAuthService
         await _db.SaveChangesAsync(ct);
 
         return new UserDto(user.Id, user.Name, user.Email, user.Phone, new[] { Roles.Customer });
+    }
+
+    public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken ct)
+    {
+        var user = await _db.Users
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Email == request.Email, ct);
+
+        if (user is null || !user.IsActive || !_hasher.Verify(request.Password, user.PasswordHash))
+            throw new UnauthorizedException("INVALID_CREDENTIALS");
+
+        var roleNames = user.Roles.Select(r => r.Role).ToArray();
+        var token = _tokens.Generate(user, roleNames);
+
+        var dto = new UserDto(user.Id, user.Name, user.Email, user.Phone, roleNames);
+        return new LoginResponse(token.Token, token.ExpiresAtUtc, dto);
     }
 }

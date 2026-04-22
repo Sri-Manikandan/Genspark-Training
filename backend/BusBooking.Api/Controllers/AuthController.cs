@@ -28,4 +28,15 @@ public class AuthController : ControllerBase
         var user = await _authService.RegisterAsync(request, ct);
         return StatusCode(StatusCodes.Status201Created, user);
     }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponse>> Login(
+        [FromBody] LoginRequest request,
+        [FromServices] IValidator<LoginRequest> validator,
+        CancellationToken ct)
+    {
+        await validator.ValidateAndThrowAsync(request, ct);
+        var result = await _authService.LoginAsync(request, ct);
+        return Ok(result);
+    }
 }

@@ -18,4 +18,4 @@ public class NotFoundException(string message) : AppException("NOT_FOUND", messa
 public class ConflictException(string code, string message, object? details = null) : AppException(code, message, 409, details);
 public class BusinessRuleException(string code, string message, object? details = null) : AppException(code, message, 422, details);
 public class ForbiddenException(string message = "Forbidden") : AppException("FORBIDDEN", message, 403);
-public class UnauthorizedException(string message = "Unauthorized") : AppException("UNAUTHORIZED", message, 401);
+public class UnauthorizedException(string code = "UNAUTHORIZED", string message = "Unauthorized") : AppException(code, message, 401);
