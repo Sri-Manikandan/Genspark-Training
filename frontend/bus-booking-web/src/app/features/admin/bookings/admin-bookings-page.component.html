@@ -1,0 +1,103 @@
+<section class="p-6 max-w-7xl mx-auto space-y-4">
+  <header>
+    <h1 class="text-2xl font-semibold">Bookings</h1>
+    <p class="text-gray-600">Cross-operator booking view.</p>
+  </header>
+
+  <div class="flex gap-4 items-end flex-wrap">
+    <mat-form-field class="w-56">
+      <mat-label>Operator</mat-label>
+      <mat-select [formControl]="operatorFilter">
+        <mat-option [value]="null">All operators</mat-option>
+        @for (op of operators(); track op.userId) {
+          <mat-option [value]="op.userId">{{ op.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-48">
+      <mat-label>Status</mat-label>
+      <mat-select [formControl]="statusFilter">
+        <mat-option [value]="null">All (except pending payment)</mat-option>
+        @for (s of statusOptions; track s.value) {
+          <mat-option [value]="s.value">{{ s.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-44">
+      <mat-label>Trip date</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="dateFilter">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="applyFilters()">Apply</button>
+    <button mat-stroked-button (click)="clearFilters()">Clear</button>
+  </div>
+
+  <table mat-table [dataSource]="bookings()" class="mat-elevation-z1 w-full">
+    <ng-container matColumnDef="bookingCode">
+      <th mat-header-cell *matHeaderCellDef>Code</th>
+      <td mat-cell *matCellDef="let b" class="font-mono text-sm">{{ b.bookingCode }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Trip date</th>
+      <td mat-cell *matCellDef="let b">{{ b.tripDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="route">
+      <th mat-header-cell *matHeaderCellDef>Route</th>
+      <td mat-cell *matCellDef="let b">{{ b.sourceCity }} → {{ b.destinationCity }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="operator">
+      <th mat-header-cell *matHeaderCellDef>Operator</th>
+      <td mat-cell *matCellDef="let b">{{ b.operatorName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="bus">
+      <th mat-header-cell *matHeaderCellDef>Bus</th>
+      <td mat-cell *matCellDef="let b">{{ b.busName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="customer">
+      <th mat-header-cell *matHeaderCellDef>Customer</th>
+      <td mat-cell *matCellDef="let b">
+        <div>{{ b.customerName }}</div>
+        <div class="text-xs text-gray-500">{{ b.customerEmail }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="seats">
+      <th mat-header-cell *matHeaderCellDef>Seats</th>
+      <td mat-cell *matCellDef="let b">{{ b.seatCount }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>Amount</th>
+      <td mat-cell *matCellDef="let b">{{ b.totalAmount | currency:'INR' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let b">
+        <span class="px-2 py-1 rounded text-xs" [ngClass]="statusClass(b.status)">
+          {{ formatStatus(b.status) }}
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  </table>
+
+  @if (bookings().length === 0) {
+    <div class="p-8 text-center text-slate-500 border rounded bg-slate-50">
+      No bookings match these filters.
+    </div>
+  }
+
+  <p class="text-sm text-slate-500">Total: {{ totalCount() }} booking(s)</p>
+</section>
