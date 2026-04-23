@@ -75,7 +75,36 @@ public class OperatorBookingService : IOperatorBookingService
         return new OperatorBookingListResponseDto(items, p, size, total);
     }
 
-    public Task<OperatorRevenueResponseDto> GetRevenueAsync(
+    public async Task<OperatorRevenueResponseDto> GetRevenueAsync(
         Guid operatorUserId, DateOnly from, DateOnly to, CancellationToken ct)
-        => throw new NotImplementedException("Implemented in Task 7");
+    {
+        var rows = await _db.Bookings
+            .AsNoTracking()
+            .Where(b => b.Trip!.Schedule!.Bus!.OperatorUserId == operatorUserId
+                     && (b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.Completed)
+                     && b.Trip!.TripDate >= from
+                     && b.Trip!.TripDate <= to)
+            .Include(b => b.Trip)
+                .ThenInclude(t => t!.Schedule).ThenInclude(s => s!.Bus)
+            .ToListAsync(ct);
+
+        var byBus = rows
+            .GroupBy(b => new
+            {
+                BusId = b.Trip!.Schedule!.Bus!.Id,
+                BusName = b.Trip!.Schedule!.Bus!.BusName,
+                RegNum = b.Trip!.Schedule!.Bus!.RegistrationNumber
+            })
+            .Select(g => new OperatorRevenueItemDto(
+                g.Key.BusId,
+                g.Key.BusName,
+                g.Key.RegNum,
+                g.Count(),
+                g.Sum(b => b.SeatCount),
+                g.Sum(b => b.TotalFare)))
+            .OrderByDescending(x => x.TotalFare)
+            .ToList();
+
+        return new OperatorRevenueResponseDto(from, to, byBus.Sum(x => x.TotalFare), byBus);
+    }
 }
