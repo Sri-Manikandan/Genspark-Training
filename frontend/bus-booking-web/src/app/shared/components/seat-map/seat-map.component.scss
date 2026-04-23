@@ -1,0 +1,11 @@
+.seat {
+  @apply border;
+
+  &.available {
+    @apply bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100 cursor-pointer;
+  }
+
+  &.booked, &.locked {
+    @apply bg-slate-100 border-slate-300 text-slate-400 cursor-not-allowed;
+  }
+}

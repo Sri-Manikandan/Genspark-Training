@@ -1,0 +1,61 @@
+<div class="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
+  <div class="flex items-center justify-between border-b pb-4">
+    <h1 class="text-2xl font-bold">Search Results</h1>
+    <a mat-stroked-button routerLink="/">Modify Search</a>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center p-12">
+      <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  } @else if (results().length === 0) {
+    <div class="text-center p-12 bg-slate-50 rounded-lg border text-slate-500">
+      <h3 class="text-lg font-medium text-slate-700 mb-2">No buses found</h3>
+      <p>Try modifying your search criteria or choosing a different date.</p>
+    </div>
+  } @else {
+    <div class="space-y-4">
+      @for (trip of results(); track trip.tripId) {
+        <mat-card class="overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <mat-card-content class="p-0">
+            <div class="flex flex-col md:flex-row">
+              <!-- Left: Time & Route -->
+              <div class="flex-1 p-5 border-b md:border-b-0 md:border-r border-slate-100">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 class="font-semibold text-lg text-slate-800">{{ trip.operatorName }}</h3>
+                    <p class="text-sm text-slate-500">{{ trip.busName }} ({{ trip.busType }})</p>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-xl font-bold text-slate-800">{{ trip.farePerSeat | currency:'INR' }}</div>
+                    <div class="text-xs font-medium text-emerald-600">{{ trip.seatsLeft }} seats left</div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4 text-slate-700">
+                  <div class="font-medium text-lg">{{ trip.departureTime.substring(0,5) }}</div>
+                  <div class="flex-1 h-px bg-slate-200 relative">
+                    <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-slate-300 bg-white"></div>
+                  </div>
+                  <div class="font-medium text-lg">{{ trip.arrivalTime.substring(0,5) }}</div>
+                </div>
+
+                <div class="flex justify-between mt-2 text-xs text-slate-500">
+                  <div class="truncate max-w-[150px]" [title]="trip.pickupAddress">{{ trip.pickupAddress || 'Boarding Point' }}</div>
+                  <div class="truncate max-w-[150px] text-right" [title]="trip.dropAddress">{{ trip.dropAddress || 'Drop Point' }}</div>
+                </div>
+              </div>
+
+              <!-- Right: Action -->
+              <div class="w-full md:w-48 bg-slate-50 p-5 flex flex-col justify-center items-center gap-3">
+                <a mat-flat-button color="primary" class="w-full" [routerLink]="['/trips', trip.tripId]">
+                  View Seats
+                </a>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

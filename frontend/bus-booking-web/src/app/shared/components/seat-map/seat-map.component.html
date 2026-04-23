@@ -1,0 +1,35 @@
+<div class="flex flex-col items-center gap-4 p-4 border rounded-lg bg-white shadow-sm overflow-x-auto">
+  <div class="text-sm font-medium text-slate-500 mb-2 border-b w-full text-center pb-2">Front</div>
+
+  <div class="flex flex-col gap-2">
+    @for (row of seatGrid; track $index) {
+      <div class="flex gap-2">
+        @for (seat of row; track $index) {
+          @if (seat) {
+            <button
+              class="seat flex items-center justify-center w-10 h-10 rounded text-xs font-medium transition-colors"
+              [class.available]="seat.status === 'available'"
+              [class.booked]="seat.status === 'booked'"
+              [class.locked]="seat.status === 'locked'"
+              [disabled]="seat.status !== 'available'">
+              {{ seat.seatNumber }}
+            </button>
+          } @else {
+            <div class="w-10 h-10"></div> <!-- Empty space (aisle) -->
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="flex gap-4 mt-4 text-xs text-slate-600">
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></div>
+      <span>Available</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 rounded bg-slate-200 border border-slate-300"></div>
+      <span>Booked</span>
+    </div>
+  </div>
+</div>

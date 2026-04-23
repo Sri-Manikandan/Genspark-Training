@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>Create Schedule</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="flex flex-col gap-4 mt-2">
+    
+    @if (error()) {
+      <div class="p-3 text-sm text-rose-800 bg-rose-50 border border-rose-200 rounded">
+        {{ error() }}
+      </div>
+    }
+
+    <mat-form-field>
+      <mat-label>Bus</mat-label>
+      <mat-select formControlName="busId">
+        @for (b of buses(); track b.id) {
+          <mat-option [value]="b.id">{{ b.busName }} ({{ b.registrationNumber }})</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Route</mat-label>
+      <mat-select formControlName="routeId">
+        @for (r of routes(); track r.id) {
+          <mat-option [value]="r.id">{{ r.sourceCityName }} → {{ r.destinationCityName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="flex gap-4">
+      <mat-form-field class="flex-1">
+        <mat-label>Departure Time</mat-label>
+        <input matInput type="time" formControlName="departureTime">
+      </mat-form-field>
+
+      <mat-form-field class="flex-1">
+        <mat-label>Arrival Time</mat-label>
+        <input matInput type="time" formControlName="arrivalTime">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Fare per Seat (₹)</mat-label>
+      <input matInput type="number" formControlName="farePerSeat" min="1">
+    </mat-form-field>
+
+    <div class="flex gap-4">
+      <mat-form-field class="flex-1">
+        <mat-label>Valid From</mat-label>
+        <input matInput type="date" formControlName="validFrom">
+      </mat-form-field>
+
+      <mat-form-field class="flex-1">
+        <mat-label>Valid To</mat-label>
+        <input matInput type="date" formControlName="validTo">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Days of Week (Bitmask)</mat-label>
+      <mat-select formControlName="daysOfWeek">
+        <mat-option [value]="127">Everyday (127)</mat-option>
+        <mat-option [value]="31">Weekdays (31)</mat-option>
+        <mat-option [value]="96">Weekends (96)</mat-option>
+        <!-- In a real app, use a multi-select for days; using simple dropdown for M4 MVP -->
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="form.invalid || saving()" (click)="save()">
+    {{ saving() ? 'Saving...' : 'Save' }}
+  </button>
+</mat-dialog-actions>

@@ -43,6 +43,8 @@ builder.Services.AddScoped<BusBooking.Api.Infrastructure.Auth.ICurrentUserAccess
                            BusBooking.Api.Infrastructure.Auth.CurrentUserAccessor>();
 builder.Services.AddScoped<IAuditLogWriter, AuditLogWriter>();
 builder.Services.AddScoped<INotificationSender, LoggingNotificationSender>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<ITripService, TripService>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("ConnectionStrings:Default missing");

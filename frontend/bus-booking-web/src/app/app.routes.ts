@@ -7,6 +7,16 @@ export const routes: Routes = [
     loadComponent: () => import('./features/public/home/home.component').then(m => m.HomeComponent)
   },
   {
+    path: 'search-results',
+    loadComponent: () => import('./features/public/search-results/search-results.component')
+      .then(m => m.SearchResultsComponent)
+  },
+  {
+    path: 'trips/:id',
+    loadComponent: () => import('./features/public/trip-detail/trip-detail.component')
+      .then(m => m.TripDetailComponent)
+  },
+  {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
   },
@@ -71,6 +81,11 @@ export const routes: Routes = [
         path: 'buses',
         loadComponent: () => import('./features/operator/buses/operator-buses-list.component')
           .then(m => m.OperatorBusesListComponent)
+      },
+      {
+        path: 'schedules',
+        loadComponent: () => import('./features/operator/schedules/operator-schedules-list.component')
+          .then(m => m.OperatorSchedulesListComponent)
       }
     ]
   },

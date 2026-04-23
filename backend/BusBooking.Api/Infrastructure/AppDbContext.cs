@@ -20,6 +20,8 @@ public class AppDbContext : DbContext
     public DbSet<Bus> Buses => Set<Bus>();
     public DbSet<SeatDefinition> SeatDefinitions => Set<SeatDefinition>();
     public DbSet<AuditLogEntry> AuditLog => Set<AuditLogEntry>();
+    public DbSet<BusSchedule> BusSchedules => Set<BusSchedule>();
+    public DbSet<BusTrip> BusTrips => Set<BusTrip>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -193,6 +195,38 @@ public class AppDbContext : DbContext
             b.Property(a => a.MetadataJson).HasColumnName("metadata").HasColumnType("jsonb");
             b.Property(a => a.CreatedAt).HasColumnName("created_at");
             b.HasIndex(a => new { a.TargetType, a.TargetId });
+        });
+
+        modelBuilder.Entity<BusSchedule>(b =>
+        {
+            b.ToTable("bus_schedules");
+            b.HasKey(s => s.Id);
+            b.Property(s => s.Id).HasColumnName("id");
+            b.Property(s => s.BusId).HasColumnName("bus_id");
+            b.Property(s => s.RouteId).HasColumnName("route_id");
+            b.Property(s => s.DepartureTime).HasColumnName("departure_time").HasColumnType("time");
+            b.Property(s => s.ArrivalTime).HasColumnName("arrival_time").HasColumnType("time");
+            b.Property(s => s.FarePerSeat).HasColumnName("fare_per_seat").HasColumnType("decimal(10,2)");
+            b.Property(s => s.ValidFrom).HasColumnName("valid_from").HasColumnType("date");
+            b.Property(s => s.ValidTo).HasColumnName("valid_to").HasColumnType("date");
+            b.Property(s => s.DaysOfWeek).HasColumnName("days_of_week");
+            b.Property(s => s.IsActive).HasColumnName("is_active");
+            b.HasIndex(s => new { s.RouteId, s.IsActive });
+            b.HasOne(s => s.Bus).WithMany().HasForeignKey(s => s.BusId).OnDelete(DeleteBehavior.Cascade);
+            b.HasOne(s => s.Route).WithMany().HasForeignKey(s => s.RouteId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<BusTrip>(b =>
+        {
+            b.ToTable("bus_trips");
+            b.HasKey(t => t.Id);
+            b.Property(t => t.Id).HasColumnName("id");
+            b.Property(t => t.ScheduleId).HasColumnName("schedule_id");
+            b.Property(t => t.TripDate).HasColumnName("trip_date").HasColumnType("date");
+            b.Property(t => t.Status).HasColumnName("status").IsRequired().HasMaxLength(16);
+            b.Property(t => t.CancelReason).HasColumnName("cancel_reason").HasMaxLength(500);
+            b.HasIndex(t => new { t.ScheduleId, t.TripDate }).IsUnique();
+            b.HasOne(t => t.Schedule).WithMany().HasForeignKey(t => t.ScheduleId).OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

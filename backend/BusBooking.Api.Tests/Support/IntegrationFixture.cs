@@ -52,7 +52,7 @@ public class IntegrationFixture : WebApplicationFactory<Program>, IAsyncLifetime
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await db.Database.ExecuteSqlRawAsync(
-            "TRUNCATE TABLE audit_log, seat_definitions, buses, operator_offices, operator_requests, "
+            "TRUNCATE TABLE bus_trips, bus_schedules, audit_log, seat_definitions, buses, operator_offices, operator_requests, "
             + "platform_fee_config, routes, cities, user_roles, users "
             + "RESTART IDENTITY CASCADE");
         var seeder = scope.ServiceProvider.GetRequiredService<IPlatformFeeSeeder>();

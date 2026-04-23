@@ -75,7 +75,7 @@ public class OperatorBusesTests : IClassFixture<IntegrationFixture>, IAsyncLifet
         var listA = await (await clientA.GetAsync("/api/v1/operator/buses"))
             .Content.ReadFromJsonAsync<List<BusDto>>();
         listA!.Should().HaveCount(1);
-        listA[0].RegistrationNumber.Should().Be("OP-A-01");
+        listA![0].RegistrationNumber.Should().Be("OP-A-01");
     }
 
     [Fact]
