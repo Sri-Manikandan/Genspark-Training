@@ -71,6 +71,7 @@ builder.Services.Configure<BusBooking.Api.Infrastructure.RefundPolicy.RefundPoli
 builder.Services.AddScoped<IRefundPolicyService, RefundPolicyService>();
 builder.Services.AddScoped<ISeatLockService, SeatLockService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IOperatorBookingService, OperatorBookingService>();
 builder.Services.AddHostedService<SeatLockCleanupService>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")

@@ -102,4 +102,82 @@ public static class TripTestSeed
 
         return new SeededTrip(op.Id, bus.Id, route.Id, schedule.Id, trip.Id, farePerSeat, capacity);
     }
+
+    public static async Task<SeededTrip> CreateWithOperatorAsync(
+        IntegrationFixture fx,
+        User op,
+        int capacity = 10,
+        int daysAhead = 7,
+        decimal farePerSeat = 500m)
+    {
+        using var scope = fx.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var src = new City { Id = Guid.NewGuid(), Name = $"Src-{Guid.NewGuid():N}"[..16], State = "KA", IsActive = true };
+        var dst = new City { Id = Guid.NewGuid(), Name = $"Dst-{Guid.NewGuid():N}"[..16], State = "TN", IsActive = true };
+        db.Cities.AddRange(src, dst);
+
+        var route = new Route
+        {
+            Id = Guid.NewGuid(),
+            SourceCityId = src.Id,
+            DestinationCityId = dst.Id,
+            DistanceKm = 350,
+            IsActive = true
+        };
+        db.Routes.Add(route);
+
+        db.OperatorOffices.AddRange(
+            new OperatorOffice { Id = Guid.NewGuid(), OperatorUserId = op.Id, CityId = src.Id, AddressLine = "Hub A", Phone = "100", IsActive = true },
+            new OperatorOffice { Id = Guid.NewGuid(), OperatorUserId = op.Id, CityId = dst.Id, AddressLine = "Hub B", Phone = "101", IsActive = true });
+
+        var bus = new Bus
+        {
+            Id = Guid.NewGuid(),
+            OperatorUserId = op.Id,
+            RegistrationNumber = $"TN-{Guid.NewGuid().ToString("N")[..6].ToUpperInvariant()}",
+            BusName = "Test Bus 2",
+            BusType = BusType.Seater,
+            Capacity = capacity,
+            ApprovalStatus = BusApprovalStatus.Approved,
+            OperationalStatus = BusOperationalStatus.Active,
+            CreatedAt = DateTime.UtcNow
+        };
+        db.Buses.Add(bus);
+
+        for (var i = 0; i < capacity; i++)
+            db.SeatDefinitions.Add(new SeatDefinition
+            {
+                Id = Guid.NewGuid(), BusId = bus.Id,
+                SeatNumber = $"A{i + 1}", RowIndex = i, ColumnIndex = 0,
+                SeatCategory = SeatCategory.Regular
+            });
+
+        var schedule = new BusSchedule
+        {
+            Id = Guid.NewGuid(),
+            BusId = bus.Id,
+            RouteId = route.Id,
+            DepartureTime = new TimeOnly(22, 0),
+            ArrivalTime = new TimeOnly(6, 0),
+            FarePerSeat = farePerSeat,
+            ValidFrom = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1)),
+            ValidTo = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(60)),
+            DaysOfWeek = 127,
+            IsActive = true
+        };
+        db.BusSchedules.Add(schedule);
+
+        var trip = new BusTrip
+        {
+            Id = Guid.NewGuid(),
+            ScheduleId = schedule.Id,
+            TripDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(daysAhead)),
+            Status = TripStatus.Scheduled
+        };
+        db.BusTrips.Add(trip);
+
+        await db.SaveChangesAsync();
+        return new SeededTrip(op.Id, bus.Id, route.Id, schedule.Id, trip.Id, farePerSeat, capacity);
+    }
 }
