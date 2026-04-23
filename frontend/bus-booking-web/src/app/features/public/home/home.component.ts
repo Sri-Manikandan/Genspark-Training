@@ -3,13 +3,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 import { HealthApiService, HealthResponse } from '../../../core/api/health.api';
+import { CityAutocompleteComponent } from '../../../shared/components/city-autocomplete/city-autocomplete.component';
+import { CityDto } from '../../../core/api/cities.api';
 
 type Status = 'loading' | 'ok' | 'failed';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, DatePipe],
+  imports: [MatButtonModule, MatCardModule, DatePipe, CityAutocompleteComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -18,6 +20,8 @@ export class HomeComponent implements OnInit {
 
   readonly status = signal<Status>('loading');
   readonly payload = signal<HealthResponse | null>(null);
+  readonly source = signal<CityDto | null>(null);
+  readonly destination = signal<CityDto | null>(null);
   readonly statusLabel = computed(() => {
     const s = this.status();
     if (s === 'loading') return 'checking…';

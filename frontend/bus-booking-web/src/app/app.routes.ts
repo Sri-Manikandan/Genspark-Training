@@ -17,9 +17,28 @@ export const routes: Routes = [
   {
     path: 'admin',
     canMatch: [roleGuard(['admin'])],
-    loadComponent: () =>
-      import('./features/admin/admin-dashboard/admin-dashboard.component')
-        .then(m => m.AdminDashboardComponent)
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard.component')
+          .then(m => m.AdminDashboardComponent)
+      },
+      {
+        path: 'cities',
+        loadComponent: () => import('./features/admin/cities/admin-cities-page.component')
+          .then(m => m.AdminCitiesPageComponent)
+      },
+      {
+        path: 'routes',
+        loadComponent: () => import('./features/admin/routes/admin-routes-page.component')
+          .then(m => m.AdminRoutesPageComponent)
+      },
+      {
+        path: 'platform-fee',
+        loadComponent: () => import('./features/admin/platform-fee/admin-platform-fee-page.component')
+          .then(m => m.AdminPlatformFeePageComponent)
+      }
+    ]
   },
   { path: '**', redirectTo: '' }
 ];
