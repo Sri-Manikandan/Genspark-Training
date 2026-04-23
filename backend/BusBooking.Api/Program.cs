@@ -74,6 +74,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IOperatorBookingService, OperatorBookingService>();
 builder.Services.AddScoped<IAdminOperatorService, AdminOperatorService>();
 builder.Services.AddScoped<IAdminRevenueService, AdminRevenueService>();
+builder.Services.AddScoped<IAdminBookingService, AdminBookingService>();
 builder.Services.AddHostedService<SeatLockCleanupService>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
