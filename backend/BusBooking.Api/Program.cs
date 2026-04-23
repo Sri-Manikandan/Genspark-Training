@@ -32,6 +32,7 @@ builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IPlatformFeeService, PlatformFeeService>();
 builder.Services.AddScoped<IOperatorRequestService, OperatorRequestService>();
+builder.Services.AddScoped<IOperatorOfficeService, OperatorOfficeService>();
 builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 builder.Services.AddScoped<IAdminSeeder, AdminSeeder>();
