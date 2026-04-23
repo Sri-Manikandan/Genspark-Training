@@ -38,6 +38,7 @@ public class RefundPolicyServiceTests
         quote.Blocked.Should().BeFalse();
         quote.RefundPercent.Should().Be(expectedPercent);
         quote.RefundAmount.Should().Be(expectedAmount);
+        quote.HoursUntilDeparture.Should().BeApproximately(hoursAhead, 0.001);
     }
 
     [Theory]
@@ -62,5 +63,25 @@ public class RefundPolicyServiceTests
         var now = new DateTime(2026, 04, 23, 12, 0, 0, DateTimeKind.Utc);
         var quote = svc.Quote(1000m, now.AddHours(-1), now);
         quote.Blocked.Should().BeTrue();
+        quote.HoursUntilDeparture.Should().BeApproximately(-1, 0.001);
+    }
+
+    [Fact]
+    public void Quote_in_gap_between_block_and_lowest_tier_returns_zero_percent_not_blocked()
+    {
+        var options = Options.Create(new RefundPolicyOptions
+        {
+            Tiers = [new RefundPolicyTier { MinHoursBeforeDeparture = 24, RefundPercent = 80 }],
+            BlockBelowHours = 6
+        });
+        var svc = new RefundPolicyService(options);
+        var now = new DateTime(2026, 04, 23, 12, 0, 0, DateTimeKind.Utc);
+
+        var quote = svc.Quote(1000m, now.AddHours(12), now);
+
+        quote.Blocked.Should().BeFalse();
+        quote.RefundPercent.Should().Be(0);
+        quote.RefundAmount.Should().Be(0m);
+        quote.HoursUntilDeparture.Should().BeApproximately(12, 0.001);
     }
 }

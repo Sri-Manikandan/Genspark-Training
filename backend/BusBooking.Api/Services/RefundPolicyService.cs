@@ -14,6 +14,9 @@ public class RefundPolicyService : IRefundPolicyService
 
     public RefundQuote Quote(decimal totalAmount, DateTime departureUtc, DateTime nowUtc)
     {
+        if (departureUtc.Kind == DateTimeKind.Unspecified || nowUtc.Kind == DateTimeKind.Unspecified)
+            throw new ArgumentException("DateTime arguments must have Kind = Utc or Local (not Unspecified).");
+
         var hours = (departureUtc - nowUtc).TotalHours;
 
         if (hours < _options.BlockBelowHours)
