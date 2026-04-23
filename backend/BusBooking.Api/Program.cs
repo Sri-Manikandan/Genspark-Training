@@ -35,6 +35,11 @@ builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 builder.Services.AddScoped<IAdminSeeder, AdminSeeder>();
 builder.Services.AddScoped<IPlatformFeeSeeder, PlatformFeeSeeder>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BusBooking.Api.Infrastructure.Auth.ICurrentUserAccessor,
+                           BusBooking.Api.Infrastructure.Auth.CurrentUserAccessor>();
+builder.Services.AddScoped<IAuditLogWriter, AuditLogWriter>();
+builder.Services.AddScoped<INotificationSender, LoggingNotificationSender>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("ConnectionStrings:Default missing");
