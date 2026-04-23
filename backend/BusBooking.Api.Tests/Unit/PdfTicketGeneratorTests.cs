@@ -28,6 +28,7 @@ public class PdfTicketGeneratorTests
             new TimeOnly(22, 0), new TimeOnly(6, 0),
             900m, 50m, 950m, 1, "confirmed",
             null, DateTime.UtcNow,
+            null, null, null, null,
             new[] { new BookingSeatDto("A1", "Asha", 30, "female") });
 
         var bytes = gen.Generate(dto);

@@ -10,5 +10,8 @@ public static class BookingStatus
 
     public static readonly string[] All =
         [PendingPayment, Confirmed, Cancelled, CancelledByOperator, Completed];
+
+    public static bool IsCancelled(string status) =>
+        status == Cancelled || status == CancelledByOperator;
 }
 

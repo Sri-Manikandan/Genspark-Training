@@ -241,6 +241,10 @@ public class BookingService : IBookingService
             b.Status,
             b.ConfirmedAt,
             b.CreatedAt,
+            b.CancelledAt,
+            b.CancellationReason,
+            b.RefundAmount,
+            b.RefundStatus,
             b.Seats
                 .OrderBy(s => s.SeatNumber)
                 .Select(s => new BookingSeatDto(s.SeatNumber, s.PassengerName, s.PassengerAge, s.PassengerGender))

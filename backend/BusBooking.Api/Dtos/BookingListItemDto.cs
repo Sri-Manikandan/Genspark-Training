@@ -1,25 +1,20 @@
 namespace BusBooking.Api.Dtos;
 
-public record BookingDetailDto(
+public record BookingListItemDto(
     Guid BookingId,
     string BookingCode,
     Guid TripId,
     DateOnly TripDate,
+    TimeOnly DepartureTime,
+    TimeOnly ArrivalTime,
     string SourceCity,
     string DestinationCity,
     string BusName,
     string OperatorName,
-    TimeOnly DepartureTime,
-    TimeOnly ArrivalTime,
-    decimal TotalFare,
-    decimal PlatformFee,
-    decimal TotalAmount,
     int SeatCount,
+    decimal TotalAmount,
     string Status,
-    DateTime? ConfirmedAt,
     DateTime CreatedAt,
     DateTime? CancelledAt,
-    string? CancellationReason,
     decimal? RefundAmount,
-    string? RefundStatus,
-    IReadOnlyList<BookingSeatDto> Seats);
+    string? RefundStatus);
