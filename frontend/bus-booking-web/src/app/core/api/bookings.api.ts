@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+// frontend/bus-booking-web/src/app/core/api/bookings.api.ts
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -68,7 +69,54 @@ export interface BookingDetailDto {
   status: string;
   confirmedAt: string | null;
   createdAt: string;
+  cancelledAt: string | null;
+  cancellationReason: string | null;
+  refundAmount: number | null;
+  refundStatus: string | null;
   seats: BookingSeatDto[];
+}
+
+export type BookingFilter = 'upcoming' | 'past' | 'cancelled';
+
+export interface BookingListItemDto {
+  bookingId: string;
+  bookingCode: string;
+  tripId: string;
+  tripDate: string;
+  sourceCity: string;
+  destinationCity: string;
+  busName: string;
+  operatorName: string;
+  departureTime: string;
+  arrivalTime: string;
+  seatCount: number;
+  totalAmount: number;
+  status: string;
+  createdAt: string;
+  cancelledAt: string | null;
+  refundAmount: number | null;
+  refundStatus: string | null;
+}
+
+export interface BookingListResponseDto {
+  items: BookingListItemDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface RefundPreviewDto {
+  bookingId: string;
+  totalAmount: number;
+  refundPercent: number;
+  refundAmount: number;
+  hoursUntilDeparture: number;
+  cancellable: boolean;
+  blockReason: string | null;
+}
+
+export interface CancelBookingRequest {
+  reason: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -101,5 +149,20 @@ export class BookingsApiService {
   getTicketUrl(bookingId: string): string {
     return `${this.base}/bookings/${bookingId}/ticket`;
   }
-}
 
+  listBookings(filter: BookingFilter = 'upcoming', page = 1, pageSize = 20): Observable<BookingListResponseDto> {
+    const params = new HttpParams()
+      .set('filter', filter)
+      .set('page', String(page))
+      .set('pageSize', String(pageSize));
+    return this.http.get<BookingListResponseDto>(`${this.base}/bookings`, { params });
+  }
+
+  getRefundPreview(bookingId: string): Observable<RefundPreviewDto> {
+    return this.http.get<RefundPreviewDto>(`${this.base}/bookings/${bookingId}/refund-preview`);
+  }
+
+  cancelBooking(bookingId: string, body: CancelBookingRequest): Observable<BookingDetailDto> {
+    return this.http.post<BookingDetailDto>(`${this.base}/bookings/${bookingId}/cancel`, body);
+  }
+}
