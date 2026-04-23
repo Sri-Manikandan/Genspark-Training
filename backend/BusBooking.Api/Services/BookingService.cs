@@ -207,6 +207,68 @@ public class BookingService : IBookingService
         return _pdf.Generate(MapDetail(booking));
     }
 
+    public async Task<BookingListResponseDto> ListAsync(
+        Guid userId, string filter, int page, int pageSize, CancellationToken ct)
+    {
+        var today = DateOnly.FromDateTime(_time.GetUtcNow().UtcDateTime.Date);
+        var p = page < 1 ? 1 : page;
+        var size = pageSize is < 1 or > 100 ? 20 : pageSize;
+
+        var q = _db.Bookings
+            .AsNoTracking()
+            .Where(b => b.UserId == userId)
+            .Include(b => b.Trip).ThenInclude(t => t!.Schedule).ThenInclude(s => s!.Bus).ThenInclude(b => b!.Operator)
+            .Include(b => b.Trip).ThenInclude(t => t!.Schedule).ThenInclude(s => s!.Route).ThenInclude(r => r!.SourceCity)
+            .Include(b => b.Trip).ThenInclude(t => t!.Schedule).ThenInclude(s => s!.Route).ThenInclude(r => r!.DestinationCity)
+            .AsQueryable();
+
+        q = (filter ?? "upcoming").ToLowerInvariant() switch
+        {
+            "past" => q.Where(b =>
+                (b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.Completed)
+                && b.Trip!.TripDate < today),
+            "cancelled" => q.Where(b =>
+                b.Status == BookingStatus.Cancelled || b.Status == BookingStatus.CancelledByOperator),
+            _ /* upcoming */ => q.Where(b =>
+                b.Status == BookingStatus.Confirmed && b.Trip!.TripDate >= today),
+        };
+
+        var total = await q.CountAsync(ct);
+
+        var rows = await q
+            .OrderByDescending(b => b.CreatedAt)
+            .Skip((p - 1) * size)
+            .Take(size)
+            .ToListAsync(ct);
+
+        var items = rows.Select(b =>
+        {
+            var schedule = b.Trip!.Schedule!;
+            var route = schedule.Route!;
+            var bus = schedule.Bus!;
+            return new BookingListItemDto(
+                b.Id,
+                b.BookingCode,
+                b.TripId,
+                b.Trip.TripDate,
+                route.SourceCity!.Name,
+                route.DestinationCity!.Name,
+                bus.BusName,
+                bus.Operator!.Name,
+                schedule.DepartureTime,
+                schedule.ArrivalTime,
+                b.SeatCount,
+                b.TotalAmount,
+                b.Status,
+                b.CreatedAt,
+                b.CancelledAt,
+                b.RefundAmount,
+                b.RefundStatus);
+        }).ToList();
+
+        return new BookingListResponseDto(items, p, size, total);
+    }
+
     private async Task<Booking?> LoadForDetailAsync(Guid bookingId, CancellationToken ct) =>
         await _db.Bookings
             .Include(b => b.Seats)

@@ -30,6 +30,17 @@ public class BookingsController : ControllerBase
         _currentUser = currentUser;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<BookingListResponseDto>> List(
+        [FromQuery] string? filter,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken ct = default)
+    {
+        var result = await _bookings.ListAsync(_currentUser.UserId, filter ?? "upcoming", page, pageSize, ct);
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<ActionResult<CreateBookingResponseDto>> Create([FromBody] CreateBookingRequest req, CancellationToken ct)
     {

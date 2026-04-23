@@ -8,5 +8,11 @@ public interface IBookingService
     Task<BookingDetailDto> VerifyPaymentAsync(Guid userId, Guid bookingId, VerifyPaymentRequest req, CancellationToken ct);
     Task<BookingDetailDto> GetAsync(Guid userId, Guid bookingId, CancellationToken ct);
     Task<byte[]> GetTicketPdfAsync(Guid userId, Guid bookingId, CancellationToken ct);
+    Task<BookingListResponseDto> ListAsync(
+        Guid userId,
+        string filter,
+        int page,
+        int pageSize,
+        CancellationToken ct);
 }
 
