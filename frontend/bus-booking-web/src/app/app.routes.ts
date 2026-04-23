@@ -101,6 +101,18 @@ export const routes: Routes = [
       .then(m => m.CheckoutStepperComponent)
   },
   {
+    path: 'my-bookings',
+    canMatch: [roleGuard(['customer'])],
+    loadComponent: () => import('./features/customer/bookings-list/bookings-list-page.component')
+      .then(m => m.BookingsListPageComponent)
+  },
+  {
+    path: 'my-bookings/:id',
+    canMatch: [roleGuard(['customer'])],
+    loadComponent: () => import('./features/customer/booking-detail/booking-detail-page.component')
+      .then(m => m.BookingDetailPageComponent)
+  },
+  {
     path: 'booking-confirmation/:id',
     canMatch: [roleGuard(['customer'])],
     loadComponent: () => import('./features/customer/booking-confirmation/booking-confirmation.component')
