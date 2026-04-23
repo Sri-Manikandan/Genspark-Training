@@ -86,6 +86,16 @@ export const routes: Routes = [
         path: 'schedules',
         loadComponent: () => import('./features/operator/schedules/operator-schedules-list.component')
           .then(m => m.OperatorSchedulesListComponent)
+      },
+      {
+        path: 'bookings',
+        loadComponent: () => import('./features/operator/bookings/operator-bookings-page.component')
+          .then(m => m.OperatorBookingsPageComponent)
+      },
+      {
+        path: 'revenue',
+        loadComponent: () => import('./features/operator/revenue/operator-revenue-page.component')
+          .then(m => m.OperatorRevenuePageComponent)
       }
     ]
   },
