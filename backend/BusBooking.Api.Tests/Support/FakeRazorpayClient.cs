@@ -11,6 +11,8 @@ public class FakeRazorpayClient : IRazorpayClient
     public const string TestKeySecret = "fake_secret_123";
 
     public readonly ConcurrentDictionary<string, long> CreatedOrders = new();
+    public readonly ConcurrentBag<RazorpayRefund> CreatedRefunds = new();
+    public bool ThrowOnRefund { get; set; }
 
     public string KeyId => TestKeyId;
 
@@ -27,6 +29,20 @@ public class FakeRazorpayClient : IRazorpayClient
         return CryptographicOperations.FixedTimeEquals(
             Encoding.UTF8.GetBytes(expected),
             Encoding.UTF8.GetBytes(signature.ToLowerInvariant()));
+    }
+
+    public Task<RazorpayRefund> CreateRefundAsync(string paymentId, long amountInPaise, CancellationToken ct)
+    {
+        if (ThrowOnRefund)
+            throw new InvalidOperationException("Razorpay refund unavailable (test fault injection)");
+
+        var refund = new RazorpayRefund(
+            Id: "rfnd_" + Guid.NewGuid().ToString("N")[..14],
+            PaymentId: paymentId,
+            Amount: amountInPaise,
+            Status: "processed");
+        CreatedRefunds.Add(refund);
+        return Task.FromResult(refund);
     }
 
     public static string BuildSignature(string orderId, string paymentId)

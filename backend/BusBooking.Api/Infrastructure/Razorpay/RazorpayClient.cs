@@ -54,6 +54,24 @@ public class RazorpayClient : IRazorpayClient
             Encoding.UTF8.GetBytes(signature.ToLowerInvariant()));
     }
 
+    public async Task<RazorpayRefund> CreateRefundAsync(string paymentId, long amountInPaise, CancellationToken ct)
+    {
+        var body = new { amount = amountInPaise, speed = "normal" };
+        var resp = await _http.PostAsJsonAsync($"/v1/payments/{paymentId}/refund", body, ct);
+        if (!resp.IsSuccessStatusCode)
+        {
+            var text = await resp.Content.ReadAsStringAsync(ct);
+            _log.LogError("Razorpay refund failed {Status} {Body}", resp.StatusCode, text);
+            throw new InvalidOperationException($"Razorpay refund failed: {resp.StatusCode}");
+        }
+
+        var dto = await resp.Content.ReadFromJsonAsync<RefundResponse>(cancellationToken: ct)
+            ?? throw new InvalidOperationException("Razorpay refund response was empty");
+
+        return new RazorpayRefund(dto.id, dto.payment_id, dto.amount, dto.status);
+    }
+
     private record OrderResponse(string id, long amount, string currency, string? receipt);
+    private record RefundResponse(string id, string payment_id, long amount, string status);
 }
 
