@@ -66,6 +66,24 @@ public class RefundPolicyServiceTests
         quote.HoursUntilDeparture.Should().BeApproximately(-1, 0.001);
     }
 
+    [Theory]
+    [InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+    [InlineData(DateTimeKind.Utc,         DateTimeKind.Unspecified)]
+    [InlineData(DateTimeKind.Local,       DateTimeKind.Utc)]
+    [InlineData(DateTimeKind.Utc,         DateTimeKind.Local)]
+    [InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
+    public void Quote_throws_when_either_datetime_is_not_utc(
+        DateTimeKind departureKind, DateTimeKind nowKind)
+    {
+        var svc = Build();
+        var dep = new DateTime(2026, 4, 24, 12, 0, 0, departureKind);
+        var now = new DateTime(2026, 4, 23, 12, 0, 0, nowKind);
+
+        Action act = () => svc.Quote(1000m, dep, now);
+
+        act.Should().Throw<ArgumentException>();
+    }
+
     [Fact]
     public void Quote_in_gap_between_block_and_lowest_tier_returns_zero_percent_not_blocked()
     {
