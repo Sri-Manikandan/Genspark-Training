@@ -154,4 +154,102 @@ public class LoggingNotificationSender : INotificationSender
         sb.Append("</div>");
         return sb.ToString();
     }
+
+    public async Task SendOperatorDisabledAsync(User operatorUser, string? reason, CancellationToken ct = default)
+    {
+        var subject = "Your operator account has been disabled";
+        var html = BuildOperatorDisabledHtml(operatorUser, reason);
+        var result = await _email.SendAsync(
+            operatorUser.Email,
+            subject,
+            html,
+            Array.Empty<ResendAttachment>(),
+            ct);
+
+        _db.Notifications.Add(new Notification
+        {
+            Id = Guid.NewGuid(),
+            UserId = operatorUser.Id,
+            Type = NotificationType.OperatorDisabled,
+            Channel = NotificationChannel.Email,
+            ToAddress = operatorUser.Email,
+            Subject = subject,
+            ResendMessageId = result.MessageId,
+            Status = result.Success ? "sent" : "failed",
+            Error = result.Error,
+            CreatedAt = _time.GetUtcNow().UtcDateTime
+        });
+        await _db.SaveChangesAsync(ct);
+
+        if (!result.Success)
+            _log.LogWarning("Operator-disabled email failed for {Email}: {Error}", operatorUser.Email, result.Error);
+    }
+
+    public async Task SendBookingCancelledByOperatorAsync(
+        User customer,
+        BookingDetailDto booking,
+        decimal refundAmount,
+        CancellationToken ct = default)
+    {
+        var subject = $"Booking cancelled by operator — {booking.BookingCode}";
+        var html = BuildOperatorCancelledBookingHtml(customer, booking, refundAmount);
+
+        var result = await _email.SendAsync(
+            customer.Email,
+            subject,
+            html,
+            Array.Empty<ResendAttachment>(),
+            ct);
+
+        _db.Notifications.Add(new Notification
+        {
+            Id = Guid.NewGuid(),
+            UserId = customer.Id,
+            Type = NotificationType.Cancelled,
+            Channel = NotificationChannel.Email,
+            ToAddress = customer.Email,
+            Subject = subject,
+            ResendMessageId = result.MessageId,
+            Status = result.Success ? "sent" : "failed",
+            Error = result.Error,
+            CreatedAt = _time.GetUtcNow().UtcDateTime
+        });
+        await _db.SaveChangesAsync(ct);
+
+        if (!result.Success)
+            _log.LogWarning("Operator-cancel email failed for {BookingCode}: {Error}",
+                booking.BookingCode, result.Error);
+    }
+
+    private static string BuildOperatorDisabledHtml(User user, string? reason)
+    {
+        var sb = new StringBuilder();
+        sb.Append("<div style=\"font-family:Arial,sans-serif\">");
+        sb.Append($"<h2>Operator account disabled</h2>");
+        sb.Append($"<p>Hi {System.Net.WebUtility.HtmlEncode(user.Name)},</p>");
+        sb.Append("<p>Your operator account has been disabled by an administrator. Your buses have been retired and all upcoming confirmed bookings have been cancelled with full refunds to the customers.</p>");
+        if (!string.IsNullOrWhiteSpace(reason))
+            sb.Append($"<p><b>Reason:</b> {System.Net.WebUtility.HtmlEncode(reason)}</p>");
+        sb.Append("<p>Your customer account remains active. Contact support if you believe this is an error.</p>");
+        sb.Append("</div>");
+        return sb.ToString();
+    }
+
+    private static string BuildOperatorCancelledBookingHtml(User user, BookingDetailDto b, decimal refundAmount)
+    {
+        var sb = new StringBuilder();
+        sb.Append("<div style=\"font-family:Arial,sans-serif\">");
+        sb.Append($"<h2>Booking cancelled by operator: {b.BookingCode}</h2>");
+        sb.Append($"<p>Hi {System.Net.WebUtility.HtmlEncode(user.Name)},</p>");
+        sb.Append("<p>Your booking has been cancelled because the operator is no longer available on our platform.</p>");
+        sb.Append("<hr/>");
+        sb.Append($"<p><b>Trip:</b> {System.Net.WebUtility.HtmlEncode(b.SourceCity)} → {System.Net.WebUtility.HtmlEncode(b.DestinationCity)}</p>");
+        sb.Append($"<p><b>Date:</b> {b.TripDate}</p>");
+        sb.Append($"<p><b>Bus:</b> {System.Net.WebUtility.HtmlEncode(b.BusName)} (Operator: {System.Net.WebUtility.HtmlEncode(b.OperatorName)})</p>");
+        sb.Append($"<p><b>Seats:</b> {string.Join(", ", b.Seats.Select(s => System.Net.WebUtility.HtmlEncode(s.SeatNumber)))}</p>");
+        sb.Append($"<p><b>Full refund:</b> ₹{refundAmount:0.00}</p>");
+        sb.Append("<p>Refunds typically reflect in your account in 5–7 business days.</p>");
+        sb.Append("</div>");
+        return sb.ToString();
+    }
 }

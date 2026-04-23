@@ -16,4 +16,10 @@ public interface INotificationSender
         decimal refundAmount,
         int refundPercent,
         CancellationToken ct = default);
+    Task SendOperatorDisabledAsync(User operatorUser, string? reason, CancellationToken ct = default);
+    Task SendBookingCancelledByOperatorAsync(
+        User customer,
+        BookingDetailDto booking,
+        decimal refundAmount,
+        CancellationToken ct = default);
 }
