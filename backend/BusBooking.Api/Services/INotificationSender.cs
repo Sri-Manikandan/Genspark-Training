@@ -10,4 +10,10 @@ public interface INotificationSender
     Task SendBusApprovedAsync(User operatorUser, Bus bus, CancellationToken ct = default);
     Task SendBusRejectedAsync(User operatorUser, Bus bus, string reason, CancellationToken ct = default);
     Task SendBookingConfirmedAsync(User user, BookingDetailDto booking, byte[] pdfTicket, CancellationToken ct = default);
+    Task SendBookingCancelledAsync(
+        User user,
+        BookingDetailDto booking,
+        decimal refundAmount,
+        int refundPercent,
+        CancellationToken ct = default);
 }

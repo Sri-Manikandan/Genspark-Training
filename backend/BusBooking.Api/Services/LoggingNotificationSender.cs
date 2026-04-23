@@ -82,6 +82,61 @@ public class LoggingNotificationSender : INotificationSender
                 booking.BookingCode, result.Error);
     }
 
+    public async Task SendBookingCancelledAsync(
+        User user,
+        BookingDetailDto booking,
+        decimal refundAmount,
+        int refundPercent,
+        CancellationToken ct = default)
+    {
+        var subject = $"Booking cancelled — {booking.BookingCode}";
+        var html = BuildBookingCancelledHtml(user, booking, refundAmount, refundPercent);
+
+        var result = await _email.SendAsync(
+            user.Email,
+            subject,
+            html,
+            Array.Empty<ResendAttachment>(),
+            ct);
+
+        _db.Notifications.Add(new Notification
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            Type = NotificationType.Cancelled,
+            Channel = NotificationChannel.Email,
+            ToAddress = user.Email,
+            Subject = subject,
+            ResendMessageId = result.MessageId,
+            Status = result.Success ? "sent" : "failed",
+            Error = result.Error,
+            CreatedAt = _time.GetUtcNow().UtcDateTime
+        });
+        await _db.SaveChangesAsync(ct);
+
+        if (!result.Success)
+            _log.LogWarning("Booking cancellation email failed for {BookingCode}: {Error}",
+                booking.BookingCode, result.Error);
+    }
+
+    private static string BuildBookingCancelledHtml(User user, BookingDetailDto b, decimal refundAmount, int refundPercent)
+    {
+        var sb = new StringBuilder();
+        sb.Append("<div style=\"font-family:Arial,sans-serif\">");
+        sb.Append($"<h2>Booking cancelled: {b.BookingCode}</h2>");
+        sb.Append($"<p>Hi {System.Net.WebUtility.HtmlEncode(user.Name)},</p>");
+        sb.Append("<p>Your booking has been cancelled at your request.</p>");
+        sb.Append("<hr/>");
+        sb.Append($"<p><b>Trip:</b> {System.Net.WebUtility.HtmlEncode(b.SourceCity)} → {System.Net.WebUtility.HtmlEncode(b.DestinationCity)}</p>");
+        sb.Append($"<p><b>Date:</b> {b.TripDate}</p>");
+        sb.Append($"<p><b>Bus:</b> {System.Net.WebUtility.HtmlEncode(b.BusName)} (Operator: {System.Net.WebUtility.HtmlEncode(b.OperatorName)})</p>");
+        sb.Append($"<p><b>Seats:</b> {string.Join(", ", b.Seats.Select(s => System.Net.WebUtility.HtmlEncode(s.SeatNumber)))}</p>");
+        sb.Append($"<p><b>Refund:</b> ₹{refundAmount:0.00} ({refundPercent}% of ₹{b.TotalAmount:0.00})</p>");
+        sb.Append("<p>Refunds typically reflect in your account in 5–7 business days.</p>");
+        sb.Append("</div>");
+        return sb.ToString();
+    }
+
     private static string BuildBookingConfirmedHtml(User user, BookingDetailDto b)
     {
         var sb = new StringBuilder();
