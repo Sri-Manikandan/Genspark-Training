@@ -37,8 +37,48 @@ export const routes: Routes = [
         path: 'platform-fee',
         loadComponent: () => import('./features/admin/platform-fee/admin-platform-fee-page.component')
           .then(m => m.AdminPlatformFeePageComponent)
+      },
+      {
+        path: 'operator-requests',
+        loadComponent: () => import('./features/admin/operator-requests/admin-operator-requests-page.component')
+          .then(m => m.AdminOperatorRequestsPageComponent)
+      },
+      {
+        path: 'bus-approvals',
+        loadComponent: () => import('./features/admin/bus-approvals/admin-bus-approvals-page.component')
+          .then(m => m.AdminBusApprovalsPageComponent)
       }
     ]
+  },
+  {
+    path: 'operator',
+    canMatch: [roleGuard(['operator'])],
+    loadComponent: () => import('./features/operator/operator-shell/operator-shell.component')
+      .then(m => m.OperatorShellComponent),
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/operator/operator-dashboard/operator-dashboard.component')
+          .then(m => m.OperatorDashboardComponent)
+      },
+      {
+        path: 'offices',
+        loadComponent: () => import('./features/operator/offices/operator-offices-page.component')
+          .then(m => m.OperatorOfficesPageComponent)
+      },
+      {
+        path: 'buses',
+        loadComponent: () => import('./features/operator/buses/operator-buses-list.component')
+          .then(m => m.OperatorBusesListComponent)
+      }
+    ]
+  },
+  {
+    path: 'become-operator',
+    canMatch: [roleGuard(['customer'])],
+    loadComponent: () => import('./features/customer/become-operator/become-operator-page.component')
+      .then(m => m.BecomeOperatorPageComponent)
   },
   { path: '**', redirectTo: '' }
 ];

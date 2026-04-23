@@ -28,6 +28,7 @@ export class NavbarComponent {
   readonly isLoggedIn = this.auth.isLoggedIn;
   readonly isAdmin = computed(() => this.auth.hasRole('admin'));
   readonly isOperator = computed(() => this.auth.hasRole('operator'));
+  readonly isCustomer = computed(() => this.auth.hasRole('customer'));
   readonly initials = computed(() => {
     const name = this.user()?.name ?? '';
     const parts = name.trim().split(/\s+/).filter(Boolean);

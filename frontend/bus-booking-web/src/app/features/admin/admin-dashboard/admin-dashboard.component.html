@@ -34,5 +34,25 @@
         </div>
       </mat-card-content>
     </mat-card>
+
+    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/operator-requests']">
+      <mat-card-content class="flex items-start gap-3 cursor-pointer">
+        <mat-icon>person_add</mat-icon>
+        <div>
+          <div class="font-medium">Operator requests</div>
+          <div class="text-sm text-gray-600">Review applications to become operators</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/bus-approvals']">
+      <mat-card-content class="flex items-start gap-3 cursor-pointer">
+        <mat-icon>directions_bus</mat-icon>
+        <div>
+          <div class="font-medium">Bus approvals</div>
+          <div class="text-sm text-gray-600">Approve or reject operator bus submissions</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>

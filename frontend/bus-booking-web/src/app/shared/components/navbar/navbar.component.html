@@ -14,7 +14,10 @@
       <a mat-button routerLink="/admin" routerLinkActive="active-link">Admin Console</a>
     }
     @if (isOperator()) {
-      <a mat-button routerLink="/operator" routerLinkActive="active-link">Operator</a>
+      <a mat-button routerLink="/operator" routerLinkActive="active-link">Operator portal</a>
+    }
+    @if (isCustomer()) {
+      <a mat-button routerLink="/become-operator" routerLinkActive="active-link">Become operator</a>
     }
     <button mat-button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2">
       <span class="initials-chip">{{ initials() }}</span>
