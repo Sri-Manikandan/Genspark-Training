@@ -1,0 +1,21 @@
+<mat-sidenav-container class="h-screen">
+  <mat-sidenav mode="side" opened class="w-56 p-2">
+    <mat-nav-list>
+      <a mat-list-item routerLink="dashboard" routerLinkActive="bg-slate-100">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="offices" routerLinkActive="bg-slate-100">
+        <mat-icon matListItemIcon>store</mat-icon>
+        <span matListItemTitle>Offices</span>
+      </a>
+      <a mat-list-item routerLink="buses" routerLinkActive="bg-slate-100">
+        <mat-icon matListItemIcon>directions_bus</mat-icon>
+        <span matListItemTitle>Buses</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="p-6">
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

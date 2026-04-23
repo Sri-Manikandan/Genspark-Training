@@ -1,0 +1,17 @@
+<section class="space-y-4">
+  <h1 class="text-2xl font-semibold">Operator dashboard</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <mat-card>
+      <mat-card-content>
+        <p class="text-sm text-slate-500">Offices</p>
+        <p class="text-3xl font-bold">{{ officeCount() ?? '…' }}</p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <p class="text-sm text-slate-500">Buses</p>
+        <p class="text-3xl font-bold">{{ busCount() ?? '…' }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
