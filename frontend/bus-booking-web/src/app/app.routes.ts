@@ -95,5 +95,16 @@ export const routes: Routes = [
     loadComponent: () => import('./features/customer/become-operator/become-operator-page.component')
       .then(m => m.BecomeOperatorPageComponent)
   },
+  {
+    path: 'checkout/:tripId',
+    loadComponent: () => import('./features/customer/checkout/checkout-stepper.component')
+      .then(m => m.CheckoutStepperComponent)
+  },
+  {
+    path: 'booking-confirmation/:id',
+    canMatch: [roleGuard(['customer'])],
+    loadComponent: () => import('./features/customer/booking-confirmation/booking-confirmation.component')
+      .then(m => m.BookingConfirmationComponent)
+  },
   { path: '**', redirectTo: '' }
 ];

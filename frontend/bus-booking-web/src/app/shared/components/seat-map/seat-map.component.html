@@ -1,35 +1,60 @@
-<div class="flex flex-col items-center gap-4 p-4 border rounded-lg bg-white shadow-sm overflow-x-auto">
-  <div class="text-sm font-medium text-slate-500 mb-2 border-b w-full text-center pb-2">Front</div>
+<div class="inline-block">
+  <div class="mb-3 text-xs text-slate-500 flex flex-wrap gap-3">
+    <span class="flex items-center gap-1"
+      ><span class="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></span>Available</span
+    >
+    <span class="flex items-center gap-1"
+      ><span class="w-4 h-4 rounded bg-primary"></span>Selected</span
+    >
+    <span class="flex items-center gap-1"
+      ><span class="w-4 h-4 rounded bg-amber-100 border border-amber-300"></span>Locked</span
+    >
+    <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-slate-300"></span>Booked</span>
+  </div>
 
   <div class="flex flex-col gap-2">
-    @for (row of seatGrid; track $index) {
+    @for (row of seatGrid(); track $index) {
       <div class="flex gap-2">
         @for (seat of row; track $index) {
-          @if (seat) {
+          @if (seat === null) {
+            <div class="w-10 h-10"></div>
+          } @else {
             <button
-              class="seat flex items-center justify-center w-10 h-10 rounded text-xs font-medium transition-colors"
-              [class.available]="seat.status === 'available'"
-              [class.booked]="seat.status === 'booked'"
-              [class.locked]="seat.status === 'locked'"
-              [disabled]="seat.status !== 'available'">
+              type="button"
+              class="w-10 h-10 rounded border text-xs font-medium transition"
+              [disabled]="seat.status !== 'available' || !selectable()"
+              [class.bg-emerald-100]="seat.status === 'available' && !isSelected(seat.seatNumber)"
+              [class.border-emerald-300]="seat.status === 'available' && !isSelected(seat.seatNumber)"
+              [class.text-emerald-800]="seat.status === 'available' && !isSelected(seat.seatNumber)"
+              [class.bg-primary]="isSelected(seat.seatNumber)"
+              [class.text-white]="isSelected(seat.seatNumber)"
+              [class.bg-amber-100]="seat.status === 'locked'"
+              [class.border-amber-300]="seat.status === 'locked'"
+              [class.bg-slate-300]="seat.status === 'booked'"
+              [class.cursor-not-allowed]="seat.status !== 'available' || !selectable()"
+              (click)="toggle(seat)"
+            >
               {{ seat.seatNumber }}
             </button>
-          } @else {
-            <div class="w-10 h-10"></div> <!-- Empty space (aisle) -->
           }
         }
       </div>
     }
   </div>
 
-  <div class="flex gap-4 mt-4 text-xs text-slate-600">
-    <div class="flex items-center gap-1">
-      <div class="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></div>
-      <span>Available</span>
+  @if (selectable() && selected().length > 0) {
+    <div class="mt-4 p-3 bg-slate-50 rounded text-sm">
+      <div>
+        Selected: <strong>{{ selected().join(', ') }}</strong>
+      </div>
+      @if (fare() !== null) {
+        <div>
+          Fare: <strong>{{ fare()! * selected().length | currency: 'INR' }}</strong> ({{
+            selected().length
+          }}
+          × {{ fare() | currency: 'INR' }})
+        </div>
+      }
     </div>
-    <div class="flex items-center gap-1">
-      <div class="w-4 h-4 rounded bg-slate-200 border border-slate-300"></div>
-      <span>Booked</span>
-    </div>
-  </div>
+  }
 </div>

@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
+<div class="max-w-4xl mx-auto p-4 md:p-6 space-y-6 pb-24">
   @if (loading()) {
     <div class="flex justify-center p-12">
       <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -28,28 +28,32 @@
           <mat-card-content class="space-y-4">
             <div class="flex justify-between items-center text-sm">
               <span class="text-slate-500">Date</span>
-              <span class="font-medium text-slate-800">{{ t.tripDate }}</span>
+              <span class="font-medium">{{ t.tripDate }}</span>
             </div>
             
             <div class="flex justify-between items-center text-sm">
-              <span class="text-slate-500">Fare</span>
-              <span class="font-bold text-lg text-slate-800">{{ t.farePerSeat | currency:'INR' }}</span>
+              <span class="text-slate-500">Fare / seat</span>
+              <span class="font-bold text-lg">{{ t.farePerSeat | currency:'INR' }}</span>
+            </div>
+
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-slate-500">Seats left</span>
+              <span class="font-medium">{{ t.seatsLeft }}</span>
             </div>
 
             <div class="bg-slate-50 p-3 rounded text-sm space-y-3">
               <div class="flex gap-3">
-                <mat-icon class="text-slate-400 text-base h-5 w-5">my_location</mat-icon>
+                <mat-icon class="text-slate-400">my_location</mat-icon>
                 <div>
                   <div class="font-medium">{{ t.departureTime.substring(0,5) }}</div>
-                  <div class="text-slate-500 text-xs mt-0.5">{{ t.pickupAddress || t.sourceCityName }}</div>
+                  <div class="text-slate-500 text-xs">{{ t.pickupAddress || t.sourceCityName }}</div>
                 </div>
               </div>
-              <div class="ml-2.5 w-px h-6 bg-slate-200"></div>
               <div class="flex gap-3">
-                <mat-icon class="text-slate-400 text-base h-5 w-5">location_on</mat-icon>
+                <mat-icon class="text-slate-400">location_on</mat-icon>
                 <div>
                   <div class="font-medium">{{ t.arrivalTime.substring(0,5) }}</div>
-                  <div class="text-slate-500 text-xs mt-0.5">{{ t.dropAddress || t.destinationCityName }}</div>
+                  <div class="text-slate-500 text-xs">{{ t.dropAddress || t.destinationCityName }}</div>
                 </div>
               </div>
             </div>
@@ -62,15 +66,39 @@
         <mat-card class="border border-slate-200 shadow-sm">
           <mat-card-header class="border-b border-slate-100 pb-3 mb-4">
             <mat-card-title class="text-lg">Select Seats</mat-card-title>
-            <mat-card-subtitle>Click on available seats to select them (Booking coming in M5)</mat-card-subtitle>
+            <mat-card-subtitle>Pick up to 6 seats</mat-card-subtitle>
           </mat-card-header>
           
           <mat-card-content class="flex justify-center p-4">
-            <app-seat-map [layout]="t.seatLayout" />
+            <app-seat-map
+              [layout]="t.seatLayout"
+              [selectable]="true"
+              [fare]="t.farePerSeat"
+              (selectionChange)="onSelectionChange($event)" />
           </mat-card-content>
         </mat-card>
       </div>
       
+    </div>
+
+    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 shadow-lg">
+      <div class="max-w-4xl mx-auto p-4 flex items-center justify-between gap-4">
+        <div class="text-sm">
+          @if (selectedSeats().length === 0) {
+            <span class="text-slate-500">Select at least one seat</span>
+          } @else {
+            <div><strong>{{ selectedSeats().length }}</strong> seat(s) selected</div>
+            <div class="text-slate-500">
+              {{ (t.farePerSeat * selectedSeats().length) | currency:'INR' }}
+            </div>
+          }
+        </div>
+        <button mat-flat-button color="primary"
+                [disabled]="selectedSeats().length === 0 || locking()"
+                (click)="bookNow()">
+          {{ locking() ? 'Holding…' : 'Book Now' }}
+        </button>
+      </div>
     </div>
   }
 </div>

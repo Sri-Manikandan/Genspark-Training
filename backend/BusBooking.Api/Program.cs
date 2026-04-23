@@ -1,14 +1,22 @@
 using System.Text;
+using BusBooking.Api.Background;
 using BusBooking.Api.Infrastructure;
 using BusBooking.Api.Infrastructure.Auth;
 using BusBooking.Api.Infrastructure.Errors;
+using BusBooking.Api.Infrastructure.Pdf;
+using BusBooking.Api.Infrastructure.Razorpay;
+using BusBooking.Api.Infrastructure.Resend;
 using BusBooking.Api.Infrastructure.Seeding;
 using BusBooking.Api.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using QuestPDF;
+using QuestPDF.Infrastructure;
 using Serilog;
+
+Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +53,22 @@ builder.Services.AddScoped<IAuditLogWriter, AuditLogWriter>();
 builder.Services.AddScoped<INotificationSender, LoggingNotificationSender>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<ITripService, TripService>();
+
+builder.Services.Configure<RazorpayOptions>(
+    builder.Configuration.GetSection(RazorpayOptions.SectionName));
+builder.Services.Configure<ResendOptions>(
+    builder.Configuration.GetSection(ResendOptions.SectionName));
+
+builder.Services.AddHttpClient(RazorpayClient.HttpClientName);
+builder.Services.AddHttpClient(ResendEmailClient.HttpClientName);
+
+builder.Services.AddScoped<IRazorpayClient, RazorpayClient>();
+builder.Services.AddScoped<IResendEmailClient, ResendEmailClient>();
+builder.Services.AddSingleton<IPdfTicketGenerator, PdfTicketGenerator>();
+
+builder.Services.AddScoped<ISeatLockService, SeatLockService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddHostedService<SeatLockCleanupService>();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("ConnectionStrings:Default missing");
@@ -104,9 +128,10 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
-// ── Startup: seed admin ─────────────────────────────────────────
-using (var scope = app.Services.CreateScope())
+// ── Startup: seed admin (dev only) ──────────────────────────────
+if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<IAdminSeeder>();
     await seeder.SeedAsync(CancellationToken.None);
     var feeSeeder = scope.ServiceProvider.GetRequiredService<IPlatformFeeSeeder>();

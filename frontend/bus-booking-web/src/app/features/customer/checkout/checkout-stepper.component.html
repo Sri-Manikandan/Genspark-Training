@@ -1,0 +1,83 @@
+<div class="max-w-3xl mx-auto p-4 md:p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold m-0">Checkout</h1>
+    @if (expiresAt()) {
+      <app-countdown-timer [expiresAt]="expiresAt()" (expired)="onLockExpired()" />
+    }
+  </div>
+
+  @if (lockExpired()) {
+    <mat-card class="border border-rose-200 bg-rose-50 text-rose-800 p-6 text-center">
+      <h2 class="text-lg font-semibold m-0 mb-2">Your seat reservation expired</h2>
+      <p class="m-0 mb-4">Please go back and select your seats again.</p>
+      <a mat-stroked-button color="primary" [routerLink]="['/trips', tripId()]">Back to trip</a>
+    </mat-card>
+  } @else {
+    <mat-stepper linear orientation="vertical">
+      <mat-step label="Review your selection" [completed]="true">
+        <mat-card class="border border-slate-200 p-4 space-y-2">
+          <div>
+            Seats: <strong>{{ seats().join(', ') }}</strong>
+          </div>
+          <div>
+            Fare / seat: <strong>{{ fare() | currency: 'INR' }}</strong>
+          </div>
+          <div>
+            Total fare: <strong>{{ total() | currency: 'INR' }}</strong>
+          </div>
+          <div class="text-slate-500 text-xs">Platform fee is calculated on the next step.</div>
+          <div class="pt-3">
+            <button mat-flat-button color="primary" matStepperNext>Continue</button>
+          </div>
+        </mat-card>
+      </mat-step>
+
+      <mat-step label="Passenger details" [stepControl]="passengersForm">
+        <form [formGroup]="passengersForm" class="space-y-4 mt-2">
+          @for (ctrl of passengersArray.controls; track $index) {
+            <mat-card class="border border-slate-200 p-4" [formGroup]="$any(ctrl)">
+              <div class="font-semibold mb-2">Seat {{ ctrl.get('seatNumber')?.value }}</div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <mat-form-field appearance="outline">
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="passengerName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Age</mat-label>
+                  <input matInput type="number" formControlName="passengerAge" />
+                </mat-form-field>
+                <div>
+                  <label class="text-xs text-slate-500 block mb-1">Gender</label>
+                  <mat-radio-group formControlName="passengerGender" class="flex gap-4">
+                    <mat-radio-button value="male">Male</mat-radio-button>
+                    <mat-radio-button value="female">Female</mat-radio-button>
+                    <mat-radio-button value="other">Other</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </mat-card>
+          }
+          <div class="flex gap-2">
+            <button mat-stroked-button matStepperPrevious>Back</button>
+            <button mat-flat-button color="primary" matStepperNext [disabled]="passengersForm.invalid">
+              Continue
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step label="Payment">
+        <mat-card class="border border-slate-200 p-6 text-center">
+          <p class="mb-4">You will be redirected to Razorpay test-mode checkout.</p>
+          <div class="flex items-center justify-center gap-2">
+            <button mat-stroked-button matStepperPrevious>Back</button>
+            <button mat-flat-button color="primary" [disabled]="submitting()" (click)="payNow()">
+              {{ submitting() ? 'Processing…' : 'Pay ' + (total() | currency: 'INR') }}
+            </button>
+          </div>
+        </mat-card>
+      </mat-step>
+    </mat-stepper>
+  }
+</div>
+

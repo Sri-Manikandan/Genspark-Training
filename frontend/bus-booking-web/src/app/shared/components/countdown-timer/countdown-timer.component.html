@@ -1,0 +1,15 @@
+<span
+  class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold"
+  [class.bg-slate-100]="!isWarning() && !isExpired()"
+  [class.text-slate-700]="!isWarning() && !isExpired()"
+  [class.bg-rose-100]="isWarning() || isExpired()"
+  [class.text-rose-700]="isWarning() || isExpired()"
+>
+  <span>⏱</span>
+  @if (isExpired()) {
+    <span>Expired</span>
+  } @else {
+    <span>{{ display() }}</span>
+  }
+</span>
+

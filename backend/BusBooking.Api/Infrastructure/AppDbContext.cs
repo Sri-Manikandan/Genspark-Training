@@ -22,6 +22,11 @@ public class AppDbContext : DbContext
     public DbSet<AuditLogEntry> AuditLog => Set<AuditLogEntry>();
     public DbSet<BusSchedule> BusSchedules => Set<BusSchedule>();
     public DbSet<BusTrip> BusTrips => Set<BusTrip>();
+    public DbSet<SeatLock> SeatLocks => Set<SeatLock>();
+    public DbSet<Booking> Bookings => Set<Booking>();
+    public DbSet<BookingSeat> BookingSeats => Set<BookingSeat>();
+    public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -227,6 +232,113 @@ public class AppDbContext : DbContext
             b.Property(t => t.CancelReason).HasColumnName("cancel_reason").HasMaxLength(500);
             b.HasIndex(t => new { t.ScheduleId, t.TripDate }).IsUnique();
             b.HasOne(t => t.Schedule).WithMany().HasForeignKey(t => t.ScheduleId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SeatLock>(b =>
+        {
+            b.ToTable("seat_locks");
+            b.HasKey(l => l.Id);
+            b.Property(l => l.Id).HasColumnName("id");
+            b.Property(l => l.TripId).HasColumnName("trip_id");
+            b.Property(l => l.SeatNumber).HasColumnName("seat_number").IsRequired().HasMaxLength(8);
+            b.Property(l => l.LockId).HasColumnName("lock_id");
+            b.Property(l => l.SessionId).HasColumnName("session_id");
+            b.Property(l => l.UserId).HasColumnName("user_id");
+            b.Property(l => l.CreatedAt).HasColumnName("created_at");
+            b.Property(l => l.ExpiresAt).HasColumnName("expires_at");
+            b.HasIndex(l => new { l.TripId, l.SeatNumber }).IsUnique();
+            b.HasIndex(l => l.LockId);
+            b.HasIndex(l => l.ExpiresAt);
+            b.HasOne(l => l.Trip).WithMany().HasForeignKey(l => l.TripId).OnDelete(DeleteBehavior.Cascade);
+            b.HasOne(l => l.User).WithMany().HasForeignKey(l => l.UserId).OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<Booking>(b =>
+        {
+            b.ToTable("bookings");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Id).HasColumnName("id");
+            b.Property(x => x.BookingCode).HasColumnName("booking_code").IsRequired().HasMaxLength(16);
+            b.Property(x => x.TripId).HasColumnName("trip_id");
+            b.Property(x => x.UserId).HasColumnName("user_id");
+            b.Property(x => x.LockId).HasColumnName("lock_id");
+            b.Property(x => x.TotalFare).HasColumnName("total_fare").HasColumnType("numeric(10,2)");
+            b.Property(x => x.PlatformFee).HasColumnName("platform_fee").HasColumnType("numeric(10,2)");
+            b.Property(x => x.TotalAmount).HasColumnName("total_amount").HasColumnType("numeric(10,2)");
+            b.Property(x => x.SeatCount).HasColumnName("seat_count");
+            b.Property(x => x.Status).HasColumnName("status").IsRequired().HasMaxLength(32);
+            b.Property(x => x.CancellationReason).HasColumnName("cancellation_reason").HasMaxLength(500);
+            b.Property(x => x.CancelledAt).HasColumnName("cancelled_at");
+            b.Property(x => x.RefundAmount).HasColumnName("refund_amount").HasColumnType("numeric(10,2)");
+            b.Property(x => x.RefundStatus).HasColumnName("refund_status").HasMaxLength(32);
+            b.Property(x => x.CreatedAt).HasColumnName("created_at");
+            b.Property(x => x.ConfirmedAt).HasColumnName("confirmed_at");
+            b.HasIndex(x => x.BookingCode).IsUnique();
+            b.HasIndex(x => x.UserId);
+            b.HasIndex(x => x.TripId);
+            b.HasIndex(x => x.Status);
+            b.HasOne(x => x.Trip).WithMany().HasForeignKey(x => x.TripId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<BookingSeat>(b =>
+        {
+            b.ToTable("booking_seats");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Id).HasColumnName("id");
+            b.Property(x => x.BookingId).HasColumnName("booking_id");
+            b.Property(x => x.SeatNumber).HasColumnName("seat_number").IsRequired().HasMaxLength(8);
+            b.Property(x => x.PassengerName).HasColumnName("passenger_name").IsRequired().HasMaxLength(120);
+            b.Property(x => x.PassengerAge).HasColumnName("passenger_age");
+            b.Property(x => x.PassengerGender).HasColumnName("passenger_gender").IsRequired().HasMaxLength(16);
+            b.HasIndex(x => new { x.BookingId, x.SeatNumber }).IsUnique();
+            b.HasOne(x => x.Booking)
+                .WithMany(bk => bk.Seats)
+                .HasForeignKey(x => x.BookingId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Payment>(b =>
+        {
+            b.ToTable("payments");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Id).HasColumnName("id");
+            b.Property(x => x.BookingId).HasColumnName("booking_id");
+            b.Property(x => x.RazorpayOrderId).HasColumnName("razorpay_order_id").IsRequired().HasMaxLength(64);
+            b.Property(x => x.RazorpayPaymentId).HasColumnName("razorpay_payment_id").HasMaxLength(64);
+            b.Property(x => x.RazorpaySignature).HasColumnName("razorpay_signature").HasMaxLength(200);
+            b.Property(x => x.Amount).HasColumnName("amount").HasColumnType("numeric(10,2)");
+            b.Property(x => x.Currency).HasColumnName("currency").IsRequired().HasMaxLength(8);
+            b.Property(x => x.Status).HasColumnName("status").IsRequired().HasMaxLength(16);
+            b.Property(x => x.CreatedAt).HasColumnName("created_at");
+            b.Property(x => x.CapturedAt).HasColumnName("captured_at");
+            b.Property(x => x.RefundedAt).HasColumnName("refunded_at");
+            b.Property(x => x.RawResponse).HasColumnName("raw_response").HasColumnType("jsonb");
+            b.HasIndex(x => x.BookingId).IsUnique();
+            b.HasIndex(x => x.RazorpayOrderId).IsUnique();
+            b.HasOne(x => x.Booking)
+                .WithOne(bk => bk.Payment)
+                .HasForeignKey<Payment>(x => x.BookingId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Notification>(b =>
+        {
+            b.ToTable("notifications");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Id).HasColumnName("id");
+            b.Property(x => x.UserId).HasColumnName("user_id");
+            b.Property(x => x.Type).HasColumnName("type").IsRequired().HasMaxLength(64);
+            b.Property(x => x.Channel).HasColumnName("channel").IsRequired().HasMaxLength(16);
+            b.Property(x => x.ToAddress).HasColumnName("to_address").IsRequired().HasMaxLength(254);
+            b.Property(x => x.Subject).HasColumnName("subject").IsRequired().HasMaxLength(200);
+            b.Property(x => x.ResendMessageId).HasColumnName("resend_message_id").HasMaxLength(80);
+            b.Property(x => x.Status).HasColumnName("status").IsRequired().HasMaxLength(16);
+            b.Property(x => x.CreatedAt).HasColumnName("created_at");
+            b.Property(x => x.Error).HasColumnName("error").HasMaxLength(2000);
+            b.HasIndex(x => x.UserId);
+            b.HasIndex(x => new { x.Type, x.CreatedAt });
+            b.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
