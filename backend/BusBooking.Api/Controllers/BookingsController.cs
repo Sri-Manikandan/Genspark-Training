@@ -67,6 +67,13 @@ public class BookingsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id:guid}/refund-preview")]
+    public async Task<ActionResult<RefundPreviewDto>> RefundPreview(Guid id, CancellationToken ct)
+    {
+        var preview = await _bookings.GetRefundPreviewAsync(_currentUser.UserId, id, ct);
+        return Ok(preview);
+    }
+
     [HttpGet("{id:guid}/ticket")]
     public async Task<IActionResult> GetTicket(Guid id, CancellationToken ct)
     {

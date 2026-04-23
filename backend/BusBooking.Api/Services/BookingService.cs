@@ -16,6 +16,7 @@ public class BookingService : IBookingService
     private readonly IRazorpayClient _razorpay;
     private readonly IPdfTicketGenerator _pdf;
     private readonly INotificationSender _notifications;
+    private readonly IRefundPolicyService _refundPolicy;
     private readonly TimeProvider _time;
     private readonly ILogger<BookingService> _log;
 
@@ -26,6 +27,7 @@ public class BookingService : IBookingService
         IRazorpayClient razorpay,
         IPdfTicketGenerator pdf,
         INotificationSender notifications,
+        IRefundPolicyService refundPolicy,
         TimeProvider time,
         ILogger<BookingService> log)
     {
@@ -35,6 +37,7 @@ public class BookingService : IBookingService
         _razorpay = razorpay;
         _pdf = pdf;
         _notifications = notifications;
+        _refundPolicy = refundPolicy;
         _time = time;
         _log = log;
     }
@@ -267,6 +270,38 @@ public class BookingService : IBookingService
         }).ToList();
 
         return new BookingListResponseDto(items, p, size, total);
+    }
+
+    public async Task<RefundPreviewDto> GetRefundPreviewAsync(Guid userId, Guid bookingId, CancellationToken ct)
+    {
+        var booking = await _db.Bookings
+            .AsNoTracking()
+            .Include(b => b.Trip).ThenInclude(t => t!.Schedule)
+            .FirstOrDefaultAsync(b => b.Id == bookingId, ct)
+            ?? throw new NotFoundException("Booking not found");
+
+        if (booking.UserId != userId)
+            throw new ForbiddenException("Not your booking");
+
+        var schedule = booking.Trip!.Schedule!;
+        var departureUtc = booking.Trip.TripDate.ToDateTime(schedule.DepartureTime, DateTimeKind.Utc);
+        var now = _time.GetUtcNow().UtcDateTime;
+        var quote = _refundPolicy.Quote(booking.TotalAmount, departureUtc, now);
+
+        string? blockReason = null;
+        if (booking.Status != BookingStatus.Confirmed)
+            blockReason = $"Booking is in status '{booking.Status}', not cancellable";
+        else if (quote.Blocked)
+            blockReason = "Cancellation window has closed (less than the policy minimum hours before departure)";
+
+        return new RefundPreviewDto(
+            booking.Id,
+            booking.TotalAmount,
+            quote.RefundPercent,
+            quote.RefundAmount,
+            quote.HoursUntilDeparture,
+            Cancellable: blockReason is null,
+            BlockReason: blockReason);
     }
 
     private async Task<Booking?> LoadForDetailAsync(Guid bookingId, CancellationToken ct) =>

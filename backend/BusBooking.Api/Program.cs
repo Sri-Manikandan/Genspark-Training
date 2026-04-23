@@ -66,6 +66,9 @@ builder.Services.AddScoped<IRazorpayClient, RazorpayClient>();
 builder.Services.AddScoped<IResendEmailClient, ResendEmailClient>();
 builder.Services.AddSingleton<IPdfTicketGenerator, PdfTicketGenerator>();
 
+builder.Services.Configure<BusBooking.Api.Infrastructure.RefundPolicy.RefundPolicyOptions>(
+    builder.Configuration.GetSection(BusBooking.Api.Infrastructure.RefundPolicy.RefundPolicyOptions.SectionName));
+builder.Services.AddScoped<IRefundPolicyService, RefundPolicyService>();
 builder.Services.AddScoped<ISeatLockService, SeatLockService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddHostedService<SeatLockCleanupService>();
