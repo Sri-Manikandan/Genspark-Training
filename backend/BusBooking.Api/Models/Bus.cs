@@ -8,8 +8,8 @@ public class Bus
     public required string BusName { get; set; }
     public required string BusType { get; set; }
     public int Capacity { get; set; }
-    public required string ApprovalStatus { get; set; } = Models.BusApprovalStatus.Pending;
-    public required string OperationalStatus { get; set; } = Models.BusOperationalStatus.Active;
+    public string ApprovalStatus { get; set; } = Models.BusApprovalStatus.Pending;
+    public string OperationalStatus { get; set; } = Models.BusOperationalStatus.Active;
     public DateTime CreatedAt { get; set; }
     public DateTime? ApprovedAt { get; set; }
     public Guid? ApprovedByAdminId { get; set; }

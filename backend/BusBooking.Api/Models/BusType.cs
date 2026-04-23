@@ -6,5 +6,5 @@ public static class BusType
     public const string Sleeper = "sleeper";
     public const string SemiSleeper = "semi_sleeper";
 
-    public static readonly string[] All = [Seater, Sleeper, SemiSleeper];
+    public static readonly IReadOnlySet<string> All = new HashSet<string> { Seater, Sleeper, SemiSleeper };
 }

@@ -109,7 +109,9 @@ public class AppDbContext : DbContext
             b.Property(r => r.ReviewedAt).HasColumnName("reviewed_at");
             b.Property(r => r.ReviewedByAdminId).HasColumnName("reviewed_by_admin_id");
             b.Property(r => r.RejectReason).HasColumnName("reject_reason").HasMaxLength(500);
-            b.HasIndex(r => new { r.UserId, r.Status }).IsUnique();
+            b.HasIndex(r => r.UserId)
+                .HasFilter("status = 'pending'")
+                .IsUnique();
             b.HasOne(r => r.User)
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
@@ -137,26 +139,26 @@ public class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        modelBuilder.Entity<Bus>(b =>
+        modelBuilder.Entity<Bus>(bus =>
         {
-            b.ToTable("buses");
-            b.HasKey(x => x.Id);
-            b.Property(x => x.Id).HasColumnName("id");
-            b.Property(x => x.OperatorUserId).HasColumnName("operator_user_id");
-            b.Property(x => x.RegistrationNumber).HasColumnName("registration_number")
+            bus.ToTable("buses");
+            bus.HasKey(x => x.Id);
+            bus.Property(x => x.Id).HasColumnName("id");
+            bus.Property(x => x.OperatorUserId).HasColumnName("operator_user_id");
+            bus.Property(x => x.RegistrationNumber).HasColumnName("registration_number")
                 .HasColumnType("citext").IsRequired().HasMaxLength(32);
-            b.Property(x => x.BusName).HasColumnName("bus_name").IsRequired().HasMaxLength(120);
-            b.Property(x => x.BusType).HasColumnName("bus_type").IsRequired().HasMaxLength(16);
-            b.Property(x => x.Capacity).HasColumnName("capacity");
-            b.Property(x => x.ApprovalStatus).HasColumnName("approval_status").IsRequired().HasMaxLength(16);
-            b.Property(x => x.OperationalStatus).HasColumnName("operational_status").IsRequired().HasMaxLength(20);
-            b.Property(x => x.CreatedAt).HasColumnName("created_at");
-            b.Property(x => x.ApprovedAt).HasColumnName("approved_at");
-            b.Property(x => x.ApprovedByAdminId).HasColumnName("approved_by_admin_id");
-            b.Property(x => x.RejectReason).HasColumnName("reject_reason").HasMaxLength(500);
-            b.HasIndex(x => x.RegistrationNumber).IsUnique();
-            b.HasIndex(x => new { x.OperatorUserId, x.ApprovalStatus });
-            b.HasOne(x => x.Operator)
+            bus.Property(x => x.BusName).HasColumnName("bus_name").IsRequired().HasMaxLength(120);
+            bus.Property(x => x.BusType).HasColumnName("bus_type").IsRequired().HasMaxLength(16);
+            bus.Property(x => x.Capacity).HasColumnName("capacity");
+            bus.Property(x => x.ApprovalStatus).HasColumnName("approval_status").IsRequired().HasMaxLength(16);
+            bus.Property(x => x.OperationalStatus).HasColumnName("operational_status").IsRequired().HasMaxLength(20);
+            bus.Property(x => x.CreatedAt).HasColumnName("created_at");
+            bus.Property(x => x.ApprovedAt).HasColumnName("approved_at");
+            bus.Property(x => x.ApprovedByAdminId).HasColumnName("approved_by_admin_id");
+            bus.Property(x => x.RejectReason).HasColumnName("reject_reason").HasMaxLength(500);
+            bus.HasIndex(x => x.RegistrationNumber).IsUnique();
+            bus.HasIndex(x => new { x.OperatorUserId, x.ApprovalStatus });
+            bus.HasOne(x => x.Operator)
                 .WithMany()
                 .HasForeignKey(x => x.OperatorUserId)
                 .OnDelete(DeleteBehavior.Restrict);

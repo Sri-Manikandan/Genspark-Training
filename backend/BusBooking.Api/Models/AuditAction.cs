@@ -10,4 +10,11 @@ public static class AuditAction
     public const string BusApproved = "BUS_APPROVED";
     public const string BusRejected = "BUS_REJECTED";
     public const string BusStatusChanged = "BUS_STATUS_CHANGED";
+
+    public static readonly IReadOnlySet<string> All = new HashSet<string>
+    {
+        OperatorRequestApproved, OperatorRequestRejected,
+        OperatorOfficeCreated, OperatorOfficeDeleted,
+        BusCreated, BusApproved, BusRejected, BusStatusChanged
+    };
 }

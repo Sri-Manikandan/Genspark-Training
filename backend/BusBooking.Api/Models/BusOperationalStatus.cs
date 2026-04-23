@@ -6,5 +6,5 @@ public static class BusOperationalStatus
     public const string UnderMaintenance = "under_maintenance";
     public const string Retired = "retired";
 
-    public static readonly string[] All = [Active, UnderMaintenance, Retired];
+    public static readonly IReadOnlySet<string> All = new HashSet<string> { Active, UnderMaintenance, Retired };
 }
