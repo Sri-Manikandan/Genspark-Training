@@ -304,6 +304,82 @@ public class BookingService : IBookingService
             BlockReason: blockReason);
     }
 
+    public async Task<BookingDetailDto> CancelAsync(
+        Guid userId, Guid bookingId, CancelBookingRequest req, CancellationToken ct)
+    {
+        var booking = await LoadForDetailAsync(bookingId, ct)
+            ?? throw new NotFoundException("Booking not found");
+        if (booking.UserId != userId)
+            throw new ForbiddenException("Not your booking");
+
+        // Idempotent: re-cancelling an already-cancelled booking returns current state.
+        if (BookingStatus.IsCancelled(booking.Status))
+            return MapDetail(booking);
+
+        if (booking.Status != BookingStatus.Confirmed)
+            throw new BusinessRuleException("CANCEL_NOT_ALLOWED",
+                $"Booking cannot be cancelled from status '{booking.Status}'");
+
+        var schedule = booking.Trip!.Schedule!;
+        var departureUtc = booking.Trip.TripDate.ToDateTime(schedule.DepartureTime, DateTimeKind.Utc);
+        var now = _time.GetUtcNow().UtcDateTime;
+        var quote = _refundPolicy.Quote(booking.TotalAmount, departureUtc, now);
+
+        if (quote.Blocked)
+            throw new BusinessRuleException("CANCEL_WINDOW_CLOSED",
+                "Cancellation window has closed for this booking",
+                new { hoursUntilDeparture = quote.HoursUntilDeparture });
+
+        booking.Status = BookingStatus.Cancelled;
+        booking.CancelledAt = now;
+        booking.CancellationReason = req.Reason;
+        booking.RefundAmount = quote.RefundAmount;
+        booking.RefundStatus = RefundStatus.Pending;
+        await _db.SaveChangesAsync(ct);
+
+        var dto = MapDetail(booking);
+
+        // Side effects post-commit. A Razorpay outage must not strand the booking.
+        if (quote.RefundAmount > 0m
+            && booking.Payment is { Status: PaymentStatus.Captured, RazorpayPaymentId: { } payId })
+        {
+            try
+            {
+                var refund = await _razorpay.CreateRefundAsync(payId, (long)(quote.RefundAmount * 100m), ct);
+                booking.Payment.Status = PaymentStatus.Refunded;
+                booking.Payment.RefundedAt = now;
+                booking.RefundStatus = RefundStatus.Processed;
+                await _db.SaveChangesAsync(ct);
+            }
+            catch (Exception ex)
+            {
+                _log.LogError(ex, "Razorpay refund failed for booking {BookingCode}", booking.BookingCode);
+                booking.RefundStatus = RefundStatus.Failed;
+                await _db.SaveChangesAsync(ct);
+            }
+        }
+        else
+        {
+            // Zero refund or unpaid booking — nothing to call.
+            booking.RefundStatus = RefundStatus.Processed;
+            await _db.SaveChangesAsync(ct);
+        }
+
+        var refreshed = MapDetail(booking);
+
+        try
+        {
+            await _notifications.SendBookingCancelledAsync(
+                booking.User, refreshed, quote.RefundAmount, quote.RefundPercent, ct);
+        }
+        catch (Exception ex)
+        {
+            _log.LogError(ex, "Cancellation email failed for {BookingCode}", booking.BookingCode);
+        }
+
+        return refreshed;
+    }
+
     private async Task<Booking?> LoadForDetailAsync(Guid bookingId, CancellationToken ct) =>
         await _db.Bookings
             .Include(b => b.Seats)

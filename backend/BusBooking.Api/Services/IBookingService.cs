@@ -15,5 +15,6 @@ public interface IBookingService
         int pageSize,
         CancellationToken ct);
     Task<RefundPreviewDto> GetRefundPreviewAsync(Guid userId, Guid bookingId, CancellationToken ct);
+    Task<BookingDetailDto> CancelAsync(Guid userId, Guid bookingId, CancelBookingRequest req, CancellationToken ct);
 }
 

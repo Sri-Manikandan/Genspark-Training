@@ -16,17 +16,20 @@ public class BookingsController : ControllerBase
     private readonly IBookingService _bookings;
     private readonly IValidator<CreateBookingRequest> _createValidator;
     private readonly IValidator<VerifyPaymentRequest> _verifyValidator;
+    private readonly IValidator<CancelBookingRequest> _cancelValidator;
     private readonly ICurrentUserAccessor _currentUser;
 
     public BookingsController(
         IBookingService bookings,
         IValidator<CreateBookingRequest> createValidator,
         IValidator<VerifyPaymentRequest> verifyValidator,
+        IValidator<CancelBookingRequest> cancelValidator,
         ICurrentUserAccessor currentUser)
     {
         _bookings = bookings;
         _createValidator = createValidator;
         _verifyValidator = verifyValidator;
+        _cancelValidator = cancelValidator;
         _currentUser = currentUser;
     }
 
@@ -72,6 +75,17 @@ public class BookingsController : ControllerBase
     {
         var preview = await _bookings.GetRefundPreviewAsync(_currentUser.UserId, id, ct);
         return Ok(preview);
+    }
+
+    [HttpPost("{id:guid}/cancel")]
+    public async Task<ActionResult<BookingDetailDto>> Cancel(
+        Guid id,
+        [FromBody] CancelBookingRequest req,
+        CancellationToken ct)
+    {
+        await _cancelValidator.ValidateAndThrowAsync(req, ct);
+        var detail = await _bookings.CancelAsync(_currentUser.UserId, id, req, ct);
+        return Ok(detail);
     }
 
     [HttpGet("{id:guid}/ticket")]

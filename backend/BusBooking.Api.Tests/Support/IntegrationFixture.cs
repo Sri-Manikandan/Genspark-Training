@@ -86,6 +86,7 @@ public class IntegrationFixture : WebApplicationFactory<Program>, IAsyncLifetime
             + "bus_booking_test.users "
             + "RESTART IDENTITY CASCADE");
         while (Razorpay.CreatedOrders.Count > 0) Razorpay.CreatedOrders.Clear();
+        Razorpay.CreatedRefunds.Clear();
         while (Email.Sent.TryDequeue(out _)) { }
         var seeder = scope.ServiceProvider.GetRequiredService<IPlatformFeeSeeder>();
         await seeder.SeedAsync(CancellationToken.None);
