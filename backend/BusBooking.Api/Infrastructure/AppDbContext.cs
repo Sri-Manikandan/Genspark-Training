@@ -109,7 +109,7 @@ public class AppDbContext : DbContext
             b.Property(r => r.ReviewedAt).HasColumnName("reviewed_at");
             b.Property(r => r.ReviewedByAdminId).HasColumnName("reviewed_by_admin_id");
             b.Property(r => r.RejectReason).HasColumnName("reject_reason").HasMaxLength(500);
-            b.HasIndex(r => new { r.UserId, r.Status });
+            b.HasIndex(r => new { r.UserId, r.Status }).IsUnique();
             b.HasOne(r => r.User)
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
