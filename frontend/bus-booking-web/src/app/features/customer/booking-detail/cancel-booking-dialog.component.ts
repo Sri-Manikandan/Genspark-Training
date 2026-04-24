@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookingDetailDto, BookingsApiService, RefundPreviewDto } from '../../../core/api/bookings.api';
+import { RefundPolicyLabelPipe } from '../../../shared/pipes/refund-policy-label.pipe';
 
 export interface CancelDialogData {
   bookingId: string;
@@ -32,7 +33,8 @@ export interface CancelDialogResult {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RefundPolicyLabelPipe
   ],
   templateUrl: './cancel-booking-dialog.component.html'
 })

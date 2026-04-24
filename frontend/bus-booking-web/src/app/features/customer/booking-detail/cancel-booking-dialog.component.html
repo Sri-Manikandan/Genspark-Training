@@ -23,6 +23,9 @@
         <div class="flex justify-between font-semibold text-emerald-800">
           <span>You'll receive</span><span>{{ p.refundAmount | currency: 'INR' }}</span>
         </div>
+        <div class="text-xs text-slate-500 pt-1">
+          Tier: {{ p.hoursUntilDeparture | refundPolicyLabel }}
+        </div>
         <div class="text-xs text-slate-500 pt-2">
           Refunds typically reflect in your original payment method in 5–7 business days.
         </div>
