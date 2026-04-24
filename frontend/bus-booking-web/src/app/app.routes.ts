@@ -57,6 +57,21 @@ export const routes: Routes = [
         path: 'bus-approvals',
         loadComponent: () => import('./features/admin/bus-approvals/admin-bus-approvals-page.component')
           .then(m => m.AdminBusApprovalsPageComponent)
+      },
+      {
+        path: 'operators',
+        loadComponent: () => import('./features/admin/operators/admin-operators-page.component')
+          .then(m => m.AdminOperatorsPageComponent)
+      },
+      {
+        path: 'revenue',
+        loadComponent: () => import('./features/admin/revenue/admin-revenue-page.component')
+          .then(m => m.AdminRevenuePageComponent)
+      },
+      {
+        path: 'bookings',
+        loadComponent: () => import('./features/admin/bookings/admin-bookings-page.component')
+          .then(m => m.AdminBookingsPageComponent)
       }
     ]
   },

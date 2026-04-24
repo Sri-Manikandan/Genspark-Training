@@ -54,5 +54,35 @@
         </div>
       </mat-card-content>
     </mat-card>
+
+    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/operators']">
+      <mat-card-content class="flex items-start gap-3 cursor-pointer">
+        <mat-icon>manage_accounts</mat-icon>
+        <div>
+          <div class="font-medium">Operators</div>
+          <div class="text-sm text-gray-600">Disable or re-enable operators</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/bookings']">
+      <mat-card-content class="flex items-start gap-3 cursor-pointer">
+        <mat-icon>receipt_long</mat-icon>
+        <div>
+          <div class="font-medium">Bookings</div>
+          <div class="text-sm text-gray-600">Cross-operator booking history</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/revenue']">
+      <mat-card-content class="flex items-start gap-3 cursor-pointer">
+        <mat-icon>bar_chart</mat-icon>
+        <div>
+          <div class="font-medium">Revenue</div>
+          <div class="text-sm text-gray-600">GMV and platform-fee income</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>
