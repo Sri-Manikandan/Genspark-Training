@@ -82,6 +82,62 @@ Visit `http://localhost:4200` — you should see a page saying "backend online".
 Backend: `cd backend && dotnet test`
 Frontend: `cd frontend/bus-booking-web && npm test -- --watch=false`
 
+## Demo script
+
+With `DemoSeed:Enabled=true` in `appsettings.Development.json` (the default in
+`appsettings.Development.example.json`), a fresh `dotnet run` populates:
+
+- Cities: **Bangalore** (Karnataka), **Chennai** (Tamil Nadu).
+- Route: Bangalore → Chennai, 350 km.
+- Operator: `operator@demo.local` / `Operator123!` — roles `customer + operator`,
+  offices at both cities, one approved 40-seater bus ("Demo Express", reg `KA01DEMO1234`),
+  one daily schedule 09:00 → 14:00 at ₹500/seat for the next 60 days.
+- Customer: `customer@demo.local` / `Customer123!`.
+- Admin: `admin@busbooking.local` / `ChangeMeOnFirstBoot!` (seeded separately).
+
+End-to-end walkthrough:
+
+1. Visit `http://localhost:4200`, search **Bangalore → Chennai** for today or
+   any date in the next 60 days. A single "Demo Express" trip appears.
+2. Click the trip, pick two available seats. You're prompted to log in →
+   sign in as the **customer**.
+3. Enter passenger details → pay with Razorpay test card `4111 1111 1111 1111`,
+   any future expiry, any CVV.
+4. Confirmation page shows the booking code. The PDF ticket downloads and (if
+   `Resend:ApiKey` is set and your address matches the Resend account owner)
+   a confirmation email arrives.
+5. Open **My Bookings** → click the new row → **Cancel booking**. The dialog
+   shows the tier label (e.g. "80% refund (24h or more before departure)"),
+   confirm cancel. A refund email arrives.
+6. Log out, log back in as **admin**. Go to **Admin console → Operators**,
+   click **Disable** on "Demo Operator". The single demo bus is retired; any
+   future confirmed bookings flip to `cancelled_by_operator` with pending
+   refunds; affected customers receive a cancellation email.
+
+To reset: `dropdb bus_booking && createdb bus_booking && psql -d bus_booking
+-c "CREATE EXTENSION IF NOT EXISTS citext; CREATE EXTENSION IF NOT EXISTS
+pg_trgm;" && dotnet ef database update` (run from `backend/BusBooking.Api`),
+then restart the API.
+
+## Troubleshooting
+
+- **Resend emails don't arrive.** On the free tier without a verified domain,
+  Resend only delivers to the account-owner address. Either verify a domain
+  at https://resend.com/domains or set `Resend:FromAddress` and your test
+  `customer@demo.local` email to the same address on the Resend account.
+- **Razorpay modal shows "Invalid key".** The test key in
+  `appsettings.Development.json` (`Razorpay:KeyId` / `Razorpay:KeySecret`)
+  must start with `rzp_test_`. Copy both from the Razorpay test dashboard.
+- **Search returns no trips.** The seeded schedule is valid for today +60
+  days. If your system date drifts outside that window, either restart the
+  API (the 60-day window re-anchors to `now`) or add a new schedule through
+  the operator portal.
+- **`dotnet ef database update` fails with "extension citext does not exist".**
+  Run `psql -d bus_booking -c "CREATE EXTENSION IF NOT EXISTS citext;"` as
+  the Postgres superuser (not `bus_user`).
+- **`DemoSeed:Enabled=true` but no demo data appears.** The seeder only runs
+  in `Development`. Verify with `ASPNETCORE_ENVIRONMENT=Development dotnet run`.
+
 ## Project layout
 
 ```
