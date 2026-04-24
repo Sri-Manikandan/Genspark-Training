@@ -78,7 +78,8 @@ export class OperatorScheduleFormComponent implements OnInit {
       next: () => this.dialogRef.close(true),
       error: (err) => {
         this.error.set(
-          err.error?.message
+          err.error?.error?.message
+          ?? err.error?.message
           ?? err.error?.title
           ?? (typeof err.error === 'string' ? err.error : null)
           ?? 'Failed to create schedule'
