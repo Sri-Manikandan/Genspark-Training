@@ -12,16 +12,18 @@
     <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-slate-300"></span>Booked</span>
   </div>
 
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2" role="group" aria-label="Seat map">
     @for (row of seatGrid(); track $index) {
       <div class="flex gap-2">
         @for (seat of row; track $index) {
           @if (seat === null) {
-            <div class="w-10 h-10"></div>
+            <div class="w-10 h-10" aria-hidden="true"></div>
           } @else {
             <button
               type="button"
               class="w-10 h-10 rounded border text-xs font-medium transition"
+              [attr.aria-label]="'Seat ' + seat.seatNumber + ' ' + seat.status"
+              [attr.aria-pressed]="selectable() ? isSelected(seat.seatNumber) : null"
               [disabled]="seat.status !== 'available' || !selectable()"
               [class.bg-emerald-100]="seat.status === 'available' && !isSelected(seat.seatNumber)"
               [class.border-emerald-300]="seat.status === 'available' && !isSelected(seat.seatNumber)"
