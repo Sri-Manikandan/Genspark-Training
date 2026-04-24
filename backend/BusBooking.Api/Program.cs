@@ -46,6 +46,9 @@ builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 builder.Services.AddScoped<IAdminSeeder, AdminSeeder>();
 builder.Services.AddScoped<IPlatformFeeSeeder, PlatformFeeSeeder>();
+builder.Services.Configure<DemoDataSeedOptions>(
+    builder.Configuration.GetSection(DemoDataSeedOptions.SectionName));
+builder.Services.AddScoped<IDemoDataSeeder, DemoDataSeeder>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BusBooking.Api.Infrastructure.Auth.ICurrentUserAccessor,
                            BusBooking.Api.Infrastructure.Auth.CurrentUserAccessor>();
@@ -143,6 +146,8 @@ if (app.Environment.IsDevelopment())
     await seeder.SeedAsync(CancellationToken.None);
     var feeSeeder = scope.ServiceProvider.GetRequiredService<IPlatformFeeSeeder>();
     await feeSeeder.SeedAsync(CancellationToken.None);
+    var demoSeeder = scope.ServiceProvider.GetRequiredService<IDemoDataSeeder>();
+    await demoSeeder.SeedAsync(CancellationToken.None);
 }
 
 // ── Pipeline ────────────────────────────────────────────────────

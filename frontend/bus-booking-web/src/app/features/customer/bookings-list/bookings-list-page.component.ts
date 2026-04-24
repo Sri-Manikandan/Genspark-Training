@@ -13,6 +13,7 @@ import {
   BookingsApiService
 } from '../../../core/api/bookings.api';
 import { BookingStatusBadgeComponent } from '../../../shared/components/booking-status-badge/booking-status-badge.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-bookings-list-page',
@@ -28,7 +29,8 @@ import { BookingStatusBadgeComponent } from '../../../shared/components/booking-
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    BookingStatusBadgeComponent
+    BookingStatusBadgeComponent,
+    EmptyStateComponent
   ],
   templateUrl: './bookings-list-page.component.html'
 })

@@ -73,9 +73,10 @@
   </table>
 
   @if (bookings().length === 0) {
-    <div class="p-8 text-center text-slate-500 border rounded bg-slate-50">
-      No bookings found for the selected filters.
-    </div>
+    <app-empty-state
+      icon="receipt_long"
+      title="No bookings found"
+      description="Try clearing filters or picking a different date range."></app-empty-state>
   }
 
   <p class="text-sm text-slate-500">Total: {{ totalCount() }} booking(s)</p>

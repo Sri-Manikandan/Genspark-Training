@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { OperatorBookingsApiService, OperatorBookingListItemDto } from '../../../core/api/operator-bookings.api';
 import { OperatorBusesApiService, BusDto } from '../../../core/api/operator-buses.api';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-operator-bookings-page',
@@ -16,7 +17,8 @@ import { OperatorBusesApiService, BusDto } from '../../../core/api/operator-buse
   imports: [
     CommonModule, ReactiveFormsModule,
     MatTableModule, MatFormFieldModule, MatSelectModule,
-    MatInputModule, MatButtonModule, MatDatepickerModule
+    MatInputModule, MatButtonModule, MatDatepickerModule,
+    EmptyStateComponent
   ],
   templateUrl: './operator-bookings-page.component.html'
 })

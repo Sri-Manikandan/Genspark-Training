@@ -13,6 +13,7 @@ import {
 import {
   AdminOperatorsApiService, AdminOperatorListItemDto
 } from '../../../core/api/admin-operators.api';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 
 const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: 'confirmed', label: 'Confirmed' },
@@ -27,7 +28,8 @@ const STATUS_OPTIONS: { value: string; label: string }[] = [
   imports: [
     CommonModule, ReactiveFormsModule,
     MatTableModule, MatFormFieldModule, MatSelectModule,
-    MatInputModule, MatButtonModule, MatDatepickerModule
+    MatInputModule, MatButtonModule, MatDatepickerModule,
+    EmptyStateComponent
   ],
   templateUrl: './admin-bookings-page.component.html'
 })

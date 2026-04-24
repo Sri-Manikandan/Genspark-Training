@@ -94,9 +94,10 @@
   </table>
 
   @if (bookings().length === 0) {
-    <div class="p-8 text-center text-slate-500 border rounded bg-slate-50">
-      No bookings match these filters.
-    </div>
+    <app-empty-state
+      icon="receipt_long"
+      title="No bookings match these filters"
+      description="Widen the date range or clear the operator/status filters."></app-empty-state>
   }
 
   <p class="text-sm text-slate-500">Total: {{ totalCount() }} booking(s)</p>
