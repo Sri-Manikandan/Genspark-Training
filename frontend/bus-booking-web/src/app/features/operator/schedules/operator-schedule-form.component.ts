@@ -67,12 +67,28 @@ export class OperatorScheduleFormComponent implements OnInit {
     this.saving.set(true);
     this.error.set(null);
 
-    this.schedulesApi.create(this.form.getRawValue()).subscribe({
+    const v = this.form.getRawValue();
+    const payload = {
+      ...v,
+      departureTime: this.toHms(v.departureTime),
+      arrivalTime: this.toHms(v.arrivalTime)
+    };
+
+    this.schedulesApi.create(payload).subscribe({
       next: () => this.dialogRef.close(true),
       error: (err) => {
-        this.error.set(err.error?.message || 'Failed to create schedule');
+        this.error.set(
+          err.error?.message
+          ?? err.error?.title
+          ?? (typeof err.error === 'string' ? err.error : null)
+          ?? 'Failed to create schedule'
+        );
         this.saving.set(false);
       }
     });
+  }
+
+  private toHms(t: string): string {
+    return t && t.length === 5 ? `${t}:00` : t;
   }
 }
