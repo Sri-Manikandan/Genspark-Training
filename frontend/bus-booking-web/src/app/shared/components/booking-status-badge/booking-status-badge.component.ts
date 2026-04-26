@@ -1,40 +1,35 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatChipsModule } from '@angular/material/chips';
-
-interface StatusStyle {
-  label: string;
-  classes: string;
-}
 
 @Component({
   selector: 'app-booking-status-badge',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MatChipsModule],
-  template: `
-    <mat-chip [class]="style().classes" disableRipple>
-      {{ style().label }}
-    </mat-chip>
-  `
+  imports: [],
+  template: `<span class="status-badge" [class]="'status-badge--' + cssKey()">{{ label() }}</span>`,
+  styleUrl: './booking-status-badge.component.scss'
 })
 export class BookingStatusBadgeComponent {
   readonly status = input.required<string>();
 
-  readonly style = computed<StatusStyle>(() => {
-    switch (this.status()) {
-      case 'confirmed':
-        return { label: 'Confirmed', classes: 'bg-emerald-100 text-emerald-800' };
-      case 'pending_payment':
-        return { label: 'Pending payment', classes: 'bg-amber-100 text-amber-800' };
-      case 'cancelled':
-        return { label: 'Cancelled', classes: 'bg-rose-100 text-rose-800' };
-      case 'cancelled_by_operator':
-        return { label: 'Cancelled (operator)', classes: 'bg-rose-100 text-rose-800' };
-      case 'completed':
-        return { label: 'Completed', classes: 'bg-slate-200 text-slate-800' };
-      default:
-        return { label: this.status(), classes: 'bg-slate-200 text-slate-800' };
-    }
+  readonly label = computed(() => {
+    const map: Record<string, string> = {
+      confirmed: 'Confirmed',
+      pending_payment: 'Pending',
+      cancelled: 'Cancelled',
+      cancelled_by_operator: 'Cancelled',
+      completed: 'Completed',
+    };
+    return map[this.status()] ?? this.status();
+  });
+
+  readonly cssKey = computed(() => {
+    const map: Record<string, string> = {
+      confirmed: 'confirmed',
+      pending_payment: 'pending',
+      cancelled: 'cancelled',
+      cancelled_by_operator: 'cancelled',
+      completed: 'completed',
+    };
+    return map[this.status()] ?? 'default';
   });
 }

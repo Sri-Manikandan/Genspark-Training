@@ -1,101 +1,142 @@
-<!-- frontend/bus-booking-web/src/app/features/customer/booking-detail/booking-detail-page.component.html -->
-<div class="max-w-3xl mx-auto p-4 md:p-6 space-y-4">
-  <a routerLink="/my-bookings" mat-button class="inline-flex items-center gap-1">
-    <mat-icon>arrow_back</mat-icon>
-    Back to all bookings
+<div class="bdetail">
+
+  <a routerLink="/my-bookings" class="btn btn-ghost btn-sm bdetail__back">
+    <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+      <path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    All bookings
   </a>
 
   @if (loading()) {
-    <div class="flex justify-center py-12">
-      <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
+    <div class="bdetail__loading">
+      <div class="bdetail__spinner"></div>
+      <span class="mono">Fetching booking …</span>
     </div>
   } @else if (errorMessage()) {
-    <div class="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded">
-      {{ errorMessage() }}
+    <div class="bdetail__error card-paper">
+      <div class="bdetail__error-num">—</div>
+      <h3 class="bdetail__error-title">{{ errorMessage() }}</h3>
+      <a routerLink="/my-bookings" class="btn btn-ink btn-sm">Back to bookings</a>
     </div>
   } @else if (booking(); as b) {
-    <mat-card class="border border-slate-200">
-      <div class="p-5 border-b border-slate-200 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <div class="text-xs text-slate-500 font-mono">{{ b.bookingCode }}</div>
-          <h1 class="text-xl md:text-2xl font-bold m-0 mt-1">
-            {{ b.sourceCity }} → {{ b.destinationCity }}
-          </h1>
-          <div class="text-sm text-slate-600 mt-1">
-            {{ b.tripDate | date: 'fullDate' }} · {{ b.departureTime.substring(0,5) }} → {{ b.arrivalTime.substring(0,5) }}
-          </div>
-        </div>
+
+    <header class="bdetail__header">
+      <div class="eyebrow eyebrow-oxblood"><span>Booking</span><span>·</span><span>{{ b.bookingCode }}</span></div>
+      <h1 class="display bdetail__title">{{ b.sourceCity }} <span class="display-italic">to</span> {{ b.destinationCity }}</h1>
+      <div class="bdetail__header-row">
+        <span class="mono bdetail__date">{{ b.tripDate | date:'EEEE, d MMMM yyyy' }} · {{ b.departureTime.substring(0,5) }} → {{ b.arrivalTime.substring(0,5) }}</span>
         <app-booking-status-badge [status]="b.status" />
       </div>
+    </header>
 
-      <div class="p-5 grid gap-4 md:grid-cols-2">
-        <div>
-          <div class="text-xs text-slate-500 uppercase tracking-wide">Bus</div>
-          <div class="font-medium">{{ b.busName }}</div>
-          <div class="text-sm text-slate-600">{{ b.operatorName }}</div>
-        </div>
-        <div>
-          <div class="text-xs text-slate-500 uppercase tracking-wide">Booked</div>
-          <div class="font-medium">{{ b.createdAt | date: 'mediumDate' }}</div>
-          @if (b.confirmedAt) {
-            <div class="text-sm text-slate-600">Confirmed {{ b.confirmedAt | date: 'shortTime' }}</div>
-          }
-        </div>
-      </div>
+    <div class="bdetail__rule"></div>
 
-      <div class="px-5 pb-5">
-        <div class="text-xs text-slate-500 uppercase tracking-wide mb-2">Passengers</div>
-        <div class="border border-slate-200 rounded divide-y divide-slate-200">
-          @for (s of b.seats; track s.seatNumber) {
-            <div class="px-4 py-3 flex items-center justify-between">
-              <div>
-                <span class="font-mono text-sm bg-slate-100 px-2 py-0.5 rounded">{{ s.seatNumber }}</span>
-                <span class="ml-3 font-medium">{{ s.passengerName }}</span>
+    <div class="bdetail__body">
+
+      <!-- LEFT: trip info + payment -->
+      <div class="bdetail__left">
+        <!-- Operator -->
+        <div class="bdetail__section card-paper">
+          <div class="bdetail__section-pad">
+            <div class="eyebrow">Operator</div>
+            <div class="bdetail__op-name">{{ b.operatorName }}</div>
+            <div class="mono bdetail__op-sub">{{ b.busName }}</div>
+
+            <div class="bdetail__spec">
+              <div class="bdetail__spec-row">
+                <span class="bdetail__spec-label">Booked on</span>
+                <span class="bdetail__spec-val mono">{{ b.createdAt | date:'d MMM yyyy' }}</span>
               </div>
-              <div class="text-xs text-slate-500">{{ s.passengerAge }} · {{ s.passengerGender }}</div>
+              @if (b.confirmedAt) {
+                <div class="bdetail__spec-row">
+                  <span class="bdetail__spec-label">Confirmed</span>
+                  <span class="bdetail__spec-val mono">{{ b.confirmedAt | date:'d MMM, HH:mm' }}</span>
+                </div>
+              }
+              <div class="bdetail__spec-row">
+                <span class="bdetail__spec-label">Seats</span>
+                <span class="bdetail__spec-val mono">{{ b.seatCount }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="bdetail__section card-paper">
+          <div class="bdetail__section-pad">
+            <div class="eyebrow">Payment</div>
+            <div class="bdetail__ledger">
+              <div class="bdetail__ledger-row">
+                <span class="mono">Fare ({{ b.seatCount }} × seat)</span>
+                <span class="mono">₹{{ b.totalFare | number }}</span>
+              </div>
+              <div class="bdetail__ledger-row">
+                <span class="mono">Platform fee</span>
+                <span class="mono">₹{{ b.platformFee | number }}</span>
+              </div>
+              <div class="bdetail__ledger-row bdetail__ledger-row--total">
+                <span class="mono">Total</span>
+                <span class="bdetail__ledger-total">₹{{ b.totalAmount | number }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cancellation notice -->
+        @if (isCancelled()) {
+          <div class="bdetail__cancel-notice">
+            <div class="eyebrow eyebrow-oxblood">Cancelled</div>
+            <div class="mono bdetail__cancel-date">{{ b.cancelledAt | date:'d MMM yyyy, HH:mm' }}</div>
+            @if (b.cancellationReason) {
+              <div class="mono bdetail__cancel-reason">{{ b.cancellationReason }}</div>
+            }
+            @if (b.refundAmount !== null) {
+              <div class="bdetail__refund-row">
+                <span class="mono">Refund</span>
+                <span class="bdetail__refund-amt">₹{{ b.refundAmount | number }}</span>
+                <span class="mono bdetail__refund-status">{{ b.refundStatus }}</span>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Actions -->
+        <div class="bdetail__actions">
+          @if (canDownloadTicket()) {
+            <button class="btn btn-ink btn-sm" (click)="downloadTicket()" type="button">
+              Download PDF ticket
+              <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true">
+                <path d="M10 3v11m-4-4 4 4 4-4M3 17h14" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          }
+          @if (canCancel()) {
+            <button class="btn btn-ghost btn-sm bdetail__cancel-btn" (click)="openCancelDialog()" type="button">
+              Cancel booking
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- RIGHT: passenger manifest -->
+      <div class="bdetail__right">
+        <div class="eyebrow eyebrow-oxblood">
+          <span>Passengers</span><span>·</span><span>{{ b.seatCount }} seat(s)</span>
+        </div>
+        <div class="bdetail__manifest">
+          @for (s of b.seats; track s.seatNumber; let i = $index) {
+            <div class="bdetail__pax ticket">
+              <div class="bdetail__pax-seat mono">{{ s.seatNumber }}</div>
+              <div class="bdetail__pax-info">
+                <div class="bdetail__pax-name">{{ s.passengerName }}</div>
+                <div class="bdetail__pax-meta mono">{{ s.passengerAge }} yrs · {{ s.passengerGender }}</div>
+              </div>
+              <div class="bdetail__pax-ix mono">{{ (i + 1).toString().padStart(2,'0') }}</div>
             </div>
           }
         </div>
       </div>
 
-      <div class="px-5 pb-5">
-        <div class="text-xs text-slate-500 uppercase tracking-wide mb-2">Payment</div>
-        <div class="border border-slate-200 rounded p-4 grid grid-cols-2 text-sm gap-y-1">
-          <div>Fare ({{ b.seatCount }} × seat)</div><div class="text-right">{{ b.totalFare | currency: 'INR' }}</div>
-          <div>Platform fee</div><div class="text-right">{{ b.platformFee | currency: 'INR' }}</div>
-          <div class="font-semibold">Total</div><div class="text-right font-semibold">{{ b.totalAmount | currency: 'INR' }}</div>
-        </div>
-      </div>
-
-      @if (isCancelled()) {
-        <div class="mx-5 mb-5 border border-rose-200 bg-rose-50 rounded p-4 text-sm">
-          <div class="font-semibold text-rose-900 mb-1">Cancelled</div>
-          <div>On {{ b.cancelledAt | date: 'medium' }}</div>
-          @if (b.cancellationReason) {
-            <div class="mt-1">Reason: {{ b.cancellationReason }}</div>
-          }
-          @if (b.refundAmount !== null) {
-            <div class="mt-2">
-              Refund: <strong>{{ b.refundAmount | currency: 'INR' }}</strong>
-              <span class="text-rose-700">({{ b.refundStatus }})</span>
-            </div>
-          }
-        </div>
-      }
-
-      <div class="px-5 pb-5 flex flex-wrap gap-2">
-        @if (canDownloadTicket()) {
-          <button mat-flat-button color="primary" (click)="downloadTicket()">
-            <mat-icon class="mr-1">download</mat-icon>
-            Download PDF ticket
-          </button>
-        }
-        @if (canCancel()) {
-          <button mat-stroked-button color="warn" (click)="openCancelDialog()" matTooltip="See refund estimate before confirming">
-            Cancel booking
-          </button>
-        }
-      </div>
-    </mat-card>
+    </div>
   }
 </div>

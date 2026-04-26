@@ -128,7 +128,8 @@ public class BookingService : IBookingService
         await _db.SaveChangesAsync(ct);
 
         return new CreateBookingResponseDto(
-            bookingId, bookingCode, order.Id, _razorpay.KeyId, paise, "INR");
+            bookingId, bookingCode, order.Id, _razorpay.KeyId, paise, "INR",
+            totalFare, platformFee, totalAmount);
     }
 
     public async Task<BookingDetailDto> VerifyPaymentAsync(

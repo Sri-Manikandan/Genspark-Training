@@ -12,7 +12,8 @@ import {
   selector: 'app-countdown-timer',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './countdown-timer.component.html'
+  templateUrl: './countdown-timer.component.html',
+  styleUrl: './countdown-timer.component.scss'
 })
 export class CountdownTimerComponent implements OnDestroy {
   readonly expiresAt = input.required<string>();

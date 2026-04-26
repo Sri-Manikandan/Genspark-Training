@@ -1,12 +1,7 @@
 // frontend/bus-booking-web/src/app/features/customer/bookings-list/bookings-list-page.component.ts
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon';
 import {
   BookingFilter,
   BookingListItemDto,
@@ -19,20 +14,9 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
   selector: 'app-bookings-list-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    CurrencyPipe,
-    DatePipe,
-    RouterLink,
-    MatTabsModule,
-    MatTableModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    BookingStatusBadgeComponent,
-    EmptyStateComponent
-  ],
-  templateUrl: './bookings-list-page.component.html'
+  imports: [CommonModule, DatePipe, RouterLink, BookingStatusBadgeComponent, EmptyStateComponent],
+  templateUrl: './bookings-list-page.component.html',
+  styleUrl: './bookings-list-page.component.scss'
 })
 export class BookingsListPageComponent implements OnInit {
   private readonly api = inject(BookingsApiService);
@@ -43,16 +27,12 @@ export class BookingsListPageComponent implements OnInit {
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
-  readonly columns = ['code', 'route', 'date', 'seats', 'amount', 'status', 'actions'];
-
-  private readonly tabIndexToFilter: BookingFilter[] = ['upcoming', 'past', 'cancelled'];
-
   ngOnInit(): void {
     this.load();
   }
 
-  onTabChange(e: MatTabChangeEvent): void {
-    this.filter.set(this.tabIndexToFilter[e.index]);
+  setFilter(f: BookingFilter): void {
+    this.filter.set(f);
     this.load();
   }
 

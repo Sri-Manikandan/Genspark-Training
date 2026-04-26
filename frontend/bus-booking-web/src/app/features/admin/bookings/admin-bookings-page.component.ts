@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   AdminBookingsApiService, AdminBookingListItemDto
 } from '../../../core/api/admin-bookings.api';
+import { toLocalDateString } from '../../../core/utils/date-utils';
 import {
   AdminOperatorsApiService, AdminOperatorListItemDto
 } from '../../../core/api/admin-operators.api';
@@ -62,7 +63,7 @@ export class AdminBookingsPageComponent implements OnInit {
     const opId = this.operatorFilter.value ?? undefined;
     const status = this.statusFilter.value ?? undefined;
     const date = this.dateFilter.value
-      ? this.dateFilter.value.toISOString().slice(0, 10)
+      ? toLocalDateString(this.dateFilter.value)
       : undefined;
     this.bookingsApi.list(opId, status, date, this.page(), this.pageSize).subscribe(res => {
       this.bookings.set(res.items);

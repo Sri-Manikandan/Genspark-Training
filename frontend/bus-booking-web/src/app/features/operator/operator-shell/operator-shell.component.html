@@ -1,33 +1,43 @@
-<mat-sidenav-container class="h-screen">
-  <mat-sidenav mode="side" opened class="w-56 p-2">
-    <mat-nav-list>
-      <a mat-list-item routerLink="dashboard" routerLinkActive="bg-slate-100">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>Dashboard</span>
-      </a>
-      <a mat-list-item routerLink="offices" routerLinkActive="bg-slate-100">
-        <mat-icon matListItemIcon>store</mat-icon>
-        <span matListItemTitle>Offices</span>
-      </a>
-      <a mat-list-item routerLink="buses" routerLinkActive="bg-slate-100">
-        <mat-icon matListItemIcon>directions_bus</mat-icon>
-        <span matListItemTitle>Buses</span>
-      </a>
-      <a mat-list-item routerLink="schedules" routerLinkActive="bg-slate-100">
-        <mat-icon matListItemIcon>schedule</mat-icon>
-        <span matListItemTitle>Schedules</span>
-      </a>
-      <a mat-list-item routerLink="bookings" routerLinkActive="bg-slate-100">
-        <mat-icon matListItemIcon>confirmation_number</mat-icon>
-        <span matListItemTitle>Bookings</span>
-      </a>
-      <a mat-list-item routerLink="revenue" routerLinkActive="bg-slate-100">
-        <mat-icon matListItemIcon>bar_chart</mat-icon>
-        <span matListItemTitle>Revenue</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content class="p-6">
+<div class="op-shell">
+  <!-- Sidebar -->
+  <nav class="op-sidebar" aria-label="Operator navigation">
+    <div class="op-sidebar__brand">
+      <div class="op-sidebar__logo" aria-hidden="true">
+        <div class="op-sidebar__logo-sq"></div>
+      </div>
+      <div>
+        <div class="op-sidebar__name">Depot.</div>
+        <div class="op-sidebar__role mono">Operator</div>
+      </div>
+    </div>
+
+    <div class="op-sidebar__section mono">Operations</div>
+
+    <a routerLink="dashboard" routerLinkActive="op-nav__link--active" class="op-nav__link">
+      <span class="op-nav__ix mono">01</span>Dashboard
+    </a>
+    <a routerLink="offices" routerLinkActive="op-nav__link--active" class="op-nav__link">
+      <span class="op-nav__ix mono">02</span>Offices
+    </a>
+    <a routerLink="buses" routerLinkActive="op-nav__link--active" class="op-nav__link">
+      <span class="op-nav__ix mono">03</span>Buses
+    </a>
+    <a routerLink="schedules" routerLinkActive="op-nav__link--active" class="op-nav__link">
+      <span class="op-nav__ix mono">04</span>Schedules
+    </a>
+    <a routerLink="bookings" routerLinkActive="op-nav__link--active" class="op-nav__link">
+      <span class="op-nav__ix mono">05</span>Bookings
+    </a>
+    <a routerLink="revenue" routerLinkActive="op-nav__link--active" class="op-nav__link">
+      <span class="op-nav__ix mono">06</span>Revenue
+    </a>
+  </nav>
+
+  <!-- Perforation strip -->
+  <div class="op-perf" aria-hidden="true"></div>
+
+  <!-- Main content -->
+  <main class="op-content">
     <router-outlet />
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </main>
+</div>

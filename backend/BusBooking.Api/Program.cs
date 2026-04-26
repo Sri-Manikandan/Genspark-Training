@@ -16,6 +16,23 @@ using QuestPDF;
 using QuestPDF.Infrastructure;
 using Serilog;
 
+// ── Load .env ─────────────────────────────────────────────────────
+// Must run before CreateBuilder so the config system picks up the vars.
+var envFile = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+if (File.Exists(envFile))
+{
+    foreach (var line in File.ReadAllLines(envFile))
+    {
+        var trimmed = line.Trim();
+        if (trimmed.Length == 0 || trimmed[0] == '#') continue;
+        var eq = trimmed.IndexOf('=');
+        if (eq < 1) continue;
+        var key = trimmed[..eq].Trim();
+        var val = trimmed[(eq + 1)..].Trim();
+        Environment.SetEnvironmentVariable(key, val, EnvironmentVariableTarget.Process);
+    }
+}
+
 Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);

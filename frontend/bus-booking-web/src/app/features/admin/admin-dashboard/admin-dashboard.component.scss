@@ -1,3 +1,68 @@
-:host {
-  display: block;
+:host { display: block; }
+
+.admin-dash__header { margin-bottom: 0; }
+.admin-dash__title {
+  font-size: clamp(32px, 5vw, 64px);
+  margin: 10px 0 4px; line-height: 0.95;
+}
+.admin-dash__sub {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-60); margin: 6px 0 0;
+}
+
+.admin-dash__rule {
+  margin: 20px 0 32px; height: 1px;
+  background-image: linear-gradient(to right, var(--ink) 50%, transparent 50%);
+  background-size: 8px 1px; background-repeat: repeat-x;
+}
+
+.admin-dash__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-nav-tile {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 12px;
+  padding: 20px 20px 18px;
+  background: var(--paper-100);
+  border: 1px solid var(--rule);
+  text-decoration: none; color: inherit;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+    .admin-nav-tile__ix { color: var(--ochre); }
+  }
+}
+
+.admin-nav-tile__inner { flex: 1; }
+.admin-nav-tile__ix {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ink-40);
+  margin-bottom: 8px;
+  transition: color 120ms;
+}
+.admin-nav-tile__title {
+  font-family: 'Inter', sans-serif; font-weight: 500;
+  font-size: 20px; letter-spacing: -0.015em;
+  margin-bottom: 5px;
+}
+.admin-nav-tile__desc {
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-60);
+  line-height: 1.5;
+}
+
+.admin-nav-tile__arrow {
+  font-size: 18px; color: var(--ink-40);
+  align-self: flex-end; transition: color 120ms;
+  .admin-nav-tile:hover & { color: var(--ink); }
 }

@@ -1,88 +1,24 @@
-<section class="p-6 max-w-5xl mx-auto space-y-6">
-  <header>
-    <h1 class="text-2xl font-semibold">Admin console</h1>
-    <p class="text-gray-600">Manage the catalog and platform configuration.</p>
+<div class="admin-dash">
+  <header class="admin-dash__header">
+    <div class="eyebrow eyebrow-oxblood">
+      <span>Administration</span><span>·</span><span>Console</span>
+    </div>
+    <h1 class="display admin-dash__title">Control <span class="display-italic">panel.</span></h1>
+    <p class="admin-dash__sub mono">Platform management — proceed with care</p>
   </header>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/cities']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>location_city</mat-icon>
-        <div>
-          <div class="font-medium">Cities</div>
-          <div class="text-sm text-gray-600">Add, deactivate, rename</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <div class="admin-dash__rule"></div>
 
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/routes']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>alt_route</mat-icon>
-        <div>
-          <div class="font-medium">Routes</div>
-          <div class="text-sm text-gray-600">Pair cities that operators can serve</div>
+  <div class="admin-dash__grid">
+    @for (item of navItems; track item.route) {
+      <a [routerLink]="item.route" class="admin-nav-tile">
+        <div class="admin-nav-tile__inner">
+          <div class="admin-nav-tile__ix mono">{{ item.ix }}</div>
+          <div class="admin-nav-tile__title">{{ item.title }}</div>
+          <div class="admin-nav-tile__desc mono">{{ item.desc }}</div>
         </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/platform-fee']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>payments</mat-icon>
-        <div>
-          <div class="font-medium">Platform fee</div>
-          <div class="text-sm text-gray-600">Fixed ₹ or percent, with history</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/operator-requests']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>person_add</mat-icon>
-        <div>
-          <div class="font-medium">Operator requests</div>
-          <div class="text-sm text-gray-600">Review applications to become operators</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/bus-approvals']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>directions_bus</mat-icon>
-        <div>
-          <div class="font-medium">Bus approvals</div>
-          <div class="text-sm text-gray-600">Approve or reject operator bus submissions</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/operators']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>manage_accounts</mat-icon>
-        <div>
-          <div class="font-medium">Operators</div>
-          <div class="text-sm text-gray-600">Disable or re-enable operators</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/bookings']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>receipt_long</mat-icon>
-        <div>
-          <div class="font-medium">Bookings</div>
-          <div class="text-sm text-gray-600">Cross-operator booking history</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="hover:shadow-md transition" [routerLink]="['/admin/revenue']">
-      <mat-card-content class="flex items-start gap-3 cursor-pointer">
-        <mat-icon>bar_chart</mat-icon>
-        <div>
-          <div class="font-medium">Revenue</div>
-          <div class="text-sm text-gray-600">GMV and platform-fee income</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+        <div class="admin-nav-tile__arrow" aria-hidden="true">→</div>
+      </a>
+    }
   </div>
-</section>
+</div>

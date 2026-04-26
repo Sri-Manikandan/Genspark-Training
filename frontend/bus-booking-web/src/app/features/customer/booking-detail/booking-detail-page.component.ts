@@ -1,13 +1,8 @@
 // frontend/bus-booking-web/src/app/features/customer/booking-detail/booking-detail-page.component.ts
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BookingDetailDto, BookingsApiService } from '../../../core/api/bookings.api';
 import { BookingStatusBadgeComponent } from '../../../shared/components/booking-status-badge/booking-status-badge.component';
@@ -18,20 +13,9 @@ import { CancelBookingDialogComponent, CancelDialogResult } from './cancel-booki
   selector: 'app-booking-detail-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    CurrencyPipe,
-    DatePipe,
-    RouterLink,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    BookingStatusBadgeComponent
-  ],
-  templateUrl: './booking-detail-page.component.html'
+  imports: [CommonModule, DatePipe, RouterLink, BookingStatusBadgeComponent],
+  templateUrl: './booking-detail-page.component.html',
+  styleUrl: './booking-detail-page.component.scss'
 })
 export class BookingDetailPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

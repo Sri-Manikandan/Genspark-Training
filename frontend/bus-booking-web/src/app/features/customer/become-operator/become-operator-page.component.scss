@@ -1,1 +1,170 @@
+:host { display: block; }
 
+.become-op {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 28px 80px;
+}
+
+.become-op__title {
+  font-size: clamp(40px, 6vw, 90px);
+  margin: 10px 0 0; line-height: 0.95;
+}
+
+.become-op__rule {
+  margin: 20px 0 32px; height: 1px;
+  background-image: linear-gradient(to right, var(--ink) 50%, transparent 50%);
+  background-size: 8px 1px; background-repeat: repeat-x;
+}
+
+/* Success state */
+.become-op__success {
+  max-width: 480px; margin: 0 auto;
+  padding: 48px 40px; text-align: center;
+}
+.become-op__success-stamp {
+  display: inline-flex; margin-bottom: 20px;
+  font-size: 14px; letter-spacing: 0.3em;
+}
+.become-op__success-title {
+  font-family: 'Inter', sans-serif; font-weight: 500;
+  font-size: 28px; letter-spacing: -0.02em; margin: 0 0 10px;
+}
+.become-op__success-note {
+  font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-60);
+  margin-bottom: 24px;
+}
+
+/* Two-column body */
+.become-op__body {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr;
+  align-items: stretch;
+  min-height: calc(100vh - 280px);
+}
+
+/* Marketing poster */
+.become-op__marketing { padding: 0 40px 0 8px; position: relative; }
+.become-op__poster {
+  background: var(--ink); color: var(--paper-100);
+  padding: 28px 32px; border-radius: 2px;
+  transform: rotate(-1.2deg);
+  box-shadow: 8px 8px 0 var(--ink), 8px 8px 0 2px var(--ochre);
+  max-width: 360px; position: relative;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.become-op__poster-num {
+  font-family: 'Inter', sans-serif; font-size: 100px;
+  line-height: 0.8; color: var(--ochre); letter-spacing: -0.06em;
+}
+.become-op__poster-sub {
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); margin-bottom: 4px;
+}
+.become-op__poster-big {
+  font-family: 'Inter', sans-serif; font-size: 22px;
+  color: var(--paper-100); font-style: italic; line-height: 1.2;
+}
+.become-op__poster-stamp {
+  position: absolute; right: -16px; top: -12px;
+  transform: rotate(15deg);
+  background: var(--paper-100) !important;
+}
+
+/* Spec table */
+.become-op__spec {
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  margin-top: 32px;
+}
+.become-op__spec-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 0; border-bottom: 1px dashed var(--ink-20);
+  &:last-child { border-bottom: none; }
+}
+.become-op__spec-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-60);
+}
+.become-op__spec-val { font-size: 18px; color: var(--ink); }
+
+/* Form */
+.become-op__form-wrap {
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 0 8px 0 40px;
+}
+.become-op__form {
+  width: 100%; max-width: 460px; padding: 40px 40px 32px; position: relative;
+  &::before {
+    content: '';
+    position: absolute; top: -14px; right: -14px;
+    width: 44px; height: 44px;
+    background: var(--ochre); border-radius: 999px; z-index: 0;
+  }
+}
+.become-op__form-head { margin-bottom: 24px; position: relative; z-index: 1; }
+.become-op__form-title {
+  font-family: 'Inter', sans-serif; font-weight: 500;
+  font-size: 38px; letter-spacing: -0.02em; margin: 10px 0 0; line-height: 1;
+}
+.become-op__form-body {
+  display: flex; flex-direction: column; gap: 20px;
+  position: relative; z-index: 1;
+}
+.become-op__submit { margin-top: 4px; }
+
+/* Responsive */
+@media (max-width: 880px) {
+  .become-op__body { grid-template-columns: 1fr; gap: 32px; }
+  .become-op__marketing { padding: 0; }
+  .become-op__form-wrap { padding: 0; }
+  .become-op__poster { max-width: 100%; transform: none; }
+}
+
+/* ============ PHONE (≤600px) ============ */
+@media (max-width: 600px) {
+  .become-op {
+    padding: 24px 16px 60px;
+  }
+
+  .become-op__title {
+    font-size: clamp(28px, 10vw, 56px);
+  }
+
+  .become-op__body {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    min-height: unset;
+  }
+
+  .become-op__poster {
+    padding: 20px 20px;
+    box-shadow: 4px 4px 0 var(--ink), 4px 4px 0 2px var(--ochre);
+  }
+
+  .become-op__poster-num {
+    font-size: 72px;
+  }
+
+  .become-op__poster-big {
+    font-size: 18px;
+  }
+
+  .become-op__form {
+    padding: 24px 20px 20px;
+    max-width: 100%;
+  }
+
+  .become-op__form-title {
+    font-size: 26px;
+  }
+
+  .become-op__success {
+    padding: 32px 20px;
+  }
+
+  .become-op__submit {
+    width: 100%;
+    justify-content: center;
+  }
+}

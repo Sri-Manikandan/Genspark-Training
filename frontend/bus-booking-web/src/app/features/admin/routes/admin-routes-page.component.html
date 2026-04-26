@@ -24,6 +24,7 @@
     </form>
   </div>
 
+  <div class="table-wrap">
   <table mat-table [dataSource]="routes()" class="w-full">
     <ng-container matColumnDef="source">
       <th mat-header-cell *matHeaderCellDef>From</th>
@@ -46,6 +47,7 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns"></tr>
   </table>
+  </div>
 
   @if (routes().length === 0) {
     <p class="text-gray-500 italic">No routes yet.</p>

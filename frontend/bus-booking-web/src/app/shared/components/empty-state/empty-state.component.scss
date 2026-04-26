@@ -1,0 +1,26 @@
+:host { display: block; }
+
+.empty-state {
+  padding: 60px 28px;
+  text-align: center;
+  border: 1px dashed var(--ink-40);
+  background: var(--paper-100);
+}
+
+.empty-state__num {
+  font-family: 'Inter', sans-serif;
+  font-size: 100px; line-height: 0.8;
+  color: var(--ochre); margin-bottom: 16px;
+}
+
+.empty-state__title {
+  font-family: 'Inter', sans-serif; font-weight: 500;
+  font-size: 24px; letter-spacing: -0.015em;
+  margin: 0 0 8px; color: var(--ink);
+}
+
+.empty-state__desc {
+  font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-60);
+  margin: 0;
+}

@@ -2,16 +2,27 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: #1e293b;
-  color: #fff;
+  background: var(--ink);
+  color: var(--paper-100);
   padding: 8px 16px;
   z-index: 1000;
   text-decoration: none;
-  border-radius: 0 0 4px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 
   &:focus {
     top: 0;
-    outline: 2px solid #fff;
+    outline: 2px solid var(--ochre);
     outline-offset: 2px;
   }
+}
+
+.app-main {
+  display: block;
+  min-height: calc(100vh - 76px);
+  position: relative;
+  z-index: 1;
+  outline: none;
 }

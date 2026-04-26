@@ -1,15 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { SearchApiService, SearchResultDto } from '../../../core/api/search.api';
 
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule],
-  templateUrl: './search-results.component.html'
+  imports: [CommonModule, RouterLink],
+  templateUrl: './search-results.component.html',
+  styleUrl: './search-results.component.scss'
 })
 export class SearchResultsComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -38,7 +37,5 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-  formatTimeRange(start: string, end: string): string {
-    return `${start.substring(0,5)} → ${end.substring(0,5)}`;
-  }
+  pad(n: number): string { return n.toString().padStart(2, '0'); }
 }

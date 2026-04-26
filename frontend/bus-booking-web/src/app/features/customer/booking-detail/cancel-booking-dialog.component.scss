@@ -1,0 +1,103 @@
+:host { display: block; }
+
+.cancel-dialog__head {
+  padding: 24px 24px 0 !important;
+  margin: 0 !important;
+}
+.cancel-dialog__title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500; font-size: 26px;
+  letter-spacing: -0.02em; margin: 8px 0 0;
+  display: block;
+}
+
+/* Override mat-dialog-content padding */
+::ng-deep .cancel-dialog .mat-mdc-dialog-content,
+.cancel-dialog__body {
+  padding: 20px 24px !important;
+  max-height: 60vh;
+}
+
+/* Loading */
+.cancel-dialog__loading {
+  display: flex; align-items: center; gap: 12px;
+  padding: 28px 0; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-60);
+}
+.cancel-dialog__spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--ink-20); border-top-color: var(--ink);
+  border-radius: 999px; animation: cd-spin 800ms linear infinite;
+}
+@keyframes cd-spin { to { transform: rotate(360deg); } }
+
+/* Error */
+.cancel-dialog__error {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: rgba(139,46,42,0.07); border: 1px dashed var(--oxblood);
+  color: var(--oxblood); font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.06em; margin-bottom: 12px;
+}
+.cancel-dialog__error-dot {
+  width: 7px; height: 7px; background: var(--oxblood);
+  border-radius: 999px; flex-shrink: 0;
+}
+
+/* Blocked */
+.cancel-dialog__blocked {
+  padding: 14px 16px;
+  border: 1px dashed var(--ochre);
+  background: rgba(212,162,76,0.08);
+}
+.cancel-dialog__blocked-title {
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ochre); margin-bottom: 6px;
+}
+
+/* Refund table */
+.cancel-dialog__refund {
+  border: 1px solid var(--rule); margin-bottom: 16px;
+}
+.cancel-dialog__refund-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 9px 14px; border-bottom: 1px dashed var(--ink-20);
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-60);
+  &:last-child { border-bottom: none; }
+  &--highlight {
+    background: rgba(62,91,59,0.06); color: var(--ink);
+    border-bottom: none;
+  }
+}
+.cancel-dialog__refund-label { color: var(--ink-60); }
+.cancel-dialog__refund-amt {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px; font-style: italic;
+  letter-spacing: -0.02em; color: var(--moss);
+}
+.cancel-dialog__refund-note {
+  padding: 8px 14px; margin: 0;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-40);
+  border-top: 1px dashed var(--ink-20);
+}
+
+/* Form */
+.cancel-dialog__form { margin-top: 4px; }
+.cancel-dialog__textarea { resize: vertical; min-height: 80px; }
+
+/* Actions */
+.cancel-dialog__actions {
+  padding: 12px 24px 20px !important;
+  display: flex !important; justify-content: flex-end !important; gap: 10px !important;
+}
+.cancel-dialog__confirm-btn {
+  background: var(--oxblood) !important;
+  border-color: var(--oxblood) !important;
+  color: var(--paper-100) !important;
+  &:hover:not(:disabled) { background: #a03530 !important; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}

@@ -1,1 +1,6 @@
 :host { display: block; }
+
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { OperatorRevenueApiService, OperatorRevenueResponseDto } from '../../../core/api/operator-revenue.api';
+import { toLocalDateString } from '../../../core/utils/date-utils';
 
 @Component({
   selector: 'app-operator-revenue-page',
@@ -36,8 +37,8 @@ export class OperatorRevenuePageComponent implements OnInit {
   }
 
   load(): void {
-    const from = this.fromDate.value?.toISOString().slice(0, 10);
-    const to = this.toDate.value?.toISOString().slice(0, 10);
+    const from = this.fromDate.value ? toLocalDateString(this.fromDate.value) : undefined;
+    const to   = this.toDate.value   ? toLocalDateString(this.toDate.value)   : undefined;
     this.api.get(from, to).subscribe(res => this.revenue.set(res));
   }
 }

@@ -19,6 +19,7 @@
     </button>
   </form>
 
+  <div class="table-wrap">
   <table mat-table [dataSource]="cities()" class="w-full">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -37,6 +38,7 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns"></tr>
   </table>
+  </div>
 
   @if (cities().length === 0) {
     <p class="text-gray-500 italic">No cities yet.</p>

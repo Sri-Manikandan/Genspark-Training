@@ -1,15 +1,8 @@
-<span
-  class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold"
-  [class.bg-slate-100]="!isWarning() && !isExpired()"
-  [class.text-slate-700]="!isWarning() && !isExpired()"
-  [class.bg-rose-100]="isWarning() || isExpired()"
-  [class.text-rose-700]="isWarning() || isExpired()"
->
-  <span>⏱</span>
+<span class="cdt" [class.cdt--warning]="isWarning()" [class.cdt--expired]="isExpired()" aria-live="polite" aria-atomic="true">
   @if (isExpired()) {
-    <span>Expired</span>
+    <span class="cdt__label mono">Expired</span>
   } @else {
-    <span>{{ display() }}</span>
+    <span class="cdt__display mono">{{ display() }}</span>
+    <span class="cdt__unit mono">remaining</span>
   }
 </span>
-

@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { OperatorSchedulesApiService, RouteOptionDto } from '../../../core/api/schedules.api';
+import { toLocalDateString } from '../../../core/utils/date-utils';
 import { OperatorBusesApiService, BusDto } from '../../../core/api/operator-buses.api';
 
 @Component({
@@ -53,8 +54,8 @@ export class OperatorScheduleFormComponent implements OnInit {
     nextMonth.setDate(today.getDate() + 30);
     
     this.form.patchValue({
-      validFrom: today.toISOString().split('T')[0],
-      validTo: nextMonth.toISOString().split('T')[0]
+      validFrom: toLocalDateString(today),
+      validTo: toLocalDateString(nextMonth)
     });
 
     this.busesApi.list().subscribe(list => 

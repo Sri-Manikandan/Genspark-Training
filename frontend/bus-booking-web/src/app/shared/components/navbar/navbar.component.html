@@ -1,40 +1,65 @@
-<mat-toolbar color="primary" class="navbar">
-  <a routerLink="/" class="brand flex items-center gap-2">
-    <mat-icon>directions_bus</mat-icon>
-    <span class="font-semibold">Bus Booking</span>
-  </a>
+<header class="depot-nav">
+  <div class="depot-nav__inner">
+    <a routerLink="/" class="brand" aria-label="Depot — home">
+      <span class="brand-mark" aria-hidden="true">
+        <span class="brand-mark__bar"></span>
+        <span class="brand-mark__bar"></span>
+        <span class="brand-mark__bar"></span>
+      </span>
+      <span class="brand-type">
+        <span class="brand-type__name">Depot<span class="brand-type__dot">.</span></span>
+        <span class="brand-type__sub">Bus Booking Atlas · Est. 2026</span>
+      </span>
+    </a>
 
-  <span class="flex-1"></span>
+    <nav class="depot-nav__links" aria-label="Primary">
+      @if (isLoggedIn()) {
+        @if (isAdmin()) {
+          <a routerLink="/admin" routerLinkActive="is-active" class="link-chip">
+            <span class="link-chip__dot"></span>Admin Console
+          </a>
+        }
+        @if (isOperator()) {
+          <a routerLink="/operator" routerLinkActive="is-active" class="link-chip">
+            <span class="link-chip__dot"></span>Operator
+          </a>
+        }
+        @if (isCustomer()) {
+          <a routerLink="/my-bookings" routerLinkActive="is-active" class="link-chip">
+            <span class="link-chip__dot"></span>My Tickets
+          </a>
+          <a routerLink="/become-operator" routerLinkActive="is-active" class="link-chip">
+            <span class="link-chip__dot"></span>Become Operator
+          </a>
+        }
+      }
+    </nav>
 
-  @if (!isLoggedIn()) {
-    <a mat-button routerLink="/login">Log in</a>
-    <a mat-flat-button color="accent" routerLink="/register">Sign up</a>
-  } @else {
-    @if (isAdmin()) {
-      <a mat-button routerLink="/admin" routerLinkActive="active-link">Admin Console</a>
-    }
-    @if (isOperator()) {
-      <a mat-button routerLink="/operator" routerLinkActive="active-link">Operator portal</a>
-    }
-    @if (isCustomer()) {
-      <a mat-button routerLink="/my-bookings" routerLinkActive="active-link">My Bookings</a>
-    }
-    @if (isCustomer()) {
-      <a mat-button routerLink="/become-operator" routerLinkActive="active-link">Become operator</a>
-    }
-    <button mat-button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2">
-      <span class="initials-chip">{{ initials() }}</span>
-      <span class="hidden sm:inline">{{ user()?.name }}</span>
-      <mat-icon>arrow_drop_down</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu">
-      <div class="px-4 py-2 text-sm text-gray-600">
-        Roles: {{ user()?.roles?.join(', ') }}
-      </div>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Log out</span>
-      </button>
-    </mat-menu>
-  }
-</mat-toolbar>
+    <div class="depot-nav__actions">
+      @if (!isLoggedIn()) {
+        <a routerLink="/login" class="btn btn-ghost btn-sm">Log in</a>
+        <a routerLink="/register" class="btn btn-ink btn-sm">Sign up</a>
+      } @else {
+        <button [matMenuTriggerFor]="userMenu" class="user-btn" aria-label="User menu">
+          <span class="user-avatar">{{ initials() }}</span>
+          <span class="user-info">
+            <span class="user-name">{{ user()?.name }}</span>
+            <span class="user-role">{{ primaryRole() }}</span>
+          </span>
+          <mat-icon class="user-caret">expand_more</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" xPosition="before" class="depot-menu">
+          @if (user()?.email) {
+            <div class="menu-email mono">{{ user()?.email }}</div>
+          }
+          <div class="menu-rule"></div>
+          <button mat-menu-item (click)="logout()" class="menu-item">
+            <mat-icon>logout</mat-icon>
+            <span>Log out</span>
+          </button>
+        </mat-menu>
+      }
+    </div>
+  </div>
+  <div class="depot-nav__rule" aria-hidden="true"></div>
+</header>

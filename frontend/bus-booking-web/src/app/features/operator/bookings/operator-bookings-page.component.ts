@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { OperatorBookingsApiService, OperatorBookingListItemDto } from '../../../core/api/operator-bookings.api';
+import { toLocalDateString } from '../../../core/utils/date-utils';
 import { OperatorBusesApiService, BusDto } from '../../../core/api/operator-buses.api';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 
@@ -47,7 +48,7 @@ export class OperatorBookingsPageComponent implements OnInit {
   load(): void {
     const busId = this.busFilter.value ?? undefined;
     const date = this.dateFilter.value
-      ? this.dateFilter.value.toISOString().slice(0, 10)
+      ? toLocalDateString(this.dateFilter.value)
       : undefined;
     this.api.list(busId, date, this.page(), this.pageSize).subscribe(res => {
       this.bookings.set(res.items);

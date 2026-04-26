@@ -6,6 +6,7 @@
     </button>
   </header>
 
+  <div style="overflow-x: auto">
   <table mat-table [dataSource]="buses()" class="w-full mat-elevation-z2">
     <ng-container matColumnDef="registration">
       <th mat-header-cell *matHeaderCellDef>Registration</th>
@@ -53,4 +54,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  </div>
 </section>

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { forkJoin } from 'rxjs';
-import { MatCardModule } from '@angular/material/card';
 import { OperatorOfficesApiService } from '../../../core/api/operator-offices.api';
 import { OperatorBusesApiService } from '../../../core/api/operator-buses.api';
 
@@ -8,8 +7,9 @@ import { OperatorBusesApiService } from '../../../core/api/operator-buses.api';
   selector: 'app-operator-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCardModule],
-  templateUrl: './operator-dashboard.component.html'
+  imports: [],
+  templateUrl: './operator-dashboard.component.html',
+  styleUrl: './operator-dashboard.component.scss'
 })
 export class OperatorDashboardComponent implements OnInit {
   private readonly officesApi = inject(OperatorOfficesApiService);

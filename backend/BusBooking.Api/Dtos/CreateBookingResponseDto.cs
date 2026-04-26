@@ -6,5 +6,8 @@ public record CreateBookingResponseDto(
     string RazorpayOrderId,
     string KeyId,
     long Amount,
-    string Currency);
+    string Currency,
+    decimal TotalFare,
+    decimal PlatformFee,
+    decimal TotalAmount);
 

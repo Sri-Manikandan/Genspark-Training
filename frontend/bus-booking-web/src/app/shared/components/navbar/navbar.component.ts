@@ -37,6 +37,12 @@ export class NavbarComponent {
     return (parts[0]!.charAt(0) + parts[parts.length - 1]!.charAt(0)).toUpperCase();
   });
 
+  readonly primaryRole = computed(() => {
+    if (this.isAdmin()) return 'Admin';
+    if (this.isOperator()) return 'Operator';
+    return 'Customer';
+  });
+
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/']);

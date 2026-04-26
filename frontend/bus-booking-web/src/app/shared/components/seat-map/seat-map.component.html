@@ -1,62 +1,80 @@
-<div class="inline-block">
-  <div class="mb-3 text-xs text-slate-500 flex flex-wrap gap-3">
-    <span class="flex items-center gap-1"
-      ><span class="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></span>Available</span
-    >
-    <span class="flex items-center gap-1"
-      ><span class="w-4 h-4 rounded bg-primary"></span>Selected</span
-    >
-    <span class="flex items-center gap-1"
-      ><span class="w-4 h-4 rounded bg-amber-100 border border-amber-300"></span>Locked</span
-    >
-    <span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-slate-300"></span>Booked</span>
+<div class="seat-map">
+
+  <!-- Legend -->
+  <div class="seat-map__legend">
+    <span class="seat-map__key">
+      <span class="seat-map__swatch seat-map__swatch--available"></span>
+      <span class="mono">Available</span>
+    </span>
+    <span class="seat-map__key">
+      <span class="seat-map__swatch seat-map__swatch--selected"></span>
+      <span class="mono">Selected</span>
+    </span>
+    <span class="seat-map__key">
+      <span class="seat-map__swatch seat-map__swatch--locked"></span>
+      <span class="mono">Locked</span>
+    </span>
+    <span class="seat-map__key">
+      <span class="seat-map__swatch seat-map__swatch--booked"></span>
+      <span class="mono">Booked</span>
+    </span>
   </div>
 
-  <div class="flex flex-col gap-2" role="group" aria-label="Seat map">
-    @for (row of seatGrid(); track $index) {
-      <div class="flex gap-2">
-        @for (seat of row; track $index) {
-          @if (seat === null) {
-            <div class="w-10 h-10" aria-hidden="true"></div>
-          } @else {
-            <button
-              type="button"
-              class="w-10 h-10 rounded border text-xs font-medium transition"
-              [attr.aria-label]="'Seat ' + seat.seatNumber + ' ' + seat.status"
-              [attr.aria-pressed]="selectable() ? isSelected(seat.seatNumber) : null"
-              [disabled]="seat.status !== 'available' || !selectable()"
-              [class.bg-emerald-100]="seat.status === 'available' && !isSelected(seat.seatNumber)"
-              [class.border-emerald-300]="seat.status === 'available' && !isSelected(seat.seatNumber)"
-              [class.text-emerald-800]="seat.status === 'available' && !isSelected(seat.seatNumber)"
-              [class.bg-primary]="isSelected(seat.seatNumber)"
-              [class.text-white]="isSelected(seat.seatNumber)"
-              [class.bg-amber-100]="seat.status === 'locked'"
-              [class.border-amber-300]="seat.status === 'locked'"
-              [class.bg-slate-300]="seat.status === 'booked'"
-              [class.cursor-not-allowed]="seat.status !== 'available' || !selectable()"
-              (click)="toggle(seat)"
-            >
-              {{ seat.seatNumber }}
-            </button>
+  <!-- Bus floor plan -->
+  <div class="seat-map__bus">
+
+    <!-- Front: driver -->
+    <div class="seat-map__front" aria-hidden="true">
+      <div class="seat-map__windshield">
+        <span class="mono">Front</span>
+      </div>
+      <div class="seat-map__driver">
+        <!-- Steering wheel -->
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="12" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="14" cy="14" r="3.5" fill="currentColor" opacity="0.4"/>
+          <line x1="14" y1="10.5" x2="14" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="10.5" y1="16.5" x2="3" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="17.5" y1="16.5" x2="25" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Seat grid -->
+    <div class="seat-map__grid" role="group" aria-label="Seat map — select your seat">
+      @for (row of seatGrid(); track $index) {
+        <div class="seat-map__row">
+          @for (seat of row; track $index) {
+            @if (seat === null) {
+              <div class="seat-map__aisle" aria-hidden="true"></div>
+            } @else {
+              <button
+                type="button"
+                class="seat-map__seat"
+                [class.seat-map__seat--available]="seat.status === 'available' && !isSelected(seat.seatNumber)"
+                [class.seat-map__seat--selected]="isSelected(seat.seatNumber)"
+                [class.seat-map__seat--locked]="seat.status === 'locked'"
+                [class.seat-map__seat--booked]="seat.status === 'booked'"
+                [attr.aria-label]="'Seat ' + seat.seatNumber + ' · ' + seat.status"
+                [attr.aria-pressed]="selectable() ? isSelected(seat.seatNumber) : null"
+                [disabled]="seat.status !== 'available' || !selectable()"
+                (click)="toggle(seat)"
+              >{{ seat.seatNumber }}</button>
+            }
           }
-        }
-      </div>
-    }
-  </div>
-
-  @if (selectable() && selected().length > 0) {
-    <div class="mt-4 p-3 bg-slate-50 rounded text-sm">
-      <div>
-        Selected: <strong>{{ selected().join(', ') }}</strong>
-      </div>
-      @if (fare() !== null) {
-        <div>
-          Fare: <strong>{{ fare()! * selected().length | currency: 'INR' }}</strong> ({{
-            selected().length
-          }}
-          × {{ fare() | currency: 'INR' }})
         </div>
       }
     </div>
+  </div>
+
+  <!-- Selection summary -->
+  @if (selectable() && selected().length > 0) {
+    <div class="seat-map__summary">
+      <span class="mono seat-map__summary-seats">{{ selected().join(' · ') }}</span>
+      @if (fare() !== null) {
+        <span class="seat-map__summary-fare">₹{{ fare()! * selected().length }}</span>
+      }
+    </div>
   }
+
 </div>

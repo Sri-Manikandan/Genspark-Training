@@ -6,6 +6,7 @@
     </button>
   </div>
 
+  <div style="overflow-x: auto">
   <table mat-table [dataSource]="schedules()" class="mat-elevation-z1 w-full">
     <ng-container matColumnDef="busName">
       <th mat-header-cell *matHeaderCellDef> Bus </th>
@@ -63,6 +64,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  </div>
 
   @if (schedules().length === 0) {
     <div class="p-8 text-center text-slate-500 border rounded bg-slate-50">

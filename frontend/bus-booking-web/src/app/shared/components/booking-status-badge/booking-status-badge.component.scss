@@ -1,0 +1,17 @@
+:host { display: inline-flex; }
+
+.status-badge {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+
+  &--confirmed   { color: var(--moss);    background: rgba(62,91,59,0.10); }
+  &--pending     { color: var(--ochre);   background: rgba(212,162,76,0.10); }
+  &--cancelled   { color: var(--oxblood); background: rgba(139,46,42,0.08); }
+  &--completed   { color: var(--ink-60);  background: var(--paper-200); }
+  &--default     { color: var(--ink-60);  background: var(--paper-200); }
+}

@@ -1,17 +1,15 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { BookingDetailDto, BookingsApiService } from '../../../core/api/bookings.api';
 import { AuthTokenStore } from '../../../core/auth/auth-token.store';
 
 @Component({
   selector: 'app-booking-confirmation',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule],
-  templateUrl: './booking-confirmation.component.html'
+  imports: [CommonModule, RouterLink],
+  templateUrl: './booking-confirmation.component.html',
+  styleUrl: './booking-confirmation.component.scss'
 })
 export class BookingConfirmationComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

@@ -1,0 +1,219 @@
+:host { display: block; }
+
+.bdetail {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 28px 80px;
+}
+
+.bdetail__back { margin-bottom: 24px; }
+
+/* Loading */
+.bdetail__loading {
+  display: flex; align-items: center; gap: 14px;
+  padding: 120px 0; justify-content: center;
+  color: var(--ink-60); font-size: 12px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.bdetail__spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--ink-20); border-top-color: var(--ink);
+  border-radius: 999px; animation: bd-spin 800ms linear infinite;
+}
+@keyframes bd-spin { to { transform: rotate(360deg); } }
+
+/* Error */
+.bdetail__error { padding: 48px 40px; text-align: center; max-width: 420px; margin: 60px auto; }
+.bdetail__error-num {
+  font-family: 'Inter', sans-serif; font-size: 72px; line-height: 0.8;
+  color: var(--ochre); margin-bottom: 14px;
+}
+.bdetail__error-title {
+  font-family: 'Inter', sans-serif; font-size: 20px; margin: 0 0 18px; letter-spacing: -0.01em;
+}
+
+/* Header */
+.bdetail__title {
+  font-size: clamp(32px, 5vw, 72px);
+  margin: 10px 0 8px; line-height: 0.95;
+}
+.bdetail__header-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 6px;
+}
+.bdetail__date {
+  font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-60);
+}
+
+.bdetail__rule {
+  margin: 20px 0 32px; height: 1px;
+  background-image: linear-gradient(to right, var(--ink) 50%, transparent 50%);
+  background-size: 8px 1px; background-repeat: repeat-x;
+}
+
+/* Body grid */
+.bdetail__body {
+  display: grid; grid-template-columns: 320px 1fr;
+  gap: 32px; align-items: start;
+}
+
+/* Left column sections */
+.bdetail__left { display: flex; flex-direction: column; gap: 16px; }
+.bdetail__section { overflow: hidden; }
+.bdetail__section-pad { padding: 20px 24px 24px; }
+
+.bdetail__op-name {
+  font-family: 'Inter', sans-serif; font-weight: 500;
+  font-size: 22px; letter-spacing: -0.015em; margin: 8px 0 3px;
+}
+.bdetail__op-sub {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-60); margin-bottom: 14px;
+}
+
+.bdetail__spec {
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+}
+.bdetail__spec-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 9px 0; border-bottom: 1px dashed var(--ink-20);
+  &:last-child { border-bottom: none; }
+}
+.bdetail__spec-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-60);
+}
+.bdetail__spec-val { font-size: 14px; color: var(--ink); }
+
+/* Ledger */
+.bdetail__ledger { margin-top: 12px; }
+.bdetail__ledger-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 8px 0; border-bottom: 1px dashed var(--ink-20); font-size: 12px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-60);
+  &:last-child { border-bottom: none; }
+  &--total {
+    border-top: 1px solid var(--ink); border-bottom: none;
+    padding-top: 10px; margin-top: 4px; color: var(--ink);
+  }
+}
+.bdetail__ledger-total {
+  font-family: 'Inter', sans-serif; font-size: 22px;
+  font-style: italic; letter-spacing: -0.02em;
+}
+
+/* Cancellation notice */
+.bdetail__cancel-notice {
+  padding: 16px 20px;
+  border: 1px dashed var(--oxblood);
+  background: rgba(139,46,42,0.05);
+}
+.bdetail__cancel-date {
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-60); margin: 6px 0;
+}
+.bdetail__cancel-reason { font-size: 11px; color: var(--ink-60); letter-spacing: 0.1em; }
+.bdetail__refund-row {
+  display: flex; align-items: baseline; gap: 8px; margin-top: 10px;
+}
+.bdetail__refund-amt {
+  font-family: 'Inter', sans-serif; font-size: 20px;
+  font-style: italic; color: var(--moss);
+}
+.bdetail__refund-status {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-60);
+}
+
+/* Actions */
+.bdetail__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.bdetail__cancel-btn {
+  background: rgba(139,46,42,0.08) !important;
+  border-color: var(--oxblood) !important;
+  color: var(--oxblood) !important;
+  &:hover { background: rgba(139,46,42,0.14) !important; }
+}
+
+/* Right: passenger manifest */
+.bdetail__right {}
+.bdetail__manifest { display: flex; flex-direction: column; gap: 1px; margin-top: 14px; }
+.bdetail__pax {
+  display: grid; grid-template-columns: 52px 1fr 28px;
+  gap: 0 12px; padding: 14px 16px;
+  background: var(--paper-100); align-items: center;
+}
+.bdetail__pax-seat {
+  font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; text-align: center;
+  background: var(--ink); color: var(--paper-100);
+  padding: 4px 6px;
+}
+.bdetail__pax-name {
+  font-family: 'Inter', sans-serif; font-size: 18px;
+  letter-spacing: -0.01em;
+}
+.bdetail__pax-meta {
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-60);
+  margin-top: 3px;
+}
+.bdetail__pax-ix {
+  font-size: 10px; letter-spacing: 0.14em; color: var(--ink-40); text-align: right;
+}
+
+@media (max-width: 860px) {
+  .bdetail__body { grid-template-columns: 1fr; }
+  .bdetail__title { font-size: clamp(28px, 8vw, 52px); }
+}
+
+/* ============ PHONE (≤600px) ============ */
+@media (max-width: 600px) {
+  .bdetail {
+    padding: 24px 16px 60px;
+  }
+
+  .bdetail__body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .bdetail__title {
+    font-size: clamp(24px, 9vw, 44px);
+  }
+
+  .bdetail__section-pad {
+    padding: 14px 16px 18px;
+  }
+
+  .bdetail__op-name {
+    font-size: 18px;
+  }
+
+  .bdetail__ledger-total {
+    font-size: 18px;
+  }
+
+  /* Passenger manifest rows */
+  .bdetail__pax {
+    grid-template-columns: 44px 1fr;
+    gap: 0 10px;
+    padding: 12px 12px;
+  }
+
+  .bdetail__pax-ix {
+    display: none; /* hide ordinal index on phones to reduce clutter */
+  }
+
+  .bdetail__pax-name {
+    font-size: 15px;
+  }
+
+  .bdetail__actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bdetail__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

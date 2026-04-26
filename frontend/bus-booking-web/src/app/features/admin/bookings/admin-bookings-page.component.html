@@ -36,6 +36,7 @@
     <button mat-stroked-button (click)="clearFilters()">Clear</button>
   </div>
 
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
   <table mat-table [dataSource]="bookings()" class="mat-elevation-z1 w-full">
     <ng-container matColumnDef="bookingCode">
       <th mat-header-cell *matHeaderCellDef>Code</th>
@@ -92,6 +93,7 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
   </table>
+  </div>
 
   @if (bookings().length === 0) {
     <app-empty-state

@@ -2,14 +2,7 @@ import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatStepperModule } from '@angular/material/stepper';
 import { AuthStore } from '../../../core/auth/auth.store';
 import {
   BookingsApiService,
@@ -21,20 +14,9 @@ import { CountdownTimerComponent } from '../../../shared/components/countdown-ti
 @Component({
   selector: 'app-checkout-stepper',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    MatStepperModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatIconModule,
-    CountdownTimerComponent
-  ],
-  templateUrl: './checkout-stepper.component.html'
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, CountdownTimerComponent],
+  templateUrl: './checkout-stepper.component.html',
+  styleUrl: './checkout-stepper.component.scss'
 })
 export class CheckoutStepperComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
@@ -52,6 +34,9 @@ export class CheckoutStepperComponent implements OnInit, OnDestroy {
   readonly fare = signal<number>(0);
   readonly submitting = signal(false);
   readonly lockExpired = signal(false);
+  readonly currentStep = signal<1 | 2 | 3>(1);
+  readonly platformFee = signal<number | null>(null);
+  readonly grandTotal = signal<number | null>(null);
   private bookingConfirmed = false;
 
   readonly total = computed(() => this.fare() * this.seats().length);
@@ -103,6 +88,16 @@ export class CheckoutStepperComponent implements OnInit, OnDestroy {
     this.lockExpired.set(true);
   }
 
+  nextStep(): void {
+    const s = this.currentStep();
+    if (s < 3) this.currentStep.set((s + 1) as 1 | 2 | 3);
+  }
+
+  prevStep(): void {
+    const s = this.currentStep();
+    if (s > 1) this.currentStep.set((s - 1) as 1 | 2 | 3);
+  }
+
   payNow(): void {
     if (this.passengersForm.invalid || this.submitting() || this.lockExpired()) return;
     this.submitting.set(true);
@@ -135,6 +130,8 @@ export class CheckoutStepperComponent implements OnInit, OnDestroy {
   }
 
   private openRazorpay(created: CreateBookingResponseDto): void {
+    this.platformFee.set(created.platformFee);
+    this.grandTotal.set(created.totalAmount);
     const user = this.auth.user();
     const options: RazorpayOptions = {
       key: created.keyId,

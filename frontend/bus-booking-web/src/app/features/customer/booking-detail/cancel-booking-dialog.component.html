@@ -1,57 +1,70 @@
-<!-- frontend/bus-booking-web/src/app/features/customer/booking-detail/cancel-booking-dialog.component.html -->
-<h2 mat-dialog-title>Cancel booking {{ data.bookingCode }}</h2>
+<div class="cancel-dialog">
+  <div class="cancel-dialog__head" mat-dialog-title>
+    <div class="eyebrow eyebrow-oxblood"><span>Cancel</span><span>·</span><span>{{ data.bookingCode }}</span></div>
+    <h2 class="cancel-dialog__title">Cancel booking.</h2>
+  </div>
 
-<mat-dialog-content class="space-y-4">
-  @if (loadingPreview()) {
-    <div class="flex justify-center py-6">
-      <mat-progress-spinner diameter="32" mode="indeterminate"></mat-progress-spinner>
-    </div>
-  } @else if (previewError()) {
-    <div class="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded text-sm">
-      {{ previewError() }}
-    </div>
-  } @else if (preview(); as p) {
-    @if (!p.cancellable) {
-      <div class="bg-amber-50 border border-amber-200 text-amber-900 p-3 rounded text-sm">
-        <div class="font-semibold mb-1">Cannot cancel right now</div>
-        <div>{{ p.blockReason }}</div>
+  <mat-dialog-content class="cancel-dialog__body">
+    @if (loadingPreview()) {
+      <div class="cancel-dialog__loading">
+        <div class="cancel-dialog__spinner"></div>
+        <span class="mono">Calculating refund …</span>
       </div>
-    } @else {
-      <div class="border border-slate-200 rounded p-4 space-y-1 text-sm">
-        <div class="flex justify-between"><span>Total paid</span><span>{{ p.totalAmount | currency: 'INR' }}</span></div>
-        <div class="flex justify-between"><span>Refund percent</span><span>{{ p.refundPercent }}%</span></div>
-        <div class="flex justify-between font-semibold text-emerald-800">
-          <span>You'll receive</span><span>{{ p.refundAmount | currency: 'INR' }}</span>
-        </div>
-        <div class="text-xs text-slate-500 pt-1">
-          Tier: {{ p.hoursUntilDeparture | refundPolicyLabel }}
-        </div>
-        <div class="text-xs text-slate-500 pt-2">
-          Refunds typically reflect in your original payment method in 5–7 business days.
-        </div>
+    } @else if (previewError()) {
+      <div class="cancel-dialog__error">
+        <span class="cancel-dialog__error-dot"></span>
+        <span class="mono">{{ previewError() }}</span>
       </div>
+    } @else if (preview(); as p) {
+      @if (!p.cancellable) {
+        <div class="cancel-dialog__blocked">
+          <div class="cancel-dialog__blocked-title mono">Cannot cancel right now</div>
+          <div class="mono">{{ p.blockReason }}</div>
+        </div>
+      } @else {
+        <div class="cancel-dialog__refund">
+          <div class="cancel-dialog__refund-row">
+            <span class="mono cancel-dialog__refund-label">Total paid</span>
+            <span class="mono">₹{{ p.totalAmount | number }}</span>
+          </div>
+          <div class="cancel-dialog__refund-row">
+            <span class="mono cancel-dialog__refund-label">Refund percent</span>
+            <span class="mono">{{ p.refundPercent }}%</span>
+          </div>
+          <div class="cancel-dialog__refund-row cancel-dialog__refund-row--highlight">
+            <span class="mono cancel-dialog__refund-label">You'll receive</span>
+            <span class="cancel-dialog__refund-amt">₹{{ p.refundAmount | number }}</span>
+          </div>
+          <p class="mono cancel-dialog__refund-note">Refunds typically reflect in 5–7 business days.</p>
+        </div>
 
-      <form [formGroup]="form" class="pt-1">
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Reason (optional)</mat-label>
-          <textarea matInput rows="3" formControlName="reason" maxlength="500"></textarea>
-        </mat-form-field>
-      </form>
+        <form [formGroup]="form" class="cancel-dialog__form">
+          <div class="field">
+            <label class="field-label" for="cancel-reason">Reason <span style="color:var(--ink-40);font-style:italic">— optional</span></label>
+            <textarea id="cancel-reason" class="field-input cancel-dialog__textarea"
+                      formControlName="reason" rows="3" maxlength="500"
+                      placeholder="Briefly describe why you're cancelling…"></textarea>
+          </div>
+        </form>
+      }
+
+      @if (submitError()) {
+        <div class="cancel-dialog__error">
+          <span class="cancel-dialog__error-dot"></span>
+          <span class="mono">{{ submitError() }}</span>
+        </div>
+      }
     }
+  </mat-dialog-content>
 
-    @if (submitError()) {
-      <div class="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded text-sm">
-        {{ submitError() }}
-      </div>
-    }
-  }
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-  <button mat-button (click)="dismiss()" [disabled]="submitting()">Keep booking</button>
-  <button mat-flat-button color="warn"
-          (click)="confirm()"
-          [disabled]="submitting() || loadingPreview() || !preview()?.cancellable">
-    {{ submitting() ? 'Cancelling…' : 'Confirm cancel' }}
-  </button>
-</mat-dialog-actions>
+  <mat-dialog-actions class="cancel-dialog__actions">
+    <button class="btn btn-ghost btn-sm" (click)="dismiss()" type="button" [disabled]="submitting()">
+      Keep booking
+    </button>
+    <button class="btn btn-sm cancel-dialog__confirm-btn"
+            (click)="confirm()" type="button"
+            [disabled]="submitting() || loadingPreview() || !preview()?.cancellable">
+      {{ submitting() ? 'Cancelling…' : 'Confirm cancel' }}
+    </button>
+  </mat-dialog-actions>
+</div>

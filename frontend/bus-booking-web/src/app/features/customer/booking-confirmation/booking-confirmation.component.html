@@ -1,38 +1,104 @@
-<div class="max-w-2xl mx-auto p-6">
+<div class="confirm">
   @if (loading()) {
-    <div class="text-center text-slate-500">Loading…</div>
+    <div class="confirm__loading">
+      <div class="confirm__spinner"></div>
+      <span class="mono">Loading …</span>
+    </div>
   } @else if (booking(); as b) {
-    <mat-card class="border border-emerald-200 bg-emerald-50">
-      <div class="flex items-center gap-3 p-4 border-b border-emerald-200">
-        <mat-icon class="text-emerald-700">check_circle</mat-icon>
-        <div>
-          <div class="text-lg font-semibold text-emerald-900">Booking confirmed</div>
-          <div class="text-sm text-emerald-800">{{ b.bookingCode }}</div>
+
+    <!-- Stamp -->
+    <div class="confirm__stamp-wrap" aria-hidden="true">
+      <div class="stamp stamp-emerald confirm__stamp">Confirmed</div>
+    </div>
+
+    <!-- Booking code -->
+    <div class="eyebrow eyebrow-oxblood">
+      <span>Booking</span><span>·</span><span>{{ b.bookingCode }}</span>
+    </div>
+    <h1 class="display confirm__title">
+      {{ b.sourceCity }} <span class="display-italic">to</span> {{ b.destinationCity }}
+    </h1>
+
+    <div class="confirm__rule"></div>
+
+    <!-- Boarding pass card -->
+    <div class="confirm__pass ticket ticket-notch-l ticket-notch-r">
+      <!-- Top: route timeline -->
+      <div class="confirm__pass-header">
+        <div class="confirm__route-stop">
+          <div class="confirm__route-time">{{ b.departureTime.substring(0,5) }}</div>
+          <div class="confirm__route-dot"></div>
+          <div class="confirm__route-city mono">{{ b.sourceCity }}</div>
+        </div>
+
+        <div class="confirm__route-mid" aria-hidden="true">
+          <div class="confirm__route-dash"></div>
+          <svg viewBox="0 0 40 18" width="36" height="16">
+            <rect x="1" y="2" width="34" height="12" rx="2" stroke="currentColor" fill="var(--paper-100)" stroke-width="1.2"/>
+            <rect x="4" y="5" width="6" height="4" fill="currentColor"/><rect x="12" y="5" width="6" height="4" fill="currentColor"/>
+            <rect x="20" y="5" width="6" height="4" fill="currentColor"/>
+            <circle cx="10" cy="15" r="2" fill="currentColor"/><circle cx="28" cy="15" r="2" fill="currentColor"/>
+          </svg>
+          <div class="confirm__route-dash"></div>
+          <div class="confirm__route-date mono">{{ b.tripDate }}</div>
+        </div>
+
+        <div class="confirm__route-stop confirm__route-stop--right">
+          <div class="confirm__route-time">{{ b.arrivalTime.substring(0,5) }}</div>
+          <div class="confirm__route-dot confirm__route-dot--arr"></div>
+          <div class="confirm__route-city mono">{{ b.destinationCity }}</div>
         </div>
       </div>
-      <div class="p-6 space-y-2 text-sm">
-        <div><strong>{{ b.sourceCity }} → {{ b.destinationCity }}</strong></div>
-        <div>{{ b.tripDate }} · {{ b.departureTime.substring(0, 5) }} → {{ b.arrivalTime.substring(0, 5) }}</div>
-        <div>{{ b.busName }} · {{ b.operatorName }}</div>
-        <div>
-          Seats:
-          <strong>
-            @for (s of b.seats; track $index) {
-              {{ s.seatNumber }}@if ($index < b.seats.length - 1) {, }
-            }
-          </strong>
+
+      <div class="confirm__pass-divider"></div>
+
+      <!-- Passengers + meta -->
+      <div class="confirm__pass-body">
+        <div class="confirm__pax-list">
+          @for (s of b.seats; track s.seatNumber) {
+            <div class="confirm__pax">
+              <span class="chip chip-ox mono">{{ s.seatNumber }}</span>
+              <span class="confirm__pax-name">{{ s.passengerName }}</span>
+              <span class="mono confirm__pax-meta">{{ s.passengerAge }} · {{ s.passengerGender }}</span>
+            </div>
+          }
         </div>
-        <div>Total paid: <strong>{{ b.totalAmount | currency: 'INR' }}</strong></div>
+
+        <div class="confirm__pass-meta">
+          <div class="confirm__meta-row">
+            <span class="mono confirm__meta-label">Operator</span>
+            <span class="confirm__meta-val">{{ b.operatorName }}</span>
+          </div>
+          <div class="confirm__meta-row">
+            <span class="mono confirm__meta-label">Bus</span>
+            <span class="confirm__meta-val mono">{{ b.busName }}</span>
+          </div>
+          <div class="confirm__meta-row">
+            <span class="mono confirm__meta-label">Total paid</span>
+            <span class="display-italic confirm__meta-total">₹{{ b.totalAmount | number }}</span>
+          </div>
+        </div>
       </div>
-      <div class="p-4 flex flex-wrap gap-2 border-t border-emerald-200">
-        <button mat-flat-button color="primary" (click)="downloadTicket()">Download PDF ticket</button>
-        <a mat-stroked-button routerLink="/my-bookings">View all bookings</a>
-        <a mat-stroked-button routerLink="/">Back to home</a>
-      </div>
-    </mat-card>
-    <p class="text-slate-500 text-xs mt-4">A copy of this ticket has been emailed to you.</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="confirm__actions">
+      <button class="btn btn-ink btn-lg" (click)="downloadTicket()" type="button">
+        Download PDF ticket
+        <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true">
+          <path d="M10 3v11m-4-4 4 4 4-4M3 17h14" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <a routerLink="/my-bookings" class="btn btn-ghost btn-sm">View all bookings</a>
+      <a routerLink="/" class="btn btn-ghost btn-sm">Back to home</a>
+    </div>
+
+    <p class="mono confirm__footer">A copy of this ticket has been emailed to you.</p>
+
   } @else {
-    <div class="text-center text-slate-500">Booking not found.</div>
+    <div class="confirm__not-found">
+      <div class="mono">Booking not found.</div>
+      <a routerLink="/my-bookings" class="btn btn-ghost btn-sm">View all bookings</a>
+    </div>
   }
 </div>
-

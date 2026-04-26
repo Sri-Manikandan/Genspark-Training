@@ -9,6 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   AdminRevenueApiService, AdminRevenueResponseDto
 } from '../../../core/api/admin-revenue.api';
+import { toLocalDateString } from '../../../core/utils/date-utils';
 
 @Component({
   selector: 'app-admin-revenue-page',
@@ -36,8 +37,8 @@ export class AdminRevenuePageComponent implements OnInit {
   }
 
   load(): void {
-    const from = this.fromDate.value?.toISOString().slice(0, 10);
-    const to   = this.toDate.value?.toISOString().slice(0, 10);
+    const from = this.fromDate.value ? toLocalDateString(this.fromDate.value) : undefined;
+    const to   = this.toDate.value   ? toLocalDateString(this.toDate.value)   : undefined;
     this.api.get(from, to).subscribe(res => this.revenue.set(res));
   }
 }

@@ -1,18 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon';
 import { OperatorRequestsApiService } from '../../../core/api/operator-requests.api';
 
 @Component({
   selector: 'app-become-operator-page',
   standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatCardModule, MatProgressSpinnerModule, MatIconModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './become-operator-page.component.html',
   styleUrl: './become-operator-page.component.scss'
 })

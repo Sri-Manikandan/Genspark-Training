@@ -1,11 +1,189 @@
-.seat {
-  @apply border;
+:host { display: block; }
 
-  &.available {
-    @apply bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100 cursor-pointer;
+/* Legend */
+.seat-map__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  background: var(--paper-200);
+  border: 1px solid var(--rule);
+}
+.seat-map__key {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.seat-map__swatch {
+  width: 13px; height: 13px;
+  border: 1.5px solid transparent;
+  flex-shrink: 0;
+}
+.seat-map__swatch--available { background: rgba(62,91,59,0.14); border-color: var(--moss); }
+.seat-map__swatch--selected  { background: var(--oxblood); border-color: var(--oxblood); }
+.seat-map__swatch--locked    { background: rgba(212,162,76,0.22); border-color: var(--ochre); }
+.seat-map__swatch--booked    { background: var(--ink-20); border-color: var(--ink-40); }
+
+/* Bus body */
+.seat-map__bus {
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  background: var(--paper-100);
+  overflow: hidden;
+  display: inline-block;
+  min-width: 200px;
+}
+
+/* Bus front */
+.seat-map__front {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper-100);
+}
+.seat-map__windshield {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.seat-map__driver {
+  width: 36px; height: 36px;
+  border: 1.5px dashed rgba(255,255,255,0.3);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+}
+
+/* Seat grid */
+.seat-map__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 14px 18px;
+}
+.seat-map__row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+/* Aisle gap */
+.seat-map__aisle {
+  width: 24px; height: 36px;
+  flex-shrink: 0;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 4px 50%;
+    width: 1px;
+    background: var(--ink-10, rgba(19,18,18,0.06));
+    transform: translateX(-50%);
+  }
+}
+
+/* Seat button */
+.seat-map__seat {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--ink-20);
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+  flex-shrink: 0;
+  background: var(--paper-100);
+  color: var(--ink-40);
+  position: relative;
+
+  /* Headrest indicator */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3px; left: 5px; right: 5px;
+    height: 3px;
+    background: currentColor;
+    border-radius: 2px 2px 0 0;
+    opacity: 0.5;
   }
 
-  &.booked, &.locked {
-    @apply bg-slate-100 border-slate-300 text-slate-400 cursor-not-allowed;
+  &--available {
+    background: rgba(62,91,59,0.10);
+    border-color: var(--moss);
+    color: var(--moss);
+
+    &:hover:not(:disabled) {
+      background: rgba(62,91,59,0.22);
+      transform: translate(-1px, -1px);
+      box-shadow: 2px 2px 0 var(--moss);
+    }
   }
+
+  &--selected {
+    background: var(--oxblood);
+    border-color: var(--oxblood);
+    color: var(--paper-100);
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 var(--ink);
+
+    &::before { opacity: 0.8; }
+  }
+
+  &--locked {
+    background: rgba(212,162,76,0.18);
+    border-color: var(--ochre);
+    color: var(--ochre);
+    cursor: not-allowed;
+  }
+
+  &--booked {
+    background: var(--paper-200);
+    border-color: var(--ink-20);
+    color: var(--ink-40);
+    cursor: not-allowed;
+  }
+
+  &:disabled { cursor: not-allowed; }
+}
+
+/* Summary bar */
+.seat-map__summary {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: var(--paper-200);
+  border: 1px dashed var(--oxblood);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.seat-map__summary-seats {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-80);
+}
+.seat-map__summary-fare {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  font-style: italic;
+  flex-shrink: 0;
 }

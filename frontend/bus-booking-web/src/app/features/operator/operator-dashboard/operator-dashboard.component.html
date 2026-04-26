@@ -1,17 +1,29 @@
-<section class="space-y-4">
-  <h1 class="text-2xl font-semibold">Operator dashboard</h1>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <mat-card>
-      <mat-card-content>
-        <p class="text-sm text-slate-500">Offices</p>
-        <p class="text-3xl font-bold">{{ officeCount() ?? '…' }}</p>
-      </mat-card-content>
-    </mat-card>
-    <mat-card>
-      <mat-card-content>
-        <p class="text-sm text-slate-500">Buses</p>
-        <p class="text-3xl font-bold">{{ busCount() ?? '…' }}</p>
-      </mat-card-content>
-    </mat-card>
+<div class="op-dash">
+  <header class="op-dash__header">
+    <div class="eyebrow eyebrow-oxblood">
+      <span>Operations</span><span>·</span><span>Dashboard</span>
+    </div>
+    <h1 class="display op-dash__title">Your <span class="display-italic">fleet.</span></h1>
+  </header>
+
+  <div class="op-dash__rule"></div>
+
+  <div class="op-dash__grid">
+    <div class="op-dash__stat ticket ticket-notch-l ticket-notch-r">
+      <div class="op-dash__stat-inner">
+        <div class="op-dash__stat-ix mono">01</div>
+        <div class="op-dash__stat-label mono">Offices</div>
+        <div class="op-dash__stat-num">{{ officeCount() ?? '…' }}</div>
+        <div class="op-dash__stat-sub mono">registered locations</div>
+      </div>
+    </div>
+    <div class="op-dash__stat ticket ticket-notch-l ticket-notch-r">
+      <div class="op-dash__stat-inner">
+        <div class="op-dash__stat-ix mono">02</div>
+        <div class="op-dash__stat-label mono">Buses</div>
+        <div class="op-dash__stat-num">{{ busCount() ?? '…' }}</div>
+        <div class="op-dash__stat-sub mono">in your fleet</div>
+      </div>
+    </div>
   </div>
-</section>
+</div>

@@ -6,6 +6,7 @@
     </p>
   </header>
 
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
   <table mat-table [dataSource]="operators()" class="mat-elevation-z1 w-full">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Operator</th>
@@ -60,6 +61,7 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
   </table>
+  </div>
 
   @if (operators().length === 0) {
     <div class="p-8 text-center text-slate-500 border rounded bg-slate-50">

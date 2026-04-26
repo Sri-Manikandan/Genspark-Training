@@ -1,14 +1,9 @@
 // frontend/bus-booking-web/src/app/features/customer/booking-detail/cancel-booking-dialog.component.ts
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookingDetailDto, BookingsApiService, RefundPreviewDto } from '../../../core/api/bookings.api';
-import { RefundPolicyLabelPipe } from '../../../shared/pipes/refund-policy-label.pipe';
 
 export interface CancelDialogData {
   bookingId: string;
@@ -25,18 +20,9 @@ export interface CancelDialogResult {
   selector: 'app-cancel-booking-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    CurrencyPipe,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    RefundPolicyLabelPipe
-  ],
-  templateUrl: './cancel-booking-dialog.component.html'
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule],
+  templateUrl: './cancel-booking-dialog.component.html',
+  styleUrl: './cancel-booking-dialog.component.scss'
 })
 export class CancelBookingDialogComponent implements OnInit {
   private readonly api = inject(BookingsApiService);

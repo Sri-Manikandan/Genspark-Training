@@ -37,6 +37,9 @@ export interface CreateBookingResponseDto {
   keyId: string;
   amount: number;
   currency: string;
+  totalFare: number;
+  platformFee: number;
+  totalAmount: number;
 }
 
 export interface VerifyPaymentRequest {

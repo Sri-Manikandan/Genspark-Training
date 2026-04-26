@@ -1,9 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchApiService, TripDetailDto } from '../../../core/api/search.api';
 import { BookingsApiService } from '../../../core/api/bookings.api';
@@ -12,8 +9,9 @@ import { SeatMapComponent } from '../../../shared/components/seat-map/seat-map.c
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, SeatMapComponent],
-  templateUrl: './trip-detail.component.html'
+  imports: [CommonModule, SeatMapComponent],
+  templateUrl: './trip-detail.component.html',
+  styleUrl: './trip-detail.component.scss'
 })
 export class TripDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

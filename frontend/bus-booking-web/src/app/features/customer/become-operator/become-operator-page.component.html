@@ -1,42 +1,93 @@
-<div class="min-h-screen flex items-center justify-center bg-slate-50 p-6">
-  <mat-card class="w-full max-w-md p-6">
-    @if (submitted()) {
-      <div class="text-center space-y-4">
-        <mat-icon class="text-5xl text-emerald-500">check_circle</mat-icon>
-        <h2 class="text-xl font-semibold">Application submitted</h2>
-        <p class="text-slate-600">An admin will review your request. You'll be notified by email.</p>
-        <button mat-flat-button color="primary" routerLink="/">Back to home</button>
+<section class="become-op">
+  <header class="become-op__header">
+    <div class="eyebrow eyebrow-oxblood">
+      <span>Operators</span><span>·</span><span>Application</span>
+    </div>
+    <h1 class="display become-op__title">
+      Start <span class="display-italic">your route.</span>
+    </h1>
+  </header>
+
+  <div class="become-op__rule"></div>
+
+  @if (submitted()) {
+    <div class="become-op__success card-paper">
+      <div class="become-op__success-stamp stamp stamp-emerald" aria-hidden="true">Submitted</div>
+      <h2 class="become-op__success-title">Application received.</h2>
+      <p class="mono become-op__success-note">
+        An admin will review your request. You'll be notified by email once it's approved.
+      </p>
+      <a routerLink="/" class="btn btn-ink btn-sm">Back to home</a>
+    </div>
+  } @else {
+    <div class="become-op__body">
+      <!-- Marketing side -->
+      <aside class="become-op__marketing" aria-hidden="true">
+        <div class="become-op__poster">
+          <div class="become-op__poster-num">03</div>
+          <div>
+            <div class="mono become-op__poster-sub">Operator · Network</div>
+            <div class="become-op__poster-big">Your buses.<br>Our platform.</div>
+          </div>
+          <div class="stamp stamp-ochre become-op__poster-stamp">Apply</div>
+        </div>
+        <div class="become-op__spec">
+          <div class="become-op__spec-row">
+            <span class="become-op__spec-label">Review time</span>
+            <span class="become-op__spec-val mono">1–3 days</span>
+          </div>
+          <div class="become-op__spec-row">
+            <span class="become-op__spec-label">Onboarding fee</span>
+            <span class="become-op__spec-val display-italic">Free</span>
+          </div>
+          <div class="become-op__spec-row">
+            <span class="become-op__spec-label">Platform fee</span>
+            <span class="become-op__spec-val mono">Per booking</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Form side -->
+      <div class="become-op__form-wrap">
+        <div class="become-op__form card-paper">
+          <div class="become-op__form-head">
+            <div class="eyebrow">Step 01 · Company details</div>
+            <h2 class="become-op__form-title">Register your company.</h2>
+          </div>
+
+          @if (errorMessage()) {
+            <div class="auth__error">
+              <span class="auth__error-dot"></span>{{ errorMessage() }}
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" class="become-op__form-body">
+            <div class="field">
+              <label class="field-label" for="op-company">Company name</label>
+              <input id="op-company" class="field-input"
+                     formControlName="companyName"
+                     autocomplete="organization"
+                     placeholder="Your registered business name" />
+              @if (form.controls.companyName.hasError('required') && form.controls.companyName.touched) {
+                <span class="field-error">Company name is required.</span>
+              }
+              @if (form.controls.companyName.hasError('minlength') && form.controls.companyName.touched) {
+                <span class="field-error">At least 2 characters.</span>
+              }
+            </div>
+
+            <button class="btn btn-ink btn-lg become-op__submit" type="submit"
+                    [disabled]="form.invalid || submitting()">
+              @if (submitting()) { Submitting… } @else { Submit application · join Depot }
+              @if (!submitting()) {
+                <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true">
+                  <path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              }
+            </button>
+          </form>
+        </div>
       </div>
-    } @else {
-      <h1 class="text-2xl font-semibold mb-2">Become an operator</h1>
-      <p class="text-slate-600 mb-6">Register your company to start listing buses.</p>
-
-      @if (errorMessage()) {
-        <p class="text-rose-600 text-sm mb-4">{{ errorMessage() }}</p>
-      }
-
-      <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
-        <mat-form-field class="w-full">
-          <mat-label>Company name</mat-label>
-          <input matInput formControlName="companyName" autocomplete="organization" />
-          @if (form.controls.companyName.hasError('required')) {
-            <mat-error>Company name is required</mat-error>
-          }
-          @if (form.controls.companyName.hasError('minlength')) {
-            <mat-error>At least 2 characters</mat-error>
-          }
-          @if (form.controls.companyName.hasError('maxlength')) {
-            <mat-error>At most 160 characters</mat-error>
-          }
-        </mat-form-field>
-
-        <button mat-flat-button color="primary" type="submit" class="w-full" [disabled]="submitting()">
-          @if (submitting()) {
-            <mat-spinner diameter="18" class="inline-block mr-2"></mat-spinner>
-          }
-          Submit application
-        </button>
-      </form>
-    }
-  </mat-card>
-</div>
+    </div>
+  }
+</section>

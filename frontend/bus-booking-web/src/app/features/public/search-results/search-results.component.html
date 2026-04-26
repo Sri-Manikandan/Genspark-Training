@@ -1,61 +1,96 @@
-<div class="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
-  <div class="flex items-center justify-between border-b pb-4">
-    <h1 class="text-2xl font-bold">Search Results</h1>
-    <a mat-stroked-button routerLink="/">Modify Search</a>
-  </div>
+<section class="results">
+  <header class="results__head">
+    <div>
+      <div class="eyebrow eyebrow-oxblood">
+        <span>Departures</span><span>·</span><span>Live board</span>
+      </div>
+      <h1 class="display results__title">Tonight's <span class="display-italic">buses.</span></h1>
+      <p class="results__sub mono">{{ results().length || 0 }} service(s) matched · sorted by departure</p>
+    </div>
+    <a routerLink="/" class="btn btn-ghost btn-sm">
+      <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Modify Search
+    </a>
+  </header>
+
+  <div class="results__rule"></div>
 
   @if (loading()) {
-    <div class="flex justify-center p-12">
-      <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <div class="results__loading">
+      <div class="results__spinner"></div>
+      <span class="mono">Checking depot …</span>
     </div>
   } @else if (results().length === 0) {
-    <div class="text-center p-12 bg-slate-50 rounded-lg border text-slate-500">
-      <h3 class="text-lg font-medium text-slate-700 mb-2">No buses found</h3>
-      <p>Try modifying your search criteria or choosing a different date.</p>
+    <div class="results__empty">
+      <div class="results__empty-num">—</div>
+      <h3 class="results__empty-title">No buses found for this route tonight.</h3>
+      <p>Try a different date or adjacent cities. The printer is still warm.</p>
+      <a routerLink="/" class="btn btn-ink btn-sm">Try another search</a>
     </div>
   } @else {
-    <div class="space-y-4">
-      @for (trip of results(); track trip.tripId) {
-        <mat-card class="overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <mat-card-content class="p-0">
-            <div class="flex flex-col md:flex-row">
-              <!-- Left: Time & Route -->
-              <div class="flex-1 p-5 border-b md:border-b-0 md:border-r border-slate-100">
-                <div class="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 class="font-semibold text-lg text-slate-800">{{ trip.operatorName }}</h3>
-                    <p class="text-sm text-slate-500">{{ trip.busName }} ({{ trip.busType }})</p>
-                  </div>
-                  <div class="text-right">
-                    <div class="text-xl font-bold text-slate-800">{{ trip.farePerSeat | currency:'INR' }}</div>
-                    <div class="text-xs font-medium text-emerald-600">{{ trip.seatsLeft }} seats left</div>
-                  </div>
-                </div>
+    <div class="results__list">
+      @for (trip of results(); track trip.tripId; let i = $index) {
+        <article class="trip-ticket ticket ticket-notch-l ticket-notch-r">
+          <div class="trip-ticket__main">
+            <div class="trip-ticket__head">
+              <div class="trip-ticket__ix mono">{{ (i + 1).toString().padStart(2,'0') }} / {{ results().length.toString().padStart(2,'0') }}</div>
+              <div class="trip-ticket__op">
+                <h3 class="trip-ticket__op-name">{{ trip.operatorName }}</h3>
+                <div class="trip-ticket__op-sub mono">{{ trip.busName }} · {{ trip.busType }}</div>
+              </div>
+              <div class="chip chip-ox">Platform · {{ ((i % 12) + 1).toString().padStart(2, '0') }}</div>
+            </div>
 
-                <div class="flex items-center gap-4 text-slate-700">
-                  <div class="font-medium text-lg">{{ trip.departureTime.substring(0,5) }}</div>
-                  <div class="flex-1 h-px bg-slate-200 relative">
-                    <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-slate-300 bg-white"></div>
-                  </div>
-                  <div class="font-medium text-lg">{{ trip.arrivalTime.substring(0,5) }}</div>
-                </div>
+            <div class="trip-ticket__times">
+              <div class="trip-ticket__time">
+                <span class="trip-ticket__time-label">Dep.</span>
+                <span class="trip-ticket__time-num">{{ trip.departureTime.substring(0,5) }}</span>
+              </div>
 
-                <div class="flex justify-between mt-2 text-xs text-slate-500">
-                  <div class="truncate max-w-[150px]" [title]="trip.pickupAddress">{{ trip.pickupAddress || 'Boarding Point' }}</div>
-                  <div class="truncate max-w-[150px] text-right" [title]="trip.dropAddress">{{ trip.dropAddress || 'Drop Point' }}</div>
+              <div class="trip-ticket__route">
+                <div class="trip-ticket__route-line">
+                  <span class="trip-ticket__route-dot"></span>
+                  <span class="trip-ticket__route-dash"></span>
+                  <span class="trip-ticket__route-bus" aria-hidden="true">
+                    <svg viewBox="0 0 40 18" width="36" height="16"><rect x="1" y="2" width="34" height="12" rx="2" stroke="currentColor" fill="var(--paper-100)" stroke-width="1.2"/><rect x="4" y="5" width="6" height="4" fill="currentColor"/><rect x="12" y="5" width="6" height="4" fill="currentColor"/><rect x="20" y="5" width="6" height="4" fill="currentColor"/><circle cx="10" cy="15" r="2" fill="currentColor"/><circle cx="28" cy="15" r="2" fill="currentColor"/></svg>
+                  </span>
+                  <span class="trip-ticket__route-dash"></span>
+                  <span class="trip-ticket__route-dot"></span>
+                </div>
+                <div class="trip-ticket__route-meta mono">
+                  <span>{{ trip.pickupAddress || 'Boarding point' }}</span>
+                  <span class="dot"></span>
+                  <span>{{ trip.dropAddress || 'Drop point' }}</span>
                 </div>
               </div>
 
-              <!-- Right: Action -->
-              <div class="w-full md:w-48 bg-slate-50 p-5 flex flex-col justify-center items-center gap-3">
-                <a mat-flat-button color="primary" class="w-full" [routerLink]="['/trips', trip.tripId]">
-                  View Seats
-                </a>
+              <div class="trip-ticket__time trip-ticket__time--arr">
+                <span class="trip-ticket__time-label">Arr.</span>
+                <span class="trip-ticket__time-num">{{ trip.arrivalTime.substring(0,5) }}</span>
               </div>
             </div>
-          </mat-card-content>
-        </mat-card>
+          </div>
+
+          <div class="trip-ticket__perf" aria-hidden="true">
+            <span class="trip-ticket__perf-line"></span>
+          </div>
+
+          <aside class="trip-ticket__stub">
+            <div class="trip-ticket__stub-top">
+              <div class="eyebrow">Fare</div>
+              <div class="trip-ticket__fare">
+                <span class="trip-ticket__fare-cur">₹</span>
+                <span class="trip-ticket__fare-num">{{ trip.farePerSeat }}</span>
+              </div>
+              <div class="mono trip-ticket__seats">{{ trip.seatsLeft }} seats left</div>
+            </div>
+            <a class="btn btn-ink btn-sm trip-ticket__cta" [routerLink]="['/trips', trip.tripId]">
+              Pick seat
+              <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </aside>
+        </article>
       }
     </div>
   }
-</div>
+</section>
