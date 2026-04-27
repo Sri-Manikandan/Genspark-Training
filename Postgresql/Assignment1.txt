@@ -1,0 +1,130 @@
+Schema Design
+
+Movie
+- title (NOT NULL)
+- movie_id (PK) (SERIAL)
+- movie_format (CHECK (movie_format IN ('VHS', 'VCD', 'DVD’))) (NOT NULL)
+- category_id (FK)
+
+Category
+- category_id (PK) (SERIAL)
+- category_name
+
+Store
+- store_id (PK) (SERIAL)
+- store_name
+
+Member
+- member_id (PK) (SERIAL)
+- phone_number (UNIQUE)(NOT NULL)
+- fav_category_id (FK)
+- member_type (CHECK (member_type IN ('Gold', 'Bronze’)))(NOT NULL)
+- store_id (FK)
+
+Dependent
+- dependent_id (PK) (SERIAL)
+- dependent_name
+- member_id (FK)
+
+Rentals
+- rental_id (PK) (SERIAL)
+- movie_id (FK) (NOT NULL)
+- member_id (FK)
+- dependent_id (FK)
+- rental_date(NOT NULL)
+- return_date
+- CHECK ((member_id IS NOT NULL AND dependent_id IS NULL) OR (member_id IS NULL AND dependent_id IS NOT NULL))
+
+
+Queries
+
+1. CREATE TABLE movie 
+(movie_id INT SERIAL PRIMARY KEY, title VARCHAR(100) NOT NULL, 
+movie_format CHAR(3) NOT NULL CHECK(movie_format IN ('VHS','VCD','DVD)),
+category_id INT, FOREIGN KEY(category_id) REFERENCES category(category_id));
+
+2. CREATE TABLE category(category_id INT SERIAL PRIMARY KEY, category_name VARCHAR(20) NOT NULL);
+
+3. CREATE TABLE store(store_id INT SERIAL PRIMARY KEY, store_name VARCHAR(50) NOT NULL);
+
+4. CREATE TABLE member(member_id INT SERIAL PRIMARY KEY, phone_number VARCHAR(10) UNIQUE NOT NULL, favorite_category_id INT, member_type VARCHAR(10) NOT NULL CHECK(member_type IN ('Gold', 'Bronze')),store_id INT, FOREIGN KEY(favorite_category_id) REFERENCES category(category_id), FOREIGN KEY(store_id) REFERENCES store(store_id));
+
+5. CREATE TABLE dependent(dependent_id INT SERIAL PRIMARY KEY, name VARCHAR(50), member_id INT NOT NULL, FOREIGN KEY(member_id) REFERENCES member(member_id));
+
+6. CREATE TABLE rentals(rental_id INT SERIAL PRIMARY KEY, movie_id INT NOT NULL, member_id INT, dependent_id INT, rental_date DATE NOT NULL, return_date DATE NOT NULL, rental_fee INT NOT NULL, FOREIGN KEY(movie_id) REFERENCES movie(movie_id),
+FOREIGN KEY(member_id) REFERENCES member(member_id),
+FOREIGN KEY(dependent_id) REFERENCES dependent(dependent_id),
+CHECK(dependent_id IS NOT NULL OR member_id IS NOT NULL));
+
+Triggers
+
+1. CREATE OR REPLACE FUNCTION enforce_rental_rules()
+RETURNS TRIGGER AS $$
+DECLARE
+    total_rentals INTl
+    m_id INT;
+    m_type TEXT;
+    dep_rentals INT;
+    movie_active INT;
+BEGIN
+
+    IF(NEW.member_id IS NULL AND NEW.dependent_id IS NULL) 
+        OR (NEW.dependent_id IS NOT NULL AND NEW.member_id IS NOT NULL) THEN
+        RAISE EXCEPTION 'Invalid Rental';
+    END IF;
+
+    IF (NEW.member_id IS NOT NULL) THEN
+        m_id := NEW.member_id;
+    ELSE
+        SELECT member_id INTO m_id FROM dependent WHERE dependent_id = NEW.dependent_id;
+    END IF;
+
+    SELECT member_type INTO m_type FROM member WHERE member_id = m_id;
+    
+    SELECT COUNT(*) INTO movie_active FROM rental WHERE movie_id = NEW.movie_id AND return_date IS NULL;
+
+    IF movie_active > 0 THEN
+        RAISE EXCEPTION 'Movie is already rented';
+    END IF;
+
+    IF NEW.dependent_id IS NOT NULL THEN
+        SELECT COUNT(*) INTO dep_rentals
+        FROM Rental
+        WHERE dependent_id = NEW.dependent_id
+          AND return_date IS NULL;
+
+        IF dep_rentals >= 1 THEN
+            RAISE EXCEPTION 'Dependent can only rent 1 movie at a time';
+        END IF;
+    END IF;
+
+    IF m_type = 'Bronze' THEN
+
+        SELECT COUNT(*) INTO total_rentals
+        FROM Rental
+        WHERE member_id = m_id
+          AND return_date IS NULL;
+
+        SELECT total_rentals + COUNT(*) INTO total_rentals
+        FROM Rental r
+        JOIN Dependent d ON r.dependent_id = d.dependent_id
+        WHERE d.member_id = m_id
+          AND r.return_date IS NULL;
+
+        IF total_rentals >= 1 THEN
+            RAISE EXCEPTION 'Bronze member family can only have 1 active rental total';
+        END IF;
+
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+2. CREATE TRIGGER trg_enforce_rental_rules
+BEFORE INSERT OR UPDATE ON Rental
+
+FOR EACH ROW
+EXECUTE FUNCTION enforce_rental_rules();
+        
