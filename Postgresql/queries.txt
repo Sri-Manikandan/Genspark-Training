@@ -1,0 +1,68 @@
+CREATE TABLE areas
+(areaname VARCHAR(50) CONSTRAINT pk_area PRIMARY KEY,
+zipcode CHAR(6) NOT NULL CHECK(zipcode ~ '^[0-9]{6}$'))
+
+
+CREATE TABLE Skills (
+Skill VARCHAR(50) CONSTRAINT pk_skill PRIMARY KEY,
+SkillDescription VARCHAR(100) NOT NULL DEFAULT 'No description provided'
+);
+
+
+CREATE TABLE Employees (
+EmployeeId SERIAL PRIMARY KEY,
+Name VARCHAR(100) NOT NULL,
+Age INTEGER NOT NULL,
+Area VARCHAR(50) NOT NULL,
+ 
+CHECK (Age >= 18 AND Age <= 60),
+ 
+FOREIGN KEY (Area) REFERENCES Areas(Area)
+ON UPDATE CASCADE
+ON DELETE RESTRICT
+);
+
+
+CREATE TABLE EmployeeSkills (
+
+    EmployeeID INT,
+
+    Skill VARCHAR(30),
+
+    SkillLevel INT NOT NULL,
+ 
+    PRIMARY KEY (EmployeeID, Skill),
+ 
+    CONSTRAINT fk_emp_skill_employee
+
+        FOREIGN KEY (EmployeeID)
+
+        REFERENCES Employees(EmployeeID)
+
+        ON DELETE CASCADE,
+ 
+    CONSTRAINT fk_emp_skill_skill
+
+        FOREIGN KEY (Skill)
+
+        REFERENCES Skills(Skill)
+
+        ON DELETE CASCADE,
+ 
+    CONSTRAINT chk_skill_level
+
+        CHECK (SkillLevel BETWEEN 1 AND 10)
+
+);
+ 
+CREATE TABLE EmployeeSkills (
+
+    EmployeeId INT CONSTRAINT fk_emp_skill FOREIGN KEY REFERENCES Employees(EmployeeId) ON DELETE CASCADE,
+
+    skill VARCHAR(50) CONSTRAINT fk_skill_emp FOREIGN KEY REFERENCES Skills(skill),
+
+    skillLevel INT NOT NULL CHECK (skillLevel BETWEEN 1 AND 10),
+
+    CONSTRAINT pk_emp_skill PRIMARY KEY (EmployeeId, skill)
+
+);
