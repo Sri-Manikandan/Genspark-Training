@@ -1,0 +1,116 @@
+-- Basic
+
+-- 1. List all customers from USA.
+select * from Customers where country='USA';
+
+-- 2. List all products where UnitPrice is greater than 20.
+select * from products where unitprice >20;
+
+-- 3. List all orders placed after 1997-01-01.
+select * from orders where orderdate>'1997-01-01';
+
+-- 4. Display customers ordered by Country and then CompanyName.
+select * from customers order by country,companyname;
+
+-- 5. List products ordered by highest UnitPrice first.
+select * from products order by unitprice desc;
+
+-- Group By
+
+-- 6. Count how many customers are there in each country.
+select count(*),country from customers group by country;
+
+-- 7. Find the number of products in each category.
+select count(*), categoryid from products group by categoryid;
+
+-- 8. Find the total number of orders handled by each employee.
+select count(*), employeeid from orders group by employeeid;
+
+-- 9. Find the average freight amount for each customer.
+select avg(freight),customerid from orders group by customerid;
+
+-- 10. Find the maximum unit price in each category.
+select categoryid,max(unitprice) from products group by categoryid;
+
+-- Having
+
+-- 11. Show countries having more than 5 customers.
+select country from Customers group by country having count(*)>5;
+
+-- 12. Show employees who handled more than 50 orders.
+select employeeid from orders group by employeeid having count(*)>50;
+
+-- 13. Show customers whose average freight is greater than 50.
+select customerid from orders group by customerid having avg(freight)>50;
+
+-- 14. Show categories where the average product price is greater than 30.
+select categoryid from Products group by categoryid having avg(unitprice)>30;
+
+-- 15. Show ship countries having more than 20 orders.
+select shipcountry from orders group by shipcountry having count(*)>20;
+
+-- Joins
+
+-- 16. List each order with customer company name.
+select o.*,c.companyname from orders o join customers c on o.customerid=c.customerid;
+
+-- 17. List each order with employee first name and last name.
+select o.*,e.firstname,e.lastname from orders o join employees e on o.employeeid=e.employeeid;
+
+-- 18. List products with their category name.
+select p.*,c.categoryname from products p join categories c on p.categoryid=c.categoryid;
+
+-- 19. List products with supplier company name.
+select p.*, s.companyname from products p join suppliers s on p.supplierid=s.supplierid;
+
+-- 20. List orders with shipper company name.
+select o.*, s.companyname from orders o join shippers s on o.shipvia=s.shipperid;
+
+-- Medium
+
+-- 21. Find total orders per customer and display customer company name.
+select count(o.*) as total_orders, c.companyname from orders o join customers c on o.customerid=c.customerid group by c.companyname;
+
+-- 22. Find total products supplied by each supplier.
+select count(p.*) as total_products, s.companyname from products p join suppliers s on p.supplierid=s.supplierid group by s.companyname;
+
+-- 23. Find average product price per category with category name.
+select avg(p.unitprice) as avg_product_price, c.categoryname from products p join categories c on p.categoryid=c.categoryid group by c.categoryname;
+
+-- 24. Find total freight per customer and order by highest total freight.
+select sum(o.freight) as total_freight, c.customerid from orders o join customers c on o.customerid=c.customerid group by c.customerid order by total_freight desc;
+
+-- 25. Find employees who handled more than 25 orders.
+select e.employeeid,count(o.*) as total_orders from employees e join orders o on e.employeeid=o.employeeid group by e.employeeid having count(o.*)>25;
+
+-- Advanced
+
+-- 26. Find total sales amount per order.
+select sum(od.unitprice*od.quantity) as total_sales, o.orderid from order_details od join orders o on od.orderid=o.orderid group by o.orderid;
+
+-- 27. Find total sales amount per customer.
+select sum(od.unitprice*od.quantity) as total_sales, c.customerid from order_details od join orders o on od.orderid=o.orderid join customers c on o.customerid=c.customerid group by c.customerid;
+
+-- 28. Find top 10 products by total quantity sold.
+select p.productid,sum(od.quantity) as total_quantity_sold from products p join order_details od on p.productid=od.productid group by p.productid order by total_quantity_sold desc limit 10;
+
+-- 29. Find categories whose total sales are greater than 50000.
+select c.categoryid, sum(od.unitprice*od.quantity) as total_sales from order_details od join products p on od.productid=p.productid join categories c on p.categoryid=c.categoryid group by c.categoryid having sum(od.unitprice*od.quantity)>50000;
+
+-- 30. Find employees whose total sales are greater than 100000.
+select e.employeeid, sum(od.unitprice*od.quantity) as total_sales from order_details od join orders o on od.orderid=o.orderid join employees e on o.employeeid=e.employeeid group by e.employeeid having sum(od.unitprice*od.quantity)>100000;
+
+-- 31. Find total sales per country based on customer country.
+select c.country, sum(od.unitprice*od.quantity) as total_sales from order_details od join orders o on od.orderid=o.orderid join customers c on o.customerid=c.customerid group by c.country;
+
+-- 32. Find suppliers whose products generated sales above 30000.
+select s.supplierid, sum(od.unitprice*od.quantity) as total_sales from order_details od join products p on od.productid=p.productid join suppliers s on p.supplierid=s.supplierid group by s.supplierid having sum(od.unitprice*od.quantity)>30000;
+
+-- 33. Find customers who placed more than 10 orders and sort by order count descending.
+select c.customerid, count(o.*) as total_orders from customers c join orders o on c.customerid=o.customerid group by c.customerid having count(o.*)>10 order by total_orders desc;
+
+-- 34. Find monthly order count for each year and month.
+select extract(year from orderdate) as year, extract(month from orderdate) as month, count(*) as order_count from orders group by extract(year from orderdate),extract(month from orderdate) order by year,month;
+
+-- 35. Find monthly sales amount ordered by year and month.
+SELECT EXTRACT(YEAR FROM o.orderdate) AS year, EXTRACT(MONTH FROM o.orderdate) AS month, SUM(od.unitprice * od.quantity) AS monthly_sales FROM orders o JOIN order_details od ON o.orderid = od.orderid GROUP BY EXTRACT(YEAR FROM o.orderdate), EXTRACT(MONTH FROM o.orderdate) ORDER BY year, month;
