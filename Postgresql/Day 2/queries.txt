@@ -1,0 +1,32 @@
+CREATE TABLE products (
+id SERIAL PRIMARY KEY,
+name TEXT,
+details JSONB
+);
+ 
+-- sample data
+INSERT INTO products (name, details) VALUES
+('Laptop', '{"brand": "Apple", "specs": {"ram": "16GB", "storage": "512GB"}}'),
+('Phone', '{"brand": "Samsung", "specs": {"ram": "8GB", "storage": "128GB"}}');
+
+select details->'brand' from products;
+
+select * from products where details->>'brand' = 'Apple';
+
+select * from products where details->'specs'->>'ram' = '128GB';
+
+select * from products where details->'specs'->>'ram' = '16GB';
+
+select * from products where details->'specs'->>'ram' = '8GB';
+
+Select * from employees;
+
+Select * from employees join areas on employees.area = areas.area where areas.area='rspuram';
+
+SELECT * FROM Employees;
+ 
+SELECT * FROM Employees WHERE Area = 'ABC';
+ 
+SELECT * FROM Employees WHERE EmployeeId > 101;
+ 
+SELECT * FROM Employees WHERE EmployeeId BETWEEN 101 AND 105;
