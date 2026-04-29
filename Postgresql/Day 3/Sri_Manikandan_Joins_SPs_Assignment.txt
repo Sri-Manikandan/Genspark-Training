@@ -1,0 +1,343 @@
+Stored Procedures and Joins Assignment
+
+Basics
+
+Q1. List all customers and the total number of orders they have placed. Show only customers with more than 5 orders. Sort by total orders descending.
+1. select c.customerid, c.companyname, count(o.orderid) as total_orders from customers c join orders o on c.customerid = o.customerid group by c.customerid, c.companyname order by total_orders desc;
+2. select c.customerid, c.companyname, count(o.orderid) as total_orders from customers c join orders o on c.customerid = o.customerid group by c.customerid, c.companyname having count(o.orderid) > 5 order by total_orders desc;
+
+Q2. Retrieve the total sales amount per customer by joining customers, orders, and order_details. Show only customers whose total sales exceed 10,000. Sort by total sales descending.
+3. select c.customerid, c.companyname, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_sales from customers c join orders o on c.customerid = o.customerid join order_details od on o.orderid = od.orderid group by c.customerid, c.companyname order by total_sales desc;
+4. select c.customerid, c.companyname, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_sales from customers c join orders o on c.customerid = o.customerid join order_details od on o.orderid = od.orderid group by c.customerid, c.companyname having sum(od.unitprice * od.quantity * (1 - od.discount)) > 10000 order by total_sales desc;
+
+Q3. Get the number of products per category. Show only categories having more than 10 products. Sort by product count descending.
+5. select c.categoryid, c.categoryname, count(p.productid) as product_count from categories c join products p on c.categoryid = p.categoryid group by c.categoryid, c.categoryname order by product_count desc;
+6. select c.categoryid, c.categoryname, count(p.productid) as product_count from categories c join products p on c.categoryid = p.categoryid group by c.categoryid, c.categoryname having count(p.productid) > 10 order by product_count desc;
+
+Q4. Display the total quantity sold per product. Include only products where total quantity sold is greater than 100. Sort by quantity descending.
+7. select p.productid, p.productname, sum(od.quantity) as total_quantity_sold from products p join order_details od on p.productid = od.productid group by p.productid, p.productname order by total_quantity_sold desc;
+8. select p.productid, p.productname, sum(od.quantity) as total_quantity_sold from products p join order_details od on p.productid = od.productid group by p.productid, p.productname having sum(od.quantity) > 100 order by total_quantity_sold desc;
+
+Q5. Find the total number of orders handled by each employee. Show only employees who handled more than 20 orders. Sort by order count descending.
+9. select e.employeeid, count(o.orderid) as order_count from employees e join orders o on e.employeeid = o.employeeid group by e.employeeid order by order_count desc;
+10. select e.employeeid, count(o.orderid) as order_count from employees e join orders o on e.employeeid = o.employeeid group by e.employeeid having count(o.orderid) > 20 order by order_count desc;
+
+
+Intermediate
+
+Q6. Retrieve the total sales per category by joining categories, products, and order_details. Show only categories with total sales above 50,000. Sort by total sales descending.
+1. select c.categoryid, c.categoryname, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_sales from categories c join products p on c.categoryid = p.categoryid join order_details od on p.productid = od.productid group by c.categoryid, c.categoryname order by total_sales desc;
+2. select c.categoryid, c.categoryname, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_sales from categories c join products p on c.categoryid = p.categoryid join order_details od on p.productid = od.productid group by c.categoryid, c.categoryname having sum(od.unitprice * od.quantity * (1 - od.discount)) > 50000 order by total_sales desc;
+
+Q7. List suppliers and the number of products they supply. Show only suppliers who supply more than 5 products. Sort by product count descending.
+3. select s.supplierid, s.companyname, count(p.productid) as product_count from suppliers s join products p on s.supplierid = p.supplierid group by s.supplierid, s.companyname order by product_count desc;
+4. select s.supplierid, s.companyname, count(p.productid) as product_count from suppliers s join products p on s.supplierid = p.supplierid group by s.supplierid, s.companyname having count(p.productid) > 5 order by product_count desc;
+
+Q8. Get the average unit price per category. Show only categories where the average price is above 30. Sort by average price descending.
+5. select c.categoryid, c.categoryname, round(avg(p.unitprice)::numeric, 2) as avg_unit_price from categories c join products p on c.categoryid = p.categoryid group by c.categoryid, c.categoryname order by avg_unit_price desc;
+6. select c.categoryid, c.categoryname, round(avg(p.unitprice)::numeric, 2) as avg_unit_price from categories c join products p on c.categoryid = p.categoryid group by c.categoryid, c.categoryname having avg(p.unitprice) > 30 order by avg_unit_price desc;
+
+Q9. Display the total revenue generated per employee (orders + order_details). Show only employees generating more than 20,000 in revenue. Sort by revenue descending.
+7. select e.employeeid, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_revenue from employees e join orders o on e.employeeid = o.employeeid join order_details od on o.orderid = od.orderid group by e.employeeid order by total_revenue desc;
+8. select e.employeeid, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_revenue from employees e join orders o on e.employeeid = o.employeeid join order_details od on o.orderid = od.orderid group by e.employeeid having sum(od.unitprice * od.quantity * (1 - od.discount)) > 20000 order by total_revenue desc;
+
+Q10. Retrieve the number of orders shipped to each country. Show only countries with more than 10 orders. Sort by order count descending.
+9. select shipcountry, count(orderid) as order_count from orders group by shipcountry order by order_count desc;
+10. select shipcountry, count(orderid) as order_count from orders group by shipcountry having count(orderid) > 10 order by order_count desc;
+
+
+Advanced
+
+Q11. Find customers and the average order value (orders + order_details). Show only customers with average order value greater than 500. Sort by average descending.
+1. select c.customerid, c.companyname, round((sum(od.unitprice * od.quantity * (1 - od.discount)) / count(distinct o.orderid))::numeric, 2) as avg_order_value from customers c join orders o on c.customerid = o.customerid join order_details od on o.orderid = od.orderid group by c.customerid, c.companyname order by avg_order_value desc;
+2. select c.customerid, c.companyname, round((sum(od.unitprice * od.quantity * (1 - od.discount)) / count(distinct o.orderid))::numeric, 2) as avg_order_value from customers c join orders o on c.customerid = o.customerid join order_details od on o.orderid = od.orderid group by c.customerid, c.companyname having (sum(od.unitprice * od.quantity * (1 - od.discount)) / count(distinct o.orderid)) > 500 order by avg_order_value desc;
+
+Q12. Get the top-selling products per category (by total quantity sold). Show only products with total quantity sold above 200. Sort within category by quantity descending.
+3. select c.categoryid, c.categoryname, p.productid, p.productname, sum(od.quantity) as total_quantity_sold from categories c join products p on c.categoryid = p.categoryid join order_details od on p.productid = od.productid group by c.categoryid, c.categoryname, p.productid, p.productname order by c.categoryid, total_quantity_sold desc;
+4. select c.categoryid, c.categoryname, p.productid, p.productname, sum(od.quantity) as total_quantity_sold from categories c join products p on c.categoryid = p.categoryid join order_details od on p.productid = od.productid group by c.categoryid, c.categoryname, p.productid, p.productname having sum(od.quantity) > 200 order by c.categoryid, total_quantity_sold desc;
+
+Q13. Retrieve the total discount given per product (order_details). Show only products where total discount exceeds 1,000. Sort by discount descending.
+5. select p.productid, p.productname, round(sum(od.unitprice * od.quantity * od.discount)::numeric, 2) as total_discount from products p join order_details od on p.productid = od.productid group by p.productid, p.productname order by total_discount desc;
+6. select p.productid, p.productname, round(sum(od.unitprice * od.quantity * od.discount)::numeric, 2) as total_discount from products p join order_details od on p.productid = od.productid group by p.productid, p.productname having sum(od.unitprice * od.quantity * od.discount) > 1000 order by total_discount desc;
+
+Q14. List employees and the number of unique customers they handled. Show only employees who handled more than 15 unique customers. Sort by count descending.
+7. select e.employeeid, count(distinct o.customerid) as unique_customers from employees e join orders o on e.employeeid = o.employeeid group by e.employeeid order by unique_customers desc;
+8. select e.employeeid, count(distinct o.customerid) as unique_customers from employees e join orders o on e.employeeid = o.employeeid group by e.employeeid having count(distinct o.customerid) > 15 order by unique_customers desc;
+
+Q15. Find the monthly total sales (year + month) using orders and order_details. Show only months where total sales exceed 30,000. Sort by year and month ascending.
+9. select extract(year from o.orderdate) as year, extract(month from o.orderdate) as month, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_sales from orders o join order_details od on o.orderid = od.orderid group by extract(year from o.orderdate), extract(month from o.orderdate) order by year, month;
+10. select extract(year from o.orderdate) as year, extract(month from o.orderdate) as month, round(sum(od.unitprice * od.quantity * (1 - od.discount))::numeric, 2) as total_sales from orders o join order_details od on o.orderid = od.orderid group by extract(year from o.orderdate), extract(month from o.orderdate) having sum(od.unitprice * od.quantity * (1 - od.discount)) > 30000 order by year, month;
+
+
+Transactions and SPs
+
+Q1. Create a stored procedure to insert a new customer. Use a transaction so that if any required value is missing, the insert is rolled back.
+1.
+create or replace procedure insert_customer(p_customerid CHAR(5),p_companyname VARCHAR(40),p_contactname VARCHAR(30),p_contacttitle VARCHAR(30),p_address VARCHAR(60),p_city VARCHAR(15),p_region VARCHAR(15),p_postalcode VARCHAR(10),p_country VARCHAR(15),p_phone VARCHAR(24),p_fax VARCHAR(24))
+language plpgsql
+as $$
+begin
+	-- START TRANSACTION;
+	IF p_customerid is null  or trim(p_customerid)=''or
+		p_companyname is null or trim(p_companyname)=''then
+		-- ROLLBACK;
+		RAISE EXCEPTION 'CustomerID or Company name is required';
+	END IF;
+	INSERT INTO customers (customerid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax) VALUES (p_customerid, p_companyname, p_contactname, p_contacttitle, p_address, p_city, p_region, p_postalcode, p_country, p_phone, p_fax);
+	-- COMMIT;
+end;
+$$;
+
+CALL insert_customer('C1004', 'Synergeek Technologies', 'Manish', 'CEO', '123 Main Road', 'Coimbatore', NULL, '641002', 'India', '9876543210', NULL);
+
+Q2. Create a stored procedure to place a new order for an existing customer with one product. Insert into orders and order_details in a single transaction.
+2.
+CREATE OR REPLACE PROCEDURE place_order(
+p_customerid TEXT,
+p_employeeid INT,
+p_productid INT,
+p_quantity INT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_orderid INT;
+    v_unitprice NUMERIC(19,4);
+BEGIN
+	-- START TRANSACTION;
+    IF p_customerid IS NULL OR TRIM(p_customerid) = '' THEN
+		-- ROLLBACK;
+        RAISE EXCEPTION 'CustomerID is required';
+    END IF;
+
+    IF p_productid IS NULL OR p_quantity <= 0 THEN
+		-- ROLLBACK;
+        RAISE EXCEPTION 'Valid product and quantity required';
+    END IF;
+
+    SELECT unitprice INTO v_unitprice
+    FROM products
+    WHERE productid = p_productid;
+
+    IF v_unitprice IS NULL THEN
+		-- ROLLBACK;
+        RAISE EXCEPTION 'Product not found';
+    END IF;
+
+    INSERT INTO orders (customerid,employeeid,orderdate,freight)
+    VALUES (p_customerid,p_employeeid,CURRENT_TIMESTAMP,0)
+    RETURNING orderid INTO v_orderid;
+
+    INSERT INTO order_details (orderid,productid,unitprice,quantity,discount)
+    VALUES (v_orderid,p_productid,v_unitprice,p_quantity,0);
+	-- COMMIT;
+END;
+$$;
+
+CALL place_order('ALFKI', 1, 1, 5);
+
+Q3. Create a stored procedure to update product stock after an order is placed. If stock is not enough, rollback the transaction.
+3.
+CREATE OR REPLACE PROCEDURE update_product_stock(p_productid INT, p_quantity INT)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_stock INT;
+BEGIN
+    -- START TRANSACTION;
+    SELECT unitsinstock INTO v_stock FROM products WHERE productid = p_productid;
+    IF v_stock IS NULL THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Product not found';
+    END IF;
+    IF v_stock < p_quantity THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Insufficient stock. Available: %, Requested: %', v_stock, p_quantity;
+    END IF;
+    UPDATE products SET unitsinstock = unitsinstock - p_quantity WHERE productid = p_productid;
+    -- COMMIT;
+END;
+$$;
+
+CALL update_product_stock(1, 10);
+
+Q4. Create a stored procedure to cancel an order. Delete records from order_details first, then from orders, using a transaction.
+4.
+CREATE OR REPLACE PROCEDURE cancel_order(p_orderid INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- START TRANSACTION;
+    IF NOT EXISTS (SELECT 1 FROM orders WHERE orderid = p_orderid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Order not found';
+    END IF;
+    DELETE FROM order_details WHERE orderid = p_orderid;
+    DELETE FROM orders WHERE orderid = p_orderid;
+    -- COMMIT;
+END;
+$$;
+
+CALL cancel_order(10248);
+
+Q5. Create a stored procedure to transfer products from one supplier to another. If the old supplier or new supplier does not exist, rollback.
+5.
+CREATE OR REPLACE PROCEDURE transfer_supplier(p_old_supplierid INT, p_new_supplierid INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- START TRANSACTION;
+    IF NOT EXISTS (SELECT 1 FROM suppliers WHERE supplierid = p_old_supplierid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Old supplier not found';
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM suppliers WHERE supplierid = p_new_supplierid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'New supplier not found';
+    END IF;
+    UPDATE products SET supplierid = p_new_supplierid WHERE supplierid = p_old_supplierid;
+    -- COMMIT;
+END;
+$$;
+
+CALL transfer_supplier(1, 2);
+
+Q6. Create a stored procedure to update the price of all products in a category by a percentage. Rollback if the percentage is less than or equal to zero.
+6.
+CREATE OR REPLACE PROCEDURE update_category_price(p_categoryid INT, p_percentage NUMERIC)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- START TRANSACTION;
+    IF p_percentage <= 0 THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Percentage must be greater than zero';
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM categories WHERE categoryid = p_categoryid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Category not found';
+    END IF;
+    UPDATE products SET unitprice = unitprice * (1 + p_percentage / 100) WHERE categoryid = p_categoryid;
+    -- COMMIT;
+END;
+$$;
+
+CALL update_category_price(1, 10);
+
+Q7. Create a stored procedure to add a new product under an existing category and supplier. Rollback if the category or supplier does not exist.
+7.
+CREATE OR REPLACE PROCEDURE add_product(p_productname VARCHAR(40), p_supplierid INT, p_categoryid INT, p_unitprice NUMERIC, p_unitsinstock INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- START TRANSACTION;
+    IF NOT EXISTS (SELECT 1 FROM categories WHERE categoryid = p_categoryid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Category not found';
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM suppliers WHERE supplierid = p_supplierid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Supplier not found';
+    END IF;
+    INSERT INTO products (productname, supplierid, categoryid, unitprice, unitsinstock)
+    VALUES (p_productname, p_supplierid, p_categoryid, p_unitprice, p_unitsinstock);
+    -- COMMIT;
+END;
+$$;
+
+CALL add_product('New Product', 1, 1, 25.00, 100);
+
+Q8. Create a stored procedure to delete a customer only if the customer has no orders. Use a transaction and rollback if orders exist.
+8.
+CREATE OR REPLACE PROCEDURE delete_customer(p_customerid CHAR(5))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- START TRANSACTION;
+    IF NOT EXISTS (SELECT 1 FROM customers WHERE customerid = p_customerid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Customer not found';
+    END IF;
+    IF EXISTS (SELECT 1 FROM orders WHERE customerid = p_customerid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Cannot delete customer with existing orders';
+    END IF;
+    DELETE FROM customers WHERE customerid = p_customerid;
+    -- COMMIT;
+END;
+$$;
+
+CALL delete_customer('C1004');
+
+Q9. Create a stored procedure to apply a discount to all order details for a specific order. Rollback if the order does not exist.
+9.
+CREATE OR REPLACE PROCEDURE apply_order_discount(p_orderid INT, p_discount NUMERIC)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- START TRANSACTION;
+    IF NOT EXISTS (SELECT 1 FROM orders WHERE orderid = p_orderid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Order not found';
+    END IF;
+    UPDATE order_details SET discount = p_discount WHERE orderid = p_orderid;
+    -- COMMIT;
+END;
+$$;
+
+CALL apply_order_discount(10248, 0.1);
+
+Q10. Create a stored procedure to place an order with multiple products. Insert the order and all order items in one transaction. If any product is invalid or stock is insufficient, rollback the complete order.
+10.
+CREATE OR REPLACE PROCEDURE place_order_multi(p_customerid TEXT, p_employeeid INT, p_productids INT[], p_quantities INT[])
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_orderid INT;
+    v_unitprice NUMERIC(19,4);
+    v_stock INT;
+    i INT;
+BEGIN
+    -- START TRANSACTION;
+    IF p_customerid IS NULL OR TRIM(p_customerid) = '' THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'CustomerID is required';
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM customers WHERE customerid = p_customerid) THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'Customer not found';
+    END IF;
+    IF array_length(p_productids, 1) IS NULL THEN
+        -- ROLLBACK;
+        RAISE EXCEPTION 'At least one product is required';
+    END IF;
+    FOR i IN 1..array_length(p_productids, 1) LOOP
+        SELECT unitprice, unitsinstock INTO v_unitprice, v_stock FROM products WHERE productid = p_productids[i];
+        IF v_unitprice IS NULL THEN
+            -- ROLLBACK;
+            RAISE EXCEPTION 'Product % not found', p_productids[i];
+        END IF;
+        IF p_quantities[i] <= 0 THEN
+            -- ROLLBACK;
+            RAISE EXCEPTION 'Quantity for product % must be greater than zero', p_productids[i];
+        END IF;
+        IF v_stock < p_quantities[i] THEN
+            -- ROLLBACK;
+            RAISE EXCEPTION 'Insufficient stock for product %. Available: %, Requested: %', p_productids[i], v_stock, p_quantities[i];
+        END IF;
+    END LOOP;
+    INSERT INTO orders (customerid, employeeid, orderdate, freight)
+    VALUES (p_customerid, p_employeeid, CURRENT_TIMESTAMP, 0)
+    RETURNING orderid INTO v_orderid;
+    FOR i IN 1..array_length(p_productids, 1) LOOP
+        SELECT unitprice INTO v_unitprice FROM products WHERE productid = p_productids[i];
+        INSERT INTO order_details (orderid, productid, unitprice, quantity, discount)
+        VALUES (v_orderid, p_productids[i], v_unitprice, p_quantities[i], 0);
+        UPDATE products SET unitsinstock = unitsinstock - p_quantities[i] WHERE productid = p_productids[i];
+    END LOOP;
+    -- COMMIT;
+END;
+$$;
+
+CALL place_order_multi('ALFKI', 1, ARRAY[1, 2, 3], ARRAY[5, 3, 2]);
+
