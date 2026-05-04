@@ -17,16 +17,16 @@ namespace Sns{
                 switch(userChoice){
                     case 1:
                         Console.WriteLine("Enter Name : ");
-                        string name = Console.ReadLine();
+                        string name = Console.ReadLine() ?? string.Empty;
                         Console.WriteLine("Enter Email : ");
-                        string email = Console.ReadLine();
+                        string email = Console.ReadLine() ?? string.Empty;
                         Console.WriteLine("Enter Phone Number : ");
-                        string phoneNumber = Console.ReadLine();
+                        string phoneNumber = Console.ReadLine() ?? string.Empty;
                         notificationService.createUser(name, email, phoneNumber);
                         break;
                     case 2:
                         Console.WriteLine("Enter Message : ");
-                        string message = Console.ReadLine();
+                        string message = Console.ReadLine() ?? string.Empty;
                         notificationService.sendMessage(message);
                         break;
                     case 3:
