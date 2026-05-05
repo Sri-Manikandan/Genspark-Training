@@ -12,4 +12,7 @@ public class User
     public DateTime? OperatorDisabledAt { get; set; }
 
     public ICollection<UserRole> Roles { get; set; } = new List<UserRole>();
+
+    public override string ToString() =>
+        $"User [{Id}] {Name} <{Email}> Active={IsActive}";
 }

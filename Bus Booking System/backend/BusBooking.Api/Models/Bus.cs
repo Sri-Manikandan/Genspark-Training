@@ -17,4 +17,7 @@ public class Bus
 
     public User? Operator { get; set; }
     public ICollection<SeatDefinition> Seats { get; set; } = new List<SeatDefinition>();
+
+    public override string ToString() =>
+        $"[{BusType}] {BusName} ({RegistrationNumber}) — {Capacity} seats — Approval: {ApprovalStatus} | Operational: {OperationalStatus}";
 }

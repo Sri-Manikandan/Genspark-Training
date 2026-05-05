@@ -17,7 +17,18 @@ public class SearchController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<SearchResultDto>>> Search(
         [FromQuery] Guid src,
         [FromQuery] Guid dst,
-        [FromQuery] DateOnly date,
+        [FromQuery] DateOnly? date,
+        [FromQuery] string? busType,
         CancellationToken ct)
-        => Ok(await _trips.SearchAsync(src, dst, date, ct));
+    {
+        // Compiler resolves each call to the correct SearchAsync overload at build time —
+        // this is static (compile-time) polymorphism / method overloading.
+        if (date is null)
+            return Ok(await _trips.SearchAsync(src, dst, ct));
+
+        if (busType is not null)
+            return Ok(await _trips.SearchAsync(src, dst, date.Value, busType, ct));
+
+        return Ok(await _trips.SearchAsync(src, dst, date.Value, ct));
+    }
 }

@@ -23,5 +23,8 @@ public class Booking
     public User User { get; set; } = null!;
     public ICollection<BookingSeat> Seats { get; set; } = new List<BookingSeat>();
     public Payment? Payment { get; set; }
+
+    public override string ToString() =>
+        $"Booking {BookingCode} | Status: {Status} | Seats: {SeatCount} | Amount: INR {TotalAmount:0.00}";
 }
 

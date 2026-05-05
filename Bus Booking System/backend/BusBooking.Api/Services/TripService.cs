@@ -19,6 +19,21 @@ public class TripService : ITripService
         return (daysOfWeek & ScheduleService.GetDayBit(date.DayOfWeek)) != 0;
     }
 
+    // Overload 1 — defaults to today; delegates to the date overload (early binding)
+    public Task<IReadOnlyList<SearchResultDto>> SearchAsync(
+        Guid srcCityId, Guid dstCityId, CancellationToken ct)
+        => SearchAsync(srcCityId, dstCityId, DateOnly.FromDateTime(DateTime.UtcNow), ct);
+
+    // Overload 3 — date + bus type filter; delegates to the date overload then filters
+    public async Task<IReadOnlyList<SearchResultDto>> SearchAsync(
+        Guid srcCityId, Guid dstCityId, DateOnly date, string busType, CancellationToken ct)
+    {
+        var all = await SearchAsync(srcCityId, dstCityId, date, ct);
+        return all.Where(r => string.Equals(r.BusType, busType, StringComparison.OrdinalIgnoreCase))
+                  .ToList();
+    }
+
+    // Overload 2 — core implementation: specific date, all bus types
     public async Task<IReadOnlyList<SearchResultDto>> SearchAsync(
         Guid srcCityId, Guid dstCityId, DateOnly date, CancellationToken ct)
     {
