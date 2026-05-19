@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PracticeEfCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6928a0d15b49129694e13c3cc44dc8c13276cf43")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dbf793469913e050d3d04d7acb109825c326cbc3")]
 [assembly: System.Reflection.AssemblyProductAttribute("PracticeEfCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PracticeEfCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
