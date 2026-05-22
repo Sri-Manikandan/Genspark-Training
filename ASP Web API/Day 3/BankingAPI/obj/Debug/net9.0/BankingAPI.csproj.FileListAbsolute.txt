@@ -106,3 +106,11 @@
 /Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/obj/Debug/net9.0/BankingAPI.pdb
 /Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/obj/Debug/net9.0/BankingAPI.genruntimeconfig.cache
 /Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/obj/Debug/net9.0/ref/BankingAPI.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 3/BankingAPI/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll

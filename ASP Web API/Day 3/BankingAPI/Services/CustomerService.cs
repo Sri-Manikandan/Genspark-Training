@@ -8,6 +8,7 @@ using BankingAPI.Models;
 using BankingAPI.Misc;
 using BankingAPI.Models.DTOs;
 using System.Security.Cryptography;
+using System.Security.Authentication;
 
 
 
@@ -19,18 +20,46 @@ namespace BankingAPI.Services
         private readonly IRepository<string, User> _userRepository;
         private readonly IRepository<int, Customer> _customerRepository;
 
+        private readonly ITokenService _tokenService;
+
         public CustomerService(IRepository<string,Account> accountRepository,
                                 IRepository<string, User> userRepository,
-                                IRepository<int, Customer> customerRepository)
+                                IRepository<int, Customer> customerRepository,
+                                ITokenService tokenService)
         {
             _accountRespository = accountRepository;
             _userRepository = userRepository;
             _customerRepository = customerRepository;
+            _tokenService = tokenService;
         }
 
         public LoginResponse Login(LoginRequest request)
         {
-            throw new NotImplementedException();
+            var dbUser = _userRepository.Get(request.Username);
+            if (dbUser == null)
+                throw new InvalidCredentialException("Invalid username or password");
+            HMACSHA256 hMACSHA256 = new HMACSHA256(dbUser.HashKey);
+            var userHashPassword = hMACSHA256.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+            for(int i=0; i< userHashPassword.Length; i++)
+            {
+                if (userHashPassword[i] != dbUser.Password[i])
+                    throw new InvalidCredentialException("Invalid username or password");
+            }
+            var loginResponse = new LoginResponse();
+            loginResponse.Username = request.Username;
+            var customer = _customerRepository.GetAll()?.FirstOrDefault(c => c.Username == request.Username);
+            if (customer == null)
+                throw new InvalidCredentialException("Invalid username or password");
+            string givenName = customer.Name;
+            TokenRequest tokenRequest = new TokenRequest
+            {
+                Username = request.Username,
+                Role = dbUser.Role,
+                GivenName = givenName
+            };
+            loginResponse.Token = _tokenService.CreateNewToken(tokenRequest);
+            return loginResponse;
+
         }
 
         public CreateAccountResponse OpensAccount(CreateAccountRequest account)

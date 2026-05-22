@@ -5,6 +5,9 @@ using BankingAPI.Repositories;
 using BankingAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.AccessControl;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,24 @@ builder.Services.AddDbContext<BankingContext>(options =>
 });
 #endregion
 
+#region Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(opts =>
+{
+    opts.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+        ValidateLifetime = true,
+        ValidateAudience = false,
+    };
+});
+#endregion
+
 #region Repositories
 builder.Services.AddScoped<IRepository<string, Account>, Repository<string,Account>>();
 builder.Services.AddScoped<IRepository<int, Customer>, Repository<int, Customer>>();
@@ -32,6 +53,7 @@ builder.Services.AddScoped<IRepository<string, User>, Repository<string, User>>(
 #region Services
 builder.Services.AddScoped<ICustomerInteract, CustomerService>();
 builder.Services.AddScoped<IAuthenticationService, CustomerService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 #endregion
 var app = builder.Build();
 
@@ -44,6 +66,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

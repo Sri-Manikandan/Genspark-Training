@@ -34,5 +34,19 @@ namespace BankingAPI.Controllers
                 return BadRequest(ex.Message); 
             }
         }
+
+        [HttpPost("Login")]
+        public ActionResult<LoginResponse> LoginUser(LoginRequest request)
+        {
+            try
+            {
+                var result = _authenticationService.Login(request);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
