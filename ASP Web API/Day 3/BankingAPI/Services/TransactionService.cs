@@ -146,5 +146,37 @@ namespace BankingAPI.Services{
                 .Where(t => t.from_account_number == accountNumber || t.to_account_number == accountNumber)
                 .ToList();
         }
+
+        public PagedResponse<Transaction> GetFilteredTransactions(TransactionFilterRequest request){
+            IQueryable<Transaction> query = _context.Transactions;
+            if(!string.IsNullOrEmpty(request.AccountNumber)){
+                query = query.Where(t => t.from_account_number == request.AccountNumber || t.to_account_number == request.AccountNumber);
+            }
+            if(request.StartDate.HasValue){
+                query = query.Where(t => t.transaction_date >= request.StartDate.Value);
+            }
+            if(request.EndDate.HasValue){
+                query = query.Where(t => t.transaction_date <= request.EndDate.Value);
+            }
+            if(!string.IsNullOrEmpty(request.TransactionStatus)){
+                query = query.Where(t => t.transaction_status == request.TransactionStatus);
+            }
+            if(request.MinAmount.HasValue){
+                query = query.Where(t => t.amount >= request.MinAmount.Value);
+            }
+            if(request.MaxAmount.HasValue){
+                query = query.Where(t => t.amount <= request.MaxAmount.Value);
+            }
+
+            int totalCount = query.Count();
+
+            var data = query.OrderByDescending(t=> t.transaction_date).Skip((request.Page - 1)* request.PageSize).Take(request.PageSize).ToList();
+            return new PagedResponse<Transaction>{
+                Data = data,
+                Page = request.Page,
+                PageSize = request.PageSize,
+                TotalCount = totalCount
+            };
+        }
     }
 }

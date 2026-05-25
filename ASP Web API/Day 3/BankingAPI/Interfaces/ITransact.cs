@@ -8,5 +8,6 @@ namespace BankingAPI.Interfaces{
         public DepositResponse DepositFunds(DepositRequest request);
         public WithdrawResponse WithdrawFunds(WithdrawRequest request);
         public List<Transaction> GetTransactionHistory(string accountNumber);
+        public PagedResponse<Transaction> GetFilteredTransactions(TransactionFilterRequest filter);
     }
 }

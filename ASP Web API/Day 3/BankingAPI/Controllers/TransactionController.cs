@@ -54,5 +54,16 @@ namespace BankingAPI.Controllers{
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("GetFilteredTransactions")]
+        public ActionResult<PagedResponse<Transaction>> GetFilteredTransactions([FromQuery]TransactionFilterRequest request){
+            try{
+                var result = _transactionService.GetFilteredTransactions(request);
+                return Ok(result);
+            }
+            catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
