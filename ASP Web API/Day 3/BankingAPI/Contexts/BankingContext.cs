@@ -16,7 +16,9 @@ namespace BankingAPI.Contexts
             
         }
 
-        public DbSet<Account>  Accounts { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
 
@@ -36,11 +38,25 @@ namespace BankingAPI.Contexts
                 c.HasData(new Customer() { Id = 101, Name = "Ramu", Phone = "9876543210", DateOfBirth= new DateTime(2000,12,12), Email = "ramu@gmail.com", Status = "Active" });
             });
 
-
+            modelBuilder.Entity<Transaction>(t =>
+            {
+                t.HasKey(t => t.Transaction_reference_number).HasName("PK_Transaction_reference_number");
+                t.HasOne(t => t.FromAccount)
+                .WithMany()
+                .HasForeignKey(t => t.from_account_number)
+                .HasConstraintName("FK_Transaction_FromAccount")
+                .OnDelete(DeleteBehavior.Restrict);
+                t.HasOne(t => t.ToAccount)
+                .WithMany()
+                .HasForeignKey(t => t.to_account_number)
+                .HasConstraintName("FK_Transaction_ToAccount")
+                .OnDelete(DeleteBehavior.Restrict);
+            });
 
             modelBuilder.Entity<Account>(a =>
             {
             a.HasKey(a => a.AccountNumber).HasName("PK_AccountNumber");
+            a.Ignore(a => a.Transactions);
 
             a.HasOne(a => a.Customer)
             .WithMany(c => c.Accounts)

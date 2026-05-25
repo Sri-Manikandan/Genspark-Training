@@ -3,6 +3,7 @@ using System;
 using BankingAPI.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BankingAPI.Migrations
 {
     [DbContext(typeof(BankingContext))]
-    partial class BankingContextModelSnapshot : ModelSnapshot
+    [Migration("20260525092344_FixTransactionTable")]
+    partial class FixTransactionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,8 +121,8 @@ namespace BankingAPI.Migrations
                     b.Property<string>("Transaction_reference_number")
                         .HasColumnType("text");
 
-                    b.Property<float>("amount")
-                        .HasColumnType("real");
+                    b.Property<decimal>("amount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("from_account_number")
                         .HasColumnType("text");
@@ -141,7 +144,7 @@ namespace BankingAPI.Migrations
 
                     b.HasIndex("to_account_number");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("BankingAPI.Models.User", b =>

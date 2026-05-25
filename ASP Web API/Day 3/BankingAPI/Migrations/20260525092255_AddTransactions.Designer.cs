@@ -3,6 +3,7 @@ using System;
 using BankingAPI.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BankingAPI.Migrations
 {
     [DbContext(typeof(BankingContext))]
-    partial class BankingContextModelSnapshot : ModelSnapshot
+    [Migration("20260525092255_AddTransactions")]
+    partial class AddTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,8 +121,11 @@ namespace BankingAPI.Migrations
                     b.Property<string>("Transaction_reference_number")
                         .HasColumnType("text");
 
-                    b.Property<float>("amount")
-                        .HasColumnType("real");
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("amount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("from_account_number")
                         .HasColumnType("text");
@@ -137,11 +143,13 @@ namespace BankingAPI.Migrations
                     b.HasKey("Transaction_reference_number")
                         .HasName("PK_Transaction_reference_number");
 
+                    b.HasIndex("AccountNumber");
+
                     b.HasIndex("from_account_number");
 
                     b.HasIndex("to_account_number");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("BankingAPI.Models.User", b =>
@@ -206,6 +214,10 @@ namespace BankingAPI.Migrations
 
             modelBuilder.Entity("BankingAPI.Models.Transaction", b =>
                 {
+                    b.HasOne("BankingAPI.Models.Account", null)
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountNumber");
+
                     b.HasOne("BankingAPI.Models.Account", "FromAccount")
                         .WithMany()
                         .HasForeignKey("from_account_number")
@@ -221,6 +233,11 @@ namespace BankingAPI.Migrations
                     b.Navigation("FromAccount");
 
                     b.Navigation("ToAccount");
+                });
+
+            modelBuilder.Entity("BankingAPI.Models.Account", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("BankingAPI.Models.Customer", b =>
