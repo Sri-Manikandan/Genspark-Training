@@ -9,8 +9,8 @@ namespace BankingAPI.Models.DTOs{
         public float? MinAmount { get; set; }
         public float? MaxAmount { get; set; }
 
-        public int Page { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
+        public int? Page { get; set; } = 1;
+        public int? PageSize { get; set; } = 10;
 
     }
 }
