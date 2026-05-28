@@ -1,0 +1,362 @@
+{
+  "Version": 1,
+  "Hash": "2EEz2ClS4hZeD0+c7NfCNG9YHNohXxzTih4UjD5Nllc=",
+  "Source": "SignalR",
+  "BasePath": "_content/SignalR",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "SignalR/wwwroot",
+      "Source": "SignalR",
+      "ContentRoot": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/",
+      "BasePath": "_content/SignalR",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/obj/Debug/net9.0/compressed/cnu05p8evj-62r5jd2buw.gz",
+      "SourceId": "SignalR",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/SignalR",
+      "RelativePath": "index#[.{fingerprint=62r5jd2buw}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "9y4sxj263i",
+      "Integrity": "EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/index.html"
+    },
+    {
+      "Identity": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/index.html",
+      "SourceId": "SignalR",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/",
+      "BasePath": "_content/SignalR",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "62r5jd2buw",
+      "Integrity": "Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/index.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "index.62r5jd2buw.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/obj/Debug/net9.0/compressed/cnu05p8evj-62r5jd2buw.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001655629139"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "603"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 28 May 2026 09:18:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "62r5jd2buw"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0="
+        }
+      ]
+    },
+    {
+      "Route": "index.62r5jd2buw.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1519"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 28 May 2026 09:18:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "62r5jd2buw"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0="
+        }
+      ]
+    },
+    {
+      "Route": "index.62r5jd2buw.html.gz",
+      "AssetFile": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/obj/Debug/net9.0/compressed/cnu05p8evj-62r5jd2buw.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "603"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 28 May 2026 09:18:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "62r5jd2buw"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/obj/Debug/net9.0/compressed/cnu05p8evj-62r5jd2buw.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001655629139"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "603"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 28 May 2026 09:18:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1519"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 28 May 2026 09:18:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Pj++RUd06/0b5K4Ur8mMuw0NYSzl6XTn67tw19Y7b/0="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.gz",
+      "AssetFile": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/obj/Debug/net9.0/compressed/cnu05p8evj-62r5jd2buw.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "603"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 28 May 2026 09:18:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-EZXKm7Of3bllRFJ+RTmK3PiR2tAJKtgjMpjwahbOkYk="
+        }
+      ]
+    }
+  ]
+}

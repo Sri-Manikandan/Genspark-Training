@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 7/SignalR/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.SignalR.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.SignalR.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.SignalR.props",
+      "PackagePath": "build\\SignalR.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.SignalR.props",
+      "PackagePath": "buildMultiTargeting\\SignalR.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.SignalR.props",
+      "PackagePath": "buildTransitive\\SignalR.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
