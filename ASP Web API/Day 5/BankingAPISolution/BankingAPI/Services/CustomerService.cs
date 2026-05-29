@@ -20,16 +20,18 @@ namespace BankingAPI.Services
         private readonly IRepository<string, User> _userRepository;
         private readonly IRepository<int, Customer> _customerRepository;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
         public CustomerService(IRepository<string,Account> accountRepository,
                                 IRepository<string, User> userRepository,
                                 IRepository<int, Customer> customerRepository,
-                                ITokenService tokenService)
+                                ITokenService tokenService, IMapper mapper)
         {
             _accountRespository = accountRepository;
             _userRepository = userRepository;
             _customerRepository = customerRepository;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -67,19 +69,13 @@ namespace BankingAPI.Services
                 Status = "Active"
             };
             var result = await _accountRespository.Create(newAccount);
-            return new CreateAccountResponse
-            {
-                AccountNumber = result.AccountNumber,
-                Status = result.Status,
-                Balance = result.Balance,
-                AccountType = result.AccountType
-            };
+            return _mapper.Map<CreateAccountResponse>(result);
         }
 
         public async Task<RegisterUserResponse> Register(RegisterUserRequest request)
         {
             User user = await MapUserObjectFromRequest(request);
-            Customer customer = await MapCustomerObjectFromRequest(request);
+            Customer customer = _mapper.Map<Customer>(request);
             user = await _userRepository.Create(user);
             customer.Username = user.Username;
             customer = await _customerRepository.Create(customer);
@@ -133,14 +129,7 @@ namespace BankingAPI.Services
         async Task<GetAccountResponse> ICustomerInteract.GetAccountByAccountNumber(string accountNumber)
         {
             var account = await _accountRespository.Get(accountNumber);
-            return new GetAccountResponse
-            {
-                AccountNumber = accountNumber,
-                AccountType = account.AccountType,
-                Balance = account.Balance,
-                CustomerId = account.CustomerId,
-                Status = account.Status
-            };
+            return _mapper.Map<GetAccountResponse>(account);
         }
     }
 }

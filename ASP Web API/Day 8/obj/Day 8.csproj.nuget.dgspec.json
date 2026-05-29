@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 5/BankingAPISolution/BankingAPI/BankingAPI.csproj": {}
+    "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/Day 8.csproj": {}
   },
   "projects": {
-    "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 5/BankingAPISolution/BankingAPI/BankingAPI.csproj": {
+    "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/Day 8.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 5/BankingAPISolution/BankingAPI/BankingAPI.csproj",
-        "projectName": "BankingAPI",
-        "projectPath": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 5/BankingAPISolution/BankingAPI/BankingAPI.csproj",
+        "projectUniqueName": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/Day 8.csproj",
+        "projectName": "Day 8",
+        "projectPath": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/Day 8.csproj",
         "packagesPath": "/Users/srimanikandanr/.nuget/packages/",
-        "outputPath": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 5/BankingAPISolution/BankingAPI/obj/",
+        "outputPath": "/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/srimanikandanr/.nuget/NuGet/NuGet.Config"
@@ -45,27 +45,13 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
-            "AutoMapper": {
-              "target": "Package",
-              "version": "[14.0.0, )"
-            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[9.0.5, )"
+              "version": "[9.0.9, )"
             },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
+            "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.5, )"
-            },
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
-              "target": "Package",
-              "version": "[9.0.4, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.6.2, )"
+              "version": "[9.0.14, )"
             }
           },
           "imports": [

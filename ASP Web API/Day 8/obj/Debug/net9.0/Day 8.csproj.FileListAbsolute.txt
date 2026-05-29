@@ -1,0 +1,42 @@
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.csproj.AssemblyReference.cache
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.GeneratedMSBuildEditorConfig.editorconfig
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.AssemblyInfoInputs.cache
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.AssemblyInfo.cs
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.csproj.CoreCompileInputs.cache
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.MvcApplicationPartsAssemblyInfo.cs
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.MvcApplicationPartsAssemblyInfo.cache
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.sourcelink.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/appsettings.Development.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/appsettings.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Day 8.staticwebassets.endpoints.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Day 8
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Day 8.deps.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Day 8.runtimeconfig.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Day 8.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Day 8.pdb
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/Microsoft.OpenApi.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/scopedcss/bundle/Day 8.styles.css
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets.build.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets.development.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets.build.endpoints.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets/msbuild.Day 8.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets/msbuild.Day 8.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets/msbuild.build.Day 8.props
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.Day 8.props
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.Day 8.props
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/staticwebassets.pack.json
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.csproj.Up2Date
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/refint/Day 8.dll
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.pdb
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/Day 8.genruntimeconfig.cache
+/Users/srimanikandanr/My Files/Presidio/Genspark-Training/ASP Web API/Day 8/obj/Debug/net9.0/ref/Day 8.dll

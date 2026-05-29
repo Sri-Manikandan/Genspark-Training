@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Principal;
+using Microsoft.AspNetCore.Ratelimiting;
 
 namespace BankingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("fixed")]
     public class AccountController : ControllerBase
     {
         private readonly ICustomerInteract _customerInteract;

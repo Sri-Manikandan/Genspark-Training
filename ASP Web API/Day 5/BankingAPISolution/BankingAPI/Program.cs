@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.AccessControl;
 using System.Text;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,24 @@ builder.Services.AddDbContext<BankingContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
 });
+#endregion
+
+#region Ratelimiting
+builder.Services.AddRateLimiter(options=>{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddFixedWindowLimiter("fixed", opt =>{
+        opt.PermitLimt = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0;
+    });
+});
+#endregion
+
+
+#region AutoMapper
+builder.Services.AddAutoMapper(cfg=>cfg.AddMaps(typeof(Program).Assembly));
 #endregion
 
 #region Authenticaion
@@ -104,6 +123,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 
