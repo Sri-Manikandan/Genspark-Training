@@ -1,0 +1,15 @@
+<h2>
+    Welcome to the Customers Page, {{customer.name}}
+</h2>
+
+<table border="1">
+    <tr [class]="styleclass">
+        <td>
+            <input type="text" [value]="customer.name"/>
+            <input type="text" [(ngModel)]="customer.name"/>
+        </td>
+        <td>
+            <button (click)="handleChangeClick()">Click</button>
+        </td>
+    </tr>
+</table>
