@@ -1,0 +1,21 @@
+<section id="projects" class="bg-slate-900 text-white py-20 px-8">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12">Projects</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (project of projects; track project.title) {
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 flex flex-col gap-4">
+          <h3 class="text-xl font-semibold">{{ project.title }}</h3>
+          <p class="text-slate-400 text-sm flex-1">{{ project.description }}</p>
+          <div class="flex flex-wrap gap-2">
+            @for (tag of project.tags; track tag) {
+              <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-full">{{ tag }}</span>
+            }
+          </div>
+          <button class="mt-2 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</section>
