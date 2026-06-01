@@ -1,0 +1,12 @@
+<section id="skills" class="bg-slate-950 text-white py-20 px-8">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12">Skills</h2>
+    <div class="flex flex-wrap justify-center gap-4">
+      @for (skill of skills; track skill) {
+        <span class="border border-cyan-400 text-cyan-400 bg-cyan-400/10 px-6 py-2 rounded-full font-medium text-sm">
+          {{ skill }}
+        </span>
+      }
+    </div>
+  </div>
+</section>
