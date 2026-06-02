@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/BankingAPI/htmlpage.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\htmlpage.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo\u002BkNzIo="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1323"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo\u002BkNzIo=\u0022"},{"Name":"Last-Modified","Value":"Tue, 02 Jun 2026 06:24:21 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/BankingAPI/htmlpage.wf4olyp7a6.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\htmlpage.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"wf4olyp7a6"},{"Name":"integrity","Value":"sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo\u002BkNzIo="},{"Name":"label","Value":"_content/BankingAPI/htmlpage.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1323"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo\u002BkNzIo=\u0022"},{"Name":"Last-Modified","Value":"Tue, 02 Jun 2026 06:24:21 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

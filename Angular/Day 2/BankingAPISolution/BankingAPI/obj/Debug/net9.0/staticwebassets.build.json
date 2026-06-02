@@ -1,0 +1,362 @@
+{
+  "Version": 1,
+  "Hash": "MNLSww47eiDZgp9VtU8Kq2t0NnhcphY7kf+Q5pI5KW8=",
+  "Source": "BankingAPI",
+  "BasePath": "_content/BankingAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "BankingAPI/wwwroot",
+      "Source": "BankingAPI",
+      "ContentRoot": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/",
+      "BasePath": "_content/BankingAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/obj/Debug/net9.0/compressed/iay0ayg41p-wf4olyp7a6.gz",
+      "SourceId": "BankingAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/BankingAPI",
+      "RelativePath": "htmlpage#[.{fingerprint=wf4olyp7a6}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "3detgdn7nu",
+      "Integrity": "94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html"
+    },
+    {
+      "Identity": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "SourceId": "BankingAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/",
+      "BasePath": "_content/BankingAPI",
+      "RelativePath": "htmlpage#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wf4olyp7a6",
+      "Integrity": "fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/htmlpage.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "htmlpage.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/obj/Debug/net9.0/compressed/iay0ayg41p-wf4olyp7a6.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001620745543"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "616"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo="
+        }
+      ]
+    },
+    {
+      "Route": "htmlpage.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1323"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo="
+        }
+      ]
+    },
+    {
+      "Route": "htmlpage.html.gz",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/obj/Debug/net9.0/compressed/iay0ayg41p-wf4olyp7a6.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "616"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg="
+        }
+      ]
+    },
+    {
+      "Route": "htmlpage.wf4olyp7a6.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/obj/Debug/net9.0/compressed/iay0ayg41p-wf4olyp7a6.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001620745543"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "616"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wf4olyp7a6"
+        },
+        {
+          "Name": "label",
+          "Value": "htmlpage.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo="
+        }
+      ]
+    },
+    {
+      "Route": "htmlpage.wf4olyp7a6.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1323"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wf4olyp7a6"
+        },
+        {
+          "Name": "label",
+          "Value": "htmlpage.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo="
+        }
+      ]
+    },
+    {
+      "Route": "htmlpage.wf4olyp7a6.html.gz",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/obj/Debug/net9.0/compressed/iay0ayg41p-wf4olyp7a6.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "616"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wf4olyp7a6"
+        },
+        {
+          "Name": "label",
+          "Value": "htmlpage.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-94GmTjXQIqRk6TX7QH9d9FMx9OyBK0Wb/e6hRSH6TPg="
+        }
+      ]
+    }
+  ]
+}

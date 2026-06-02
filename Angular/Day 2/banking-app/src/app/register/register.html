@@ -1,0 +1,30 @@
+<section>
+    <h2>Register</h2>
+    <form (ngSubmit)="handleRegisterClick()">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" [(ngModel)]="user().username" required>
+        </div>
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" [(ngModel)]="user().name" required>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" [(ngModel)]="user().email" required>
+        </div>
+        <div>
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" [(ngModel)]="user().phone" required>
+        </div>
+        <div>
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status" [(ngModel)]="user().status" required>
+        </div>
+        <div>
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="user().dateOfBirth" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</section>
