@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "Hash": "7hgLC0qCAZzqPX8/nkpg9lIWeWfBDuqF7jACaz+s7Ko=",
+  "Source": "BankingAPI",
+  "BasePath": "_content/BankingAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "BankingAPI/wwwroot",
+      "Source": "BankingAPI",
+      "ContentRoot": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/",
+      "BasePath": "_content/BankingAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "SourceId": "BankingAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/",
+      "BasePath": "_content/BankingAPI",
+      "RelativePath": "htmlpage#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wf4olyp7a6",
+      "Integrity": "fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/htmlpage.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "htmlpage.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1323"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo="
+        }
+      ]
+    },
+    {
+      "Route": "htmlpage.wf4olyp7a6.html",
+      "AssetFile": "/Users/srimanikandanr/My Files/BankingAPISolution/BankingAPI/wwwroot/htmlpage.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1323"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 02 Jun 2026 06:24:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wf4olyp7a6"
+        },
+        {
+          "Name": "label",
+          "Value": "htmlpage.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fHlDv9iR7fxBepQHhuUlALowAQatiSYyk9WJo+kNzIo="
+        }
+      ]
+    }
+  ]
+}

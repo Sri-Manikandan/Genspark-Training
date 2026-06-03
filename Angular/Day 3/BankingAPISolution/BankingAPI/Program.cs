@@ -1,0 +1,175 @@
+using BankingAPI;
+using BankingAPI.Contexts;
+using BankingAPI.Interfaces;
+using BankingAPI.Mappers;
+using BankingAPI.Middlewares;
+using BankingAPI.Models;
+using BankingAPI.Repositories;
+using BankingAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using System.Security.AccessControl;
+using System.Text;
+using System.Threading.RateLimiting;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+Log.Logger = new LoggerConfiguration()
+.ReadFrom.Configuration(builder.Configuration)
+.Enrich.FromLogContext()
+.WriteTo.Console()
+.WriteTo.File("logs/MyAppLog.txt")
+.CreateLogger();
+
+builder.Host.UseSerilog();
+
+
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
+
+
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:5091", "http://localhost:4200")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();// Allow credentials for SignalR
+    });
+});
+
+#region RateLimiter
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddFixedWindowLimiter("Fixed", limiterOptions =>
+    {
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.PermitLimit = 5;
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 0;
+    });
+});
+#endregion
+
+
+#region Mappers
+builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfile()));
+#endregion
+
+#region Contexts
+builder.Services.AddDbContext<BankingContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+});
+#endregion
+
+#region Authenticaion
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(opts =>
+{
+    opts.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = false,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+        ValidateLifetime = true
+
+    };
+});
+builder.Services.AddAuthorization();
+#endregion
+
+
+#region Repositories
+builder.Services.AddScoped<IRepository<string, Account>, Repository<string,Account>>();
+builder.Services.AddScoped<IRepository<int, Customer>, Repository<int, Customer>>();
+builder.Services.AddScoped<IRepository<string, User>, Repository<string, User>>();
+#endregion
+
+
+#region Services
+builder.Services.AddScoped<ICustomerInteract, CustomerService>();
+builder.Services.AddScoped<IAuthenticationService, CustomerService>();
+builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<ITransact, TransactionService>();
+#endregion
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.UseCors();
+
+app.UseRateLimiter();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseStaticFiles();
+
+app.MapControllers();
+
+
+
+app.MapHub<ChatHub>("/chathub");
+
+app.Run();
