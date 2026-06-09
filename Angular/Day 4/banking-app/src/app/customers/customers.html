@@ -1,0 +1,31 @@
+<h2 class="alert alert-info text-center">
+    <!-- interpolation -->
+    Welcome to the Customers Page, {{username()}}!
+</h2>
+<table border="1">
+    <tr>
+       <td>
+            <!-- Two-way Data Binding -->
+            <label for="name">Customer Name:</label>
+            <input type = "text" [(ngModel)]="customer.name"/>
+       </td>
+       <td>
+            <!-- Event Binding -->
+            <button (click)="handleChangeClick()">Click Me</button>
+       </td>
+    </tr>
+   
+    
+</table>
+
+<app-customer-card
+    [customer]="customer"
+    (customerSelected)="onCustomerSelected($event)"
+></app-customer-card>
+
+@if (selectedCustomer) {
+<div>
+    <h4>Selected Customer Details:</h4>
+    <p>Name: {{selectedCustomer?.name}}</p>
+</div>
+}

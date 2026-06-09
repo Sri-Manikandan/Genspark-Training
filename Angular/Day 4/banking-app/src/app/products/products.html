@@ -1,0 +1,28 @@
+
+<div class="d-flex gap-2 mb-3">
+    <input
+        #searchInput
+        type="text"
+        class="form-control"
+        placeholder="Search for products..."
+    />
+    <button class="btn btn-primary" (click)="searchProducts(searchInput.value)">Search</button>
+</div>
+
+@if(filteredProducts().length === 0) {
+    <p class="text-muted">No products found for "{{ searchInput.value }}".</p>
+}
+
+<section class="products-container">
+   @for (product of filteredProducts(); track product.id)
+   {
+        <div class="card" style="width: 18rem;">
+        <img class="card-img-top" [src]="product.thumbnail" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{product.title}}</h5>
+            <p class="card-text">{{product.description}}</p>
+            <a href="#" class="btn btn-primary">Buy for ${{product.price}}</a>
+        </div>
+        </div>
+   }
+</section>
