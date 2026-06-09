@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { usernameSubject, getUsernameFromToken } from './rxjs/auth.operator';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { usernameSubject, getUsernameFromToken, changeUsername } from './rxjs/auth.operator';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,22 @@ import { usernameSubject, getUsernameFromToken } from './rxjs/auth.operator';
 export class App {
   username = signal(getUsernameFromToken() ?? 'Guest');
 
-  constructor() {
+  constructor(private router: Router) {
     usernameSubject.subscribe({
       next:(un)=>{
         this.username.set(un);
       }
     })
+  }
+
+  isLoggedIn():boolean{
+    return !!sessionStorage.getItem('token');
+  }
+
+  logout() {
+    sessionStorage.removeItem('token');
+    changeUsername('Guest');
+    this.router.navigate(['/login']);
   }
 
   onDestroy(){
